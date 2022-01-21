@@ -1,10 +1,10 @@
-
+#!/usr/bin/env bash
 #PBS -q gpuq
 #PBS -l walltime=00:05:00
 
 echo "Load singularity..."
 module load singularity/3.4.1
-#echo "Executing singularity..."
+echo "Executing singularity..."
 #singularity exec \
 #  --bind $DATAWORK/:/datawork \
 #  $HOME/Singularities/tf2.6.0_retinanet.sif
