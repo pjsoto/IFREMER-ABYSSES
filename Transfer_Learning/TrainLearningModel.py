@@ -39,7 +39,7 @@ def main():
     if not os.path.exists(args.checkpoints_main_path + '/checkpoints/'):
         os.makedirs(args.checkpoints_main_path + '/checkpoints/')
 
-    args.checkpoint_dir = args.checkpoints_main_path + '/checkpoints/' + args.checkpoint_name
+    args.checkpoint_dir = args.checkpoints_main_path + args.dataset_name + '_checkpoints/' + args.checkpoint_name
 
     print("Dataset pre-processing...")
     if args.dataset_name == 'SUIM':

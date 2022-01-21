@@ -125,6 +125,7 @@ class LearningModels():
             P_mean = np.mean(self.P_tr)
             R_mean = np.mean(self.R_tr)
             self.run["train/loss"].log(self.train_loss.result())
+            self.run["train/F1-Score"].log(F1_mean)
             print(f'Epoch {e + 1}, ' f'Loss: {self.train_loss.result()} ,' f'Precision: {P_mean}, ' f'Recall: {R_mean}, ' f'F1-Score: {F1_mean}')
 
             for batch in valid_dataset:
@@ -134,6 +135,13 @@ class LearningModels():
                 labels_ = tf.keras.utils.to_categorical(labels, self.args.classes)
                 class_weights = tf.constant(1, shape = [self.args.batch_size, self.args.crop_size, self.args.crop_size, self.args.classes], dtype = tf.float32)
                 self.test_step(images, labels_, class_weights)
+
+            F1_mean = np.mean(self.F1_vl)
+            P_mean = np.mean(self.P_vl)
+            R_mean = np.mean(self.R_vl)
+            self.run["valid/loss"].log(self.train_loss.result())
+            self.run["valid/F1-Score"].log(F1_mean)
+            print(f'Epoch {e + 1}, ' f'Loss: {self.valid_loss.result()} ,' f'Precision: {P_mean}, ' f'Recall: {R_mean}, ' f'F1-Score: {F1_mean}')
 
                 #f, axarr = plt.subplots(1,2)
                 #axarr[0].imshow(images[0,:,:,:])

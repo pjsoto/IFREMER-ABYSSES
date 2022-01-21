@@ -10,14 +10,21 @@ args = parser.parse_args()
 
 Schedule = []
 
-if args.running_in == 'Docker_Container':
+if args.running_in == 'Local_Docker_Container':
     Schedule.append("python TrainLearningModel.py --task Semantic_Segmentation --learning_model Unet --crop_size 256 --checkpoint_name Prove "
                     "--dataset_name SUIM --dataset_main_path /d/DATA/Pedro_Work/IFREMER_Work/DATA/Under_water_Image_Segmenetation/SUIM/train_val/train_val/ "
                     "--checkpoints_main_path /d/DATA/Pedro_Work/IFREMER_Work/CODE/Transfer_Learning")
-if args.running_in == 'Anaconda_Environment':
+if args.running_in == 'Local_Anaconda_Environment':
     Schedule.append("python TrainLearningModel.py --task Semantic_Segmentation --learning_model Unet --crop_size 256 --checkpoint_name Prove "
                     "--dataset_name SUIM --dataset_main_path D:/DATA/Pedro_Work/IFREMER_Work/DATA/Under_water_Image_Segmenetation/SUIM/train_val/train_val/ "
                     "--checkpoints_main_path D:/DATA/Pedro_Work/IFREMER_Work/CODE/Transfer_Learning")
+
+if args.running_in == 'Datarmor':
+    Schedule.append("python TrainLearningModel.py --task Semantic_Segmentation --learning_model Unet "
+                    "--backbone_name None --batch_size 10 --runs 1 --crop_size 256 --epochs 100 --phase train "
+                    "--dataset_name SUIM --checkpoint_name SUIM_SS_Train "
+                    "--dataset_main_path /datawork/pjsotove/DATA/SUIM/train_val/train_val/ "
+                    "--checkpoints_main_path /datawork/pjsotove/EXPERIMENTS/CHECKPOINTS/")
 
 
 
