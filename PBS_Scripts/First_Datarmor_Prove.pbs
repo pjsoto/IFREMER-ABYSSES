@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+#PBS -q gpuq
+#PBS -l ncpus=1
+#PBS -l mem = 16gb
+#PBS -l walltime=00:05:00
+
+# Run a python script using a Singularity image
+singularity exec \
+  --bind $HOME:/home \
+  /home/Singularities/tf2.6.0_retinanet.sif
+  python First_Prove.py \
