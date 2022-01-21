@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 #PBS -q gpuq
-#PBS -l ncpus=1
-#PBS -l mem=16gb
-#PBS -l walltime=00:05:00
 
 echo "Load singularity..."
 module load singularity/3.4.1
