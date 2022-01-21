@@ -4,8 +4,9 @@
 #PBS -l mem=16gb
 #PBS -l walltime=00:05:00
 
-# Run a python script using a Singularity image and exec command
+echo "Load singularity..."
 module load singularity/3.4.1
+echo "Executing singularity..."
 singularity exec \
   --bind $DATAWORK/:/datawork \
   $HOME/Singularities/tf2.6.0_retinanet.sif
