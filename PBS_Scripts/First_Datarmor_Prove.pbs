@@ -1,4 +1,4 @@
-#!/usr/bin/env bash -l
+#!/usr/bin/env bash -i
 #PBS -q gpuq
 #PBS -l walltime=00:05:00
 
