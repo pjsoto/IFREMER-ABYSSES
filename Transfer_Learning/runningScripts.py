@@ -23,8 +23,8 @@ if args.running_in == 'Datarmor':
     Schedule.append("python TrainLearningModel.py --task Semantic_Segmentation --learning_model Unet "
                     "--backbone_name None --batch_size 10 --runs 1 --crop_size 256 --epochs 100 --phase train "
                     "--dataset_name SUIM --checkpoint_name SUIM_SS_Train "
-                    "--dataset_main_path /datawork/pjsotove/DATA/SUIM/train_val/train_val/ "
-                    "--checkpoints_main_path /datawork/pjsotove/EXPERIMENTS/CHECKPOINTS/")
+                    "--dataset_main_path /datawork/DATA/SUIM/train_val/train_val/ "
+                    "--checkpoints_main_path /datawork/EXPERIMENTS/CHECKPOINTS/")
 
 
 
