@@ -19,8 +19,15 @@ if args.running_in == 'Local_Anaconda_Environment':
                     "--dataset_name SUIM --dataset_main_path D:/DATA/Pedro_Work/IFREMER_Work/DATA/Under_water_Image_Segmenetation/SUIM/train_val/train_val/ "
                     "--checkpoints_main_path D:/DATA/Pedro_Work/IFREMER_Work/CODE/Transfer_Learning")
 
-if args.running_in == 'Datarmor':
+if args.running_in == 'Datarmor_Interactive':
     Schedule.append("python TrainLearningModel.py --task Semantic_Segmentation --learning_model Unet "
+                    "--backbone_name None --batch_size 10 --runs 1 --crop_size 256 --epochs 100 --phase train "
+                    "--dataset_name SUIM --checkpoint_name SUIM_SS_Train "
+                    "--dataset_main_path /datawork/DATA/SUIM/train_val/train_val/ "
+                    "--checkpoints_main_path /datawork/EXPERIMENTS/CHECKPOINTS/")
+
+if args.running_in == 'Datarmor_PBS':
+    Schedule.append("python $HOME/CODE/IFREMER-ABYSSES/Transfer_Learning/TrainLearningModel.py --task Semantic_Segmentation --learning_model Unet "
                     "--backbone_name None --batch_size 10 --runs 1 --crop_size 256 --epochs 100 --phase train "
                     "--dataset_name SUIM --checkpoint_name SUIM_SS_Train "
                     "--dataset_main_path /datawork/DATA/SUIM/train_val/train_val/ "
