@@ -4,8 +4,9 @@
 #PBS -l mem=16gb
 #PBS -l walltime=00:05:00
 
-# Run a python script using a Singularity image
+# Run a python script using a Singularity image and exec command
+module load singularity/3.4.1
 singularity exec \
-  --bind $HOME:/home \
-  /home/Singularities/tf2.6.0_retinanet.sif
-  python /home/CODE/IFREMER-ABYSSES/Datarmor_Tests/First_Prove.py \
+  --bind $DATAWORK/:/datawork \
+  $HOME/Singularities/tf2.6.0_retinanet.sif
+  python $HOME/CODE/IFREMER-ABYSSES/Datarmor_Tests/First_Prove.py \
