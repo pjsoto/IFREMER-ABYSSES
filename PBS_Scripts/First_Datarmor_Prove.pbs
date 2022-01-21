@@ -3,7 +3,7 @@
 #PBS -l walltime=00:05:00
 
 echo "Load singularity..."
-#module load singularity/3.4.1
+module load singularity/3.4.1
 #echo "Executing singularity..."
 #singularity exec \
 #  --bind $DATAWORK/:/datawork \
