@@ -8,4 +8,4 @@
 singularity exec \
   --bind $HOME:/home \
   /home/Singularities/tf2.6.0_retinanet.sif
-  python First_Prove.py \
+  python /home/CODE/IFREMER-ABYSSES/Datarmor_Tests/First_Prove.py \
