@@ -50,8 +50,8 @@ class LearningModels():
         gradients = tape.gradient(loss, self.model.learningmodel.trainable_variables)
         self.optimizer.apply_gradients(zip(gradients, self.model.learningmodel.trainable_variables))
         #self.Loss.append(loss.numpy())
-        y_pred = np.argmax(predictions.numpy(), axis = 3).reshape((self.args.batch_size * self.args.crop_size * self.args.crop_size,1))
-        y_true = np.argmax(labels, axis = 3).reshape((self.args.batch_size * self.args.crop_size * self.args.crop_size,1))
+        y_pred = np.argmax(predictions.numpy(), axis = 3).reshape((data.shape[0] * self.args.crop_size * self.args.crop_size,1))
+        y_true = np.argmax(labels, axis = 3).reshape((data.shape[0] * self.args.crop_size * self.args.crop_size,1))
         F1, P, R = compute_metrics(y_true, y_pred, 'macro')
         self.F1_tr.append(F1)
         self.P_tr.append(P)
@@ -62,8 +62,8 @@ class LearningModels():
         predictions = self.model.learningmodel(data, training = False)
         loss = self.weighted_cross_entropy_c(labels, predictions, class_weights)
 
-        y_pred = np.argmax(predictions.numpy(), axis = 3).reshape((predictions.shape[0] * self.args.crop_size * self.args.crop_size,1))
-        y_true = np.argmax(labels, axis = 3).reshape((predictions.shape[0] * self.args.crop_size * self.args.crop_size,1))
+        y_pred = np.argmax(predictions.numpy(), axis = 3).reshape((data.shape[0] * self.args.crop_size * self.args.crop_size,1))
+        y_true = np.argmax(labels, axis = 3).reshape((data.shape[0] * self.args.crop_size * self.args.crop_size,1))
         F1, P, R = compute_metrics(y_true, y_pred, 'macro')
 
         self.F1_vl.append(F1)
