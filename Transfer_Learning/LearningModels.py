@@ -62,8 +62,8 @@ class LearningModels():
         predictions = self.model.learningmodel(data, training = False)
         loss = self.weighted_cross_entropy_c(labels, predictions, class_weights)
 
-        y_pred = np.argmax(predictions.numpy(), axis = 3).reshape((self.args.batch_size * self.args.crop_size * self.args.crop_size,1))
-        y_true = np.argmax(labels, axis = 3).reshape((self.args.batch_size * self.args.crop_size * self.args.crop_size,1))
+        y_pred = np.argmax(predictions.numpy(), axis = 3).reshape((predictions.shape[0] * self.args.crop_size * self.args.crop_size,1))
+        y_true = np.argmax(labels, axis = 3).reshape((predictions.shape[0] * self.args.crop_size * self.args.crop_size,1))
         F1, P, R = compute_metrics(y_true, y_pred, 'macro')
 
         self.F1_vl.append(F1)
@@ -116,8 +116,8 @@ class LearningModels():
                 #Hot encoding the labels
                 labels_ = tf.keras.utils.to_categorical(labels, self.args.classes)
                 #Computing class weights to mitigate the imabalance between classes
-                labels_sum = tf.reduce_sum(labels_, [0, 1, 2])/tf.constant(self.args.batch_size * self.args.crop_size * self.args.crop_size,dtype = tf.float32)
-                array = tf.constant(1, shape = [self.args.batch_size, self.args.crop_size, self.args.crop_size, self.args.classes], dtype = tf.float32)
+                labels_sum = tf.reduce_sum(labels_, [0, 1, 2])/tf.constant(images.shape[0] * self.args.crop_size * self.args.crop_size,dtype = tf.float32)
+                array = tf.constant(1, shape = [images.shape[0], self.args.crop_size, self.args.crop_size, self.args.classes], dtype = tf.float32)
                 class_weights = tf.multiply(labels_sum, array)
                 self.train_step(images, labels_, class_weights)
 
@@ -131,9 +131,8 @@ class LearningModels():
             for batch in valid_dataset:
                 images = batch["image"]
                 labels = batch["label"]
-
                 labels_ = tf.keras.utils.to_categorical(labels, self.args.classes)
-                class_weights = tf.constant(1, shape = [self.args.batch_size, self.args.crop_size, self.args.crop_size, self.args.classes], dtype = tf.float32)
+                class_weights = tf.constant(1, shape = [images.shape[0], self.args.crop_size, self.args.crop_size, self.args.classes], dtype = tf.float32)
                 self.test_step(images, labels_, class_weights)
 
             F1_mean = np.mean(self.F1_vl)

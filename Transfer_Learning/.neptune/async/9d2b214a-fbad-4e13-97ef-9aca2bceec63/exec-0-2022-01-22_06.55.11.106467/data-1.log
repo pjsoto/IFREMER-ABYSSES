@@ -1,0 +1,179 @@
+{"obj": {"type": "AssignString", "path": ["sys", "name"], "value": "Untitled"}, "version": 1}
+{"obj": {"type": "AssignString", "path": ["sys", "description"], "value": ""}, "version": 2}
+{"obj": {"type": "AssignString", "path": ["sys", "hostname"], "value": "DESKTOP-EEJ811B"}, "version": 3}
+{"obj": {"type": "AssignBool", "path": ["sys", "failed"], "value": false}, "version": 4}
+{"obj": {"type": "ClearStringLog", "path": ["monitoring", "stdout"]}, "version": 5}
+{"obj": {"type": "ClearStringLog", "path": ["monitoring", "stderr"]}, "version": 6}
+{"obj": {"type": "AssignString", "path": ["source_code", "entrypoint"], "value": "TrainLearningModel.py"}, "version": 7}
+{"obj": {"type": "UploadFileSet", "path": ["source_code", "files"], "file_globs": ["D:\\DATA\\Pedro_Work\\IFREMER_Work\\CODE\\IFREMER-ABYSSES\\Transfer_Learning\\TrainLearningModel.py"], "reset": "False"}, "version": 8}
+{"obj": {"type": "ConfigFloatSeries", "path": ["monitoring", "cpu"], "min": 0.0, "max": 100.0, "unit": "%"}, "version": 9}
+{"obj": {"type": "ClearFloatLog", "path": ["monitoring", "cpu"]}, "version": 10}
+{"obj": {"type": "ConfigFloatSeries", "path": ["monitoring", "memory"], "min": 0.0, "max": 15.79909896850586, "unit": "GB"}, "version": 11}
+{"obj": {"type": "ClearFloatLog", "path": ["monitoring", "memory"]}, "version": 12}
+{"obj": {"type": "ConfigFloatSeries", "path": ["monitoring", "gpu"], "min": 0.0, "max": 100.0, "unit": "%"}, "version": 13}
+{"obj": {"type": "ClearFloatLog", "path": ["monitoring", "gpu"]}, "version": 14}
+{"obj": {"type": "ConfigFloatSeries", "path": ["monitoring", "gpu_memory"], "min": 0.0, "max": 4.0, "unit": "GB"}, "version": 15}
+{"obj": {"type": "ClearFloatLog", "path": ["monitoring", "gpu_memory"]}, "version": 16}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "Namespace(backbone_name='movilenet', batch_size=5, checkpoint_name='Prove', checkpoints_main_path='D:/DATA/Pedro_Work/IFREMER_Work/CODE/Transfer_Learning', crop_size=256, dataset_main_path='D:/DATA/Pedro_Work/IFREMER_Work/DATA/Under_water_Image_Segmenetation/SUIM/train_val/train_val/', dataset_name='SUIM', epochs=100, learning_model='Unet', phase='train', runs=1, task='Semantic_Segmentation')", "step": null, "ts": 1642845312.1999204}]}, "version": 17}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "\n", "step": null, "ts": 1642845312.2009192}]}, "version": 18}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "Dataset pre-processing...", "step": null, "ts": 1642845312.2009192}]}, "version": 19}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "\n", "step": null, "ts": 1642845312.203919}]}, "version": 20}
+{"obj": {"type": "LogFloats", "path": ["monitoring", "cpu"], "values": [{"value": 10.3, "step": null, "ts": 1642845312.193959}]}, "version": 21}
+{"obj": {"type": "LogFloats", "path": ["monitoring", "memory"], "values": [{"value": 11.735858917236328, "step": null, "ts": 1642845312.193959}]}, "version": 22}
+{"obj": {"type": "LogFloats", "path": ["monitoring", "gpu_memory"], "values": [{"value": 0.076171875, "step": null, "ts": 1642845312.193959}]}, "version": 23}
+{"obj": {"type": "LogFloats", "path": ["monitoring", "cpu"], "values": [{"value": 8.6, "step": null, "ts": 1642845322.209762}]}, "version": 24}
+{"obj": {"type": "LogFloats", "path": ["monitoring", "memory"], "values": [{"value": 11.772590637207031, "step": null, "ts": 1642845322.209762}]}, "version": 25}
+{"obj": {"type": "LogFloats", "path": ["monitoring", "gpu_memory"], "values": [{"value": 0.076171875, "step": null, "ts": 1642845322.209762}]}, "version": 26}
+{"obj": {"type": "LogFloats", "path": ["monitoring", "cpu"], "values": [{"value": 5.1, "step": null, "ts": 1642845333.2072058}]}, "version": 27}
+{"obj": {"type": "LogFloats", "path": ["monitoring", "memory"], "values": [{"value": 11.718292236328125, "step": null, "ts": 1642845333.2072058}]}, "version": 28}
+{"obj": {"type": "LogFloats", "path": ["monitoring", "gpu_memory"], "values": [{"value": 0.076171875, "step": null, "ts": 1642845333.2072058}]}, "version": 29}
+{"obj": {"type": "LogFloats", "path": ["monitoring", "cpu"], "values": [{"value": 4.7, "step": null, "ts": 1642845344.1883318}]}, "version": 30}
+{"obj": {"type": "LogFloats", "path": ["monitoring", "memory"], "values": [{"value": 11.713905334472656, "step": null, "ts": 1642845344.1883318}]}, "version": 31}
+{"obj": {"type": "LogFloats", "path": ["monitoring", "gpu_memory"], "values": [{"value": 0.076171875, "step": null, "ts": 1642845344.1883318}]}, "version": 32}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "Splitting the data into Training and Validation sets", "step": null, "ts": 1642845355.3915234}]}, "version": 33}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "\n", "step": null, "ts": 1642845355.3925238}]}, "version": 34}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "[*] Initializing the model...", "step": null, "ts": 1642845355.3945255}]}, "version": 35}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "\n", "step": null, "ts": 1642845355.3955553}]}, "version": 36}
+{"obj": {"type": "LogFloats", "path": ["monitoring", "cpu"], "values": [{"value": 4.2, "step": null, "ts": 1642845355.1831605}]}, "version": 37}
+{"obj": {"type": "LogFloats", "path": ["monitoring", "memory"], "values": [{"value": 11.687614440917969, "step": null, "ts": 1642845355.1831605}]}, "version": 38}
+{"obj": {"type": "LogFloats", "path": ["monitoring", "gpu_memory"], "values": [{"value": 2.923553466796875, "step": null, "ts": 1642845355.1831605}]}, "version": 39}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "Initalizing Neptune", "step": null, "ts": 1642845359.4180653}]}, "version": 40}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "\n", "step": null, "ts": 1642845359.4180653}]}, "version": 41}
+{"obj": {"type": "AssignFloat", "path": ["parameters", "learning_rate"], "value": 0.001}, "version": 42}
+{"obj": {"type": "AssignString", "path": ["parameters", "optimizer"], "value": "Adam"}, "version": 43}
+{"obj": {"type": "AssignString", "path": ["args"], "value": "Namespace(backbone_name='movilenet', batch_size=5, checkpoint_dir='D:/DATA/Pedro_Work/IFREMER_Work/CODE/Transfer_LearningSUIM_checkpoints/Prove', checkpoint_name='Prove', checkpoints_main_path='D:/DATA/Pedro_Work/IFREMER_Work/CODE/Transfer_Learning', classes=8, crop_size=256, dataset_main_path='D:/DATA/Pedro_Work/IFREMER_Work/DATA/Under_water_Image_Segmenetation/SUIM/train_val/train_val/', dataset_name='SUIM', epochs=100, learning_model='Unet', phase='train', runs=1, save_checkpoint_path='D:/DATA/Pedro_Work/IFREMER_Work/CODE/Transfer_LearningSUIM_checkpoints/Prove/Unet_22_01_2022_06_55_55/', task='Semantic_Segmentation')"}, "version": 44}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "Defining the data augmentation procedure", "step": null, "ts": 1642845359.4190285}]}, "version": 45}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "\n", "step": null, "ts": 1642845359.4200604}]}, "version": 46}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "Dataset pre-processing according tensorflow methods...", "step": null, "ts": 1642845359.4320273}]}, "version": 47}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "\n", "step": null, "ts": 1642845359.4330297}]}, "version": 48}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "(5, 256, 256, 3)", "step": null, "ts": 1642845360.4474802}]}, "version": 49}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "\n", "step": null, "ts": 1642845360.4484496}]}, "version": 50}
+{"obj": {"type": "LogFloats", "path": ["monitoring", "cpu"], "values": [{"value": 8.4, "step": null, "ts": 1642845369.3975708}]}, "version": 51}
+{"obj": {"type": "LogFloats", "path": ["monitoring", "memory"], "values": [{"value": 13.030372619628906, "step": null, "ts": 1642845369.3975708}]}, "version": 52}
+{"obj": {"type": "LogFloats", "path": ["monitoring", "gpu"], "values": [{"value": 95.0, "step": null, "ts": 1642845369.3975708}]}, "version": 53}
+{"obj": {"type": "LogFloats", "path": ["monitoring", "gpu_memory"], "values": [{"value": 3.157928466796875, "step": null, "ts": 1642845369.3975708}]}, "version": 54}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "(5, 256, 256, 3)", "step": null, "ts": 1642845374.120848}]}, "version": 55}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "\n", "step": null, "ts": 1642845374.1218073}]}, "version": 56}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "(5, 256, 256, 3)", "step": null, "ts": 1642845374.9778419}]}, "version": 57}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "\n", "step": null, "ts": 1642845374.9778419}]}, "version": 58}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "(5, 256, 256, 3)", "step": null, "ts": 1642845375.816849}]}, "version": 59}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "\n", "step": null, "ts": 1642845375.816849}]}, "version": 60}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "(5, 256, 256, 3)", "step": null, "ts": 1642845376.6437018}]}, "version": 61}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "\n", "step": null, "ts": 1642845376.6447046}]}, "version": 62}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "(5, 256, 256, 3)", "step": null, "ts": 1642845377.475701}]}, "version": 63}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "\n", "step": null, "ts": 1642845377.476704}]}, "version": 64}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "(5, 256, 256, 3)", "step": null, "ts": 1642845378.3247018}]}, "version": 65}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "\n", "step": null, "ts": 1642845378.3247018}]}, "version": 66}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "(5, 256, 256, 3)", "step": null, "ts": 1642845379.1577015}]}, "version": 67}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "\n", "step": null, "ts": 1642845379.1587067}]}, "version": 68}
+{"obj": {"type": "LogFloats", "path": ["monitoring", "cpu"], "values": [{"value": 10.1, "step": null, "ts": 1642845379.4237018}]}, "version": 69}
+{"obj": {"type": "LogFloats", "path": ["monitoring", "memory"], "values": [{"value": 13.024791717529297, "step": null, "ts": 1642845379.4237018}]}, "version": 70}
+{"obj": {"type": "LogFloats", "path": ["monitoring", "gpu"], "values": [{"value": 100.0, "step": null, "ts": 1642845379.4237018}]}, "version": 71}
+{"obj": {"type": "LogFloats", "path": ["monitoring", "gpu_memory"], "values": [{"value": 3.157928466796875, "step": null, "ts": 1642845379.4237018}]}, "version": 72}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "(5, 256, 256, 3)", "step": null, "ts": 1642845379.9857016}]}, "version": 73}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "\n", "step": null, "ts": 1642845379.9867017}]}, "version": 74}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "(5, 256, 256, 3)", "step": null, "ts": 1642845380.8437016}]}, "version": 75}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "\n", "step": null, "ts": 1642845380.844702}]}, "version": 76}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "(5, 256, 256, 3)", "step": null, "ts": 1642845381.674702}]}, "version": 77}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "\n", "step": null, "ts": 1642845381.675702}]}, "version": 78}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "(5, 256, 256, 3)", "step": null, "ts": 1642845382.5177011}]}, "version": 79}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "\n", "step": null, "ts": 1642845382.5187035}]}, "version": 80}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "(5, 256, 256, 3)", "step": null, "ts": 1642845383.3477015}]}, "version": 81}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "\n", "step": null, "ts": 1642845383.3487043}]}, "version": 82}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "(5, 256, 256, 3)", "step": null, "ts": 1642845384.1897013}]}, "version": 83}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "\n", "step": null, "ts": 1642845384.190702}]}, "version": 84}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "(5, 256, 256, 3)", "step": null, "ts": 1642845385.0327013}]}, "version": 85}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "\n", "step": null, "ts": 1642845385.0337055}]}, "version": 86}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "(5, 256, 256, 3)", "step": null, "ts": 1642845385.8697016}]}, "version": 87}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "\n", "step": null, "ts": 1642845385.8697016}]}, "version": 88}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "(5, 256, 256, 3)", "step": null, "ts": 1642845386.7067018}]}, "version": 89}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "\n", "step": null, "ts": 1642845386.7077022}]}, "version": 90}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "(5, 256, 256, 3)", "step": null, "ts": 1642845387.576701}]}, "version": 91}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "\n", "step": null, "ts": 1642845387.576701}]}, "version": 92}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "(5, 256, 256, 3)", "step": null, "ts": 1642845388.394311}]}, "version": 93}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "\n", "step": null, "ts": 1642845388.3953364}]}, "version": 94}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "(5, 256, 256, 3)", "step": null, "ts": 1642845389.2456708}]}, "version": 95}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "\n", "step": null, "ts": 1642845389.2466357}]}, "version": 96}
+{"obj": {"type": "LogFloats", "path": ["monitoring", "cpu"], "values": [{"value": 10.8, "step": null, "ts": 1642845389.5686362}]}, "version": 97}
+{"obj": {"type": "LogFloats", "path": ["monitoring", "memory"], "values": [{"value": 13.017204284667969, "step": null, "ts": 1642845389.5686362}]}, "version": 98}
+{"obj": {"type": "LogFloats", "path": ["monitoring", "gpu"], "values": [{"value": 99.0, "step": null, "ts": 1642845389.5686362}]}, "version": 99}
+{"obj": {"type": "LogFloats", "path": ["monitoring", "gpu_memory"], "values": [{"value": 3.157928466796875, "step": null, "ts": 1642845389.5686362}]}, "version": 100}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "(5, 256, 256, 3)", "step": null, "ts": 1642845390.0586727}]}, "version": 101}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "\n", "step": null, "ts": 1642845390.0586727}]}, "version": 102}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "(5, 256, 256, 3)", "step": null, "ts": 1642845390.8908873}]}, "version": 103}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "\n", "step": null, "ts": 1642845390.8918886}]}, "version": 104}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "(5, 256, 256, 3)", "step": null, "ts": 1642845391.7278872}]}, "version": 105}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "\n", "step": null, "ts": 1642845391.7288878}]}, "version": 106}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "(5, 256, 256, 3)", "step": null, "ts": 1642845392.575226}]}, "version": 107}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "\n", "step": null, "ts": 1642845392.576184}]}, "version": 108}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "(5, 256, 256, 3)", "step": null, "ts": 1642845393.4122202}]}, "version": 109}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "\n", "step": null, "ts": 1642845393.4132}]}, "version": 110}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "(5, 256, 256, 3)", "step": null, "ts": 1642845394.2608178}]}, "version": 111}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "\n", "step": null, "ts": 1642845394.261819}]}, "version": 112}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "(5, 256, 256, 3)", "step": null, "ts": 1642845395.0838182}]}, "version": 113}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "\n", "step": null, "ts": 1642845395.0848181}]}, "version": 114}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "(5, 256, 256, 3)", "step": null, "ts": 1642845395.9178176}]}, "version": 115}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "\n", "step": null, "ts": 1642845395.9178176}]}, "version": 116}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "(5, 256, 256, 3)", "step": null, "ts": 1642845396.7498183}]}, "version": 117}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "\n", "step": null, "ts": 1642845396.7508187}]}, "version": 118}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "(3, 256, 256, 3)", "step": null, "ts": 1642845397.5728176}]}, "version": 119}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stdout"], "values": [{"value": "\n", "step": null, "ts": 1642845397.5728176}]}, "version": 120}
+{"obj": {"type": "LogFloats", "path": ["monitoring", "cpu"], "values": [{"value": 10.5, "step": null, "ts": 1642845399.615816}]}, "version": 121}
+{"obj": {"type": "LogFloats", "path": ["monitoring", "memory"], "values": [{"value": 12.982757568359375, "step": null, "ts": 1642845399.615816}]}, "version": 122}
+{"obj": {"type": "LogFloats", "path": ["monitoring", "gpu"], "values": [{"value": 98.0, "step": null, "ts": 1642845399.615816}]}, "version": 123}
+{"obj": {"type": "LogFloats", "path": ["monitoring", "gpu_memory"], "values": [{"value": 3.157928466796875, "step": null, "ts": 1642845399.615816}]}, "version": 124}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "traceback"], "values": [{"value": "An uncaught exception occurred while run was active on worker DESKTOP-EEJ811B.", "step": null, "ts": 1642845404.063818}, {"value": "Marking run as failed", "step": null, "ts": 1642845404.063818}, {"value": "Traceback:", "step": null, "ts": 1642845404.063818}, {"value": "  File \"TrainLearningModel.py\", line 68, in <module>\n    main()\n", "step": null, "ts": 1642845404.063818}, {"value": "  File \"TrainLearningModel.py\", line 64, in main\n    model.Train()\n", "step": null, "ts": 1642845404.063818}, {"value": "  File \"D:\\DATA\\Pedro_Work\\IFREMER_Work\\CODE\\IFREMER-ABYSSES\\Transfer_Learning\\LearningModels.py\", line 137, in Train\n    self.test_step(images, labels_, class_weights)\n", "step": null, "ts": 1642845404.063818}, {"value": "  File \"D:\\DATA\\Pedro_Work\\IFREMER_Work\\CODE\\IFREMER-ABYSSES\\Transfer_Learning\\LearningModels.py\", line 63, in test_step\n    loss = self.weighted_cross_entropy_c(labels, predictions, class_weights)\n", "step": null, "ts": 1642845404.063818}, {"value": "  File \"D:\\DATA\\Pedro_Work\\IFREMER_Work\\CODE\\IFREMER-ABYSSES\\Transfer_Learning\\LearningModels.py\", line 41, in weighted_cross_entropy_c\n    temp_weighted = class_weights * temp\n", "step": null, "ts": 1642845404.063818}, {"value": "  File \"C:\\Users\\psoto\\Anaconda3\\envs\\tf270\\lib\\site-packages\\tensorflow\\python\\ops\\math_ops.py\", line 1367, in binary_op_wrapper\n    return func(x, y, name=name)\n", "step": null, "ts": 1642845404.063818}, {"value": "  File \"C:\\Users\\psoto\\Anaconda3\\envs\\tf270\\lib\\site-packages\\tensorflow\\python\\ops\\math_ops.py\", line 1710, in _mul_dispatch\n    return multiply(x, y, name=name)\n", "step": null, "ts": 1642845404.063818}]}, "version": 125}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "traceback"], "values": [{"value": "  File \"C:\\Users\\psoto\\Anaconda3\\envs\\tf270\\lib\\site-packages\\tensorflow\\python\\util\\dispatch.py\", line 206, in wrapper\n    return target(*args, **kwargs)\n", "step": null, "ts": 1642845404.063818}, {"value": "  File \"C:\\Users\\psoto\\Anaconda3\\envs\\tf270\\lib\\site-packages\\tensorflow\\python\\ops\\math_ops.py\", line 530, in multiply\n    return gen_math_ops.mul(x, y, name)\n", "step": null, "ts": 1642845404.063818}, {"value": "  File \"C:\\Users\\psoto\\Anaconda3\\envs\\tf270\\lib\\site-packages\\tensorflow\\python\\ops\\gen_math_ops.py\", line 6235, in mul\n    _ops.raise_from_not_ok_status(e, name)\n", "step": null, "ts": 1642845404.063818}, {"value": "  File \"C:\\Users\\psoto\\Anaconda3\\envs\\tf270\\lib\\site-packages\\tensorflow\\python\\framework\\ops.py\", line 6941, in raise_from_not_ok_status\n    six.raise_from(core._status_to_exception(e.code, message), None)\n", "step": null, "ts": 1642845404.063818}, {"value": "  File \"<string>\", line 3, in raise_from\n", "step": null, "ts": 1642845404.063818}, {"value": "required broadcastable shapes [Op:Mul]", "step": null, "ts": 1642845404.063818}]}, "version": 126}
+{"obj": {"type": "AssignBool", "path": ["sys", "failed"], "value": true}, "version": 127}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stderr"], "values": [{"value": "Traceback (most recent call last):\n", "step": null, "ts": 1642845404.0648186}]}, "version": 128}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stderr"], "values": [{"value": "  File \"TrainLearningModel.py\", line 68, in <module>\n", "step": null, "ts": 1642845404.0658624}]}, "version": 129}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stderr"], "values": [{"value": "    ", "step": null, "ts": 1642845404.0658624}]}, "version": 130}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stderr"], "values": [{"value": "main()", "step": null, "ts": 1642845404.0658624}]}, "version": 131}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stderr"], "values": [{"value": "\n", "step": null, "ts": 1642845404.0728183}]}, "version": 132}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stderr"], "values": [{"value": "  File \"TrainLearningModel.py\", line 64, in main\n", "step": null, "ts": 1642845404.0748243}]}, "version": 133}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stderr"], "values": [{"value": "    ", "step": null, "ts": 1642845404.0748243}]}, "version": 134}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stderr"], "values": [{"value": "model.Train()", "step": null, "ts": 1642845404.0748243}]}, "version": 135}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stderr"], "values": [{"value": "\n", "step": null, "ts": 1642845404.075824}]}, "version": 136}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stderr"], "values": [{"value": "  File \"D:\\DATA\\Pedro_Work\\IFREMER_Work\\CODE\\IFREMER-ABYSSES\\Transfer_Learning\\LearningModels.py\", line 137, in Train\n", "step": null, "ts": 1642845404.0818675}]}, "version": 137}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stderr"], "values": [{"value": "    ", "step": null, "ts": 1642845404.082858}]}, "version": 138}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stderr"], "values": [{"value": "self.test_step(images, labels_, class_weights)", "step": null, "ts": 1642845404.082858}]}, "version": 139}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stderr"], "values": [{"value": "\n", "step": null, "ts": 1642845404.082858}]}, "version": 140}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stderr"], "values": [{"value": "  File \"D:\\DATA\\Pedro_Work\\IFREMER_Work\\CODE\\IFREMER-ABYSSES\\Transfer_Learning\\LearningModels.py\", line 63, in test_step\n", "step": null, "ts": 1642845404.0838206}]}, "version": 141}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stderr"], "values": [{"value": "    ", "step": null, "ts": 1642845404.0838206}]}, "version": 142}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stderr"], "values": [{"value": "loss = self.weighted_cross_entropy_c(labels, predictions, class_weights)", "step": null, "ts": 1642845404.084822}]}, "version": 143}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stderr"], "values": [{"value": "\n", "step": null, "ts": 1642845404.084822}]}, "version": 144}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stderr"], "values": [{"value": "  File \"D:\\DATA\\Pedro_Work\\IFREMER_Work\\CODE\\IFREMER-ABYSSES\\Transfer_Learning\\LearningModels.py\", line 41, in weighted_cross_entropy_c\n", "step": null, "ts": 1642845404.0868206}]}, "version": 145}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stderr"], "values": [{"value": "    ", "step": null, "ts": 1642845404.0868206}]}, "version": 146}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stderr"], "values": [{"value": "temp_weighted = class_weights * temp", "step": null, "ts": 1642845404.0868206}]}, "version": 147}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stderr"], "values": [{"value": "\n", "step": null, "ts": 1642845404.0888188}]}, "version": 148}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stderr"], "values": [{"value": "  File \"C:\\Users\\psoto\\Anaconda3\\envs\\tf270\\lib\\site-packages\\tensorflow\\python\\ops\\math_ops.py\", line 1367, in binary_op_wrapper\n", "step": null, "ts": 1642845404.095857}]}, "version": 149}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stderr"], "values": [{"value": "    ", "step": null, "ts": 1642845404.0968208}]}, "version": 150}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stderr"], "values": [{"value": "return func(x, y, name=name)", "step": null, "ts": 1642845404.0968208}]}, "version": 151}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stderr"], "values": [{"value": "\n", "step": null, "ts": 1642845404.0968208}]}, "version": 152}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stderr"], "values": [{"value": "  File \"C:\\Users\\psoto\\Anaconda3\\envs\\tf270\\lib\\site-packages\\tensorflow\\python\\ops\\math_ops.py\", line 1710, in _mul_dispatch\n", "step": null, "ts": 1642845404.0978205}]}, "version": 153}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stderr"], "values": [{"value": "    ", "step": null, "ts": 1642845404.0988188}]}, "version": 154}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stderr"], "values": [{"value": "return multiply(x, y, name=name)", "step": null, "ts": 1642845404.0988188}]}, "version": 155}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stderr"], "values": [{"value": "\n", "step": null, "ts": 1642845404.0988188}]}, "version": 156}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stderr"], "values": [{"value": "  File \"C:\\Users\\psoto\\Anaconda3\\envs\\tf270\\lib\\site-packages\\tensorflow\\python\\util\\dispatch.py\", line 206, in wrapper\n", "step": null, "ts": 1642845404.0998209}]}, "version": 157}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stderr"], "values": [{"value": "    ", "step": null, "ts": 1642845404.0998209}]}, "version": 158}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stderr"], "values": [{"value": "return target(*args, **kwargs)", "step": null, "ts": 1642845404.0998209}]}, "version": 159}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stderr"], "values": [{"value": "\n", "step": null, "ts": 1642845404.1008208}]}, "version": 160}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stderr"], "values": [{"value": "  File \"C:\\Users\\psoto\\Anaconda3\\envs\\tf270\\lib\\site-packages\\tensorflow\\python\\ops\\math_ops.py\", line 530, in multiply\n", "step": null, "ts": 1642845404.1018484}]}, "version": 161}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stderr"], "values": [{"value": "    ", "step": null, "ts": 1642845404.1018484}]}, "version": 162}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stderr"], "values": [{"value": "return gen_math_ops.mul(x, y, name)", "step": null, "ts": 1642845404.1028202}]}, "version": 163}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stderr"], "values": [{"value": "\n", "step": null, "ts": 1642845404.104285}]}, "version": 164}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stderr"], "values": [{"value": "  File \"C:\\Users\\psoto\\Anaconda3\\envs\\tf270\\lib\\site-packages\\tensorflow\\python\\ops\\gen_math_ops.py\", line 6235, in mul\n", "step": null, "ts": 1642845404.1052854}]}, "version": 165}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stderr"], "values": [{"value": "    ", "step": null, "ts": 1642845404.107284}]}, "version": 166}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stderr"], "values": [{"value": "_ops.raise_from_not_ok_status(e, name)", "step": null, "ts": 1642845404.107284}]}, "version": 167}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stderr"], "values": [{"value": "\n", "step": null, "ts": 1642845404.1114466}]}, "version": 168}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stderr"], "values": [{"value": "  File \"C:\\Users\\psoto\\Anaconda3\\envs\\tf270\\lib\\site-packages\\tensorflow\\python\\framework\\ops.py\", line 6941, in raise_from_not_ok_status\n", "step": null, "ts": 1642845404.1122856}]}, "version": 169}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stderr"], "values": [{"value": "    ", "step": null, "ts": 1642845404.114283}]}, "version": 170}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stderr"], "values": [{"value": "six.raise_from(core._status_to_exception(e.code, message), None)", "step": null, "ts": 1642845404.114283}]}, "version": 171}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stderr"], "values": [{"value": "\n", "step": null, "ts": 1642845404.114283}]}, "version": 172}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stderr"], "values": [{"value": "  File \"<string>\", line 3, in raise_from\n", "step": null, "ts": 1642845404.1152868}]}, "version": 173}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stderr"], "values": [{"value": "tensorflow.python.framework.errors_impl", "step": null, "ts": 1642845404.1152868}]}, "version": 174}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stderr"], "values": [{"value": ".", "step": null, "ts": 1642845404.1152868}]}, "version": 175}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stderr"], "values": [{"value": "InvalidArgumentError", "step": null, "ts": 1642845404.1152868}]}, "version": 176}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stderr"], "values": [{"value": ": ", "step": null, "ts": 1642845404.1162841}]}, "version": 177}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stderr"], "values": [{"value": "required broadcastable shapes [Op:Mul]", "step": null, "ts": 1642845404.1162841}]}, "version": 178}
+{"obj": {"type": "LogStrings", "path": ["monitoring", "stderr"], "values": [{"value": "\n", "step": null, "ts": 1642845404.1162841}]}, "version": 179}
