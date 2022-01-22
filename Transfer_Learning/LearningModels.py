@@ -15,6 +15,7 @@ class LearningModels():
     def __init__(self, args, dataset, run):
         self.args = args
         self.dataset = dataset
+        self.args.classes = self.dataset.classes
         self.run = run
         dataset = []
         self.model = Networks(self.args)
