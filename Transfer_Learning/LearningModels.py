@@ -26,10 +26,10 @@ class LearningModels():
             self.aug = Augmenter(self.args)
             if self.args.optimizer == 'Adam':
                 self.optimizer = tf.keras.optimizers.Adam(learning_rate = self.args.lr, beta_1 = 0.9)
-                params = {"learning_rate": self.args.learning_rate, "optimizer": "Adam"}
+                params = {"learning_rate": self.args.lr, "optimizer": "Adam"}
             if self.args.optimizer == 'SGD':
                 self.optimizer = tf.keras.optimizers.SGD(learning_rate = self.args.lr)
-                params = {"learning_rate": self.args.learning_rate, "optimizer": "SGD"}
+                params = {"learning_rate": self.args.lr, "optimizer": "SGD"}
             self.run["parameters"] = params
             #self.model.learningmodel.summary()
             self.F1_tr, self.P_tr, self.R_tr = [], [], []
