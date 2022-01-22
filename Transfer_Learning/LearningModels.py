@@ -21,14 +21,16 @@ class LearningModels():
         self.model = Networks(self.args)
         if self.args.phase == 'train':
             print("Initalizing Neptune")
-
-            params = {"learning_rate": 0.001, "optimizer": "Adam"}
-            self.run["parameters"] = params
             self.run["args"] = self.args
             print("Defining the data augmentation procedure")
             self.aug = Augmenter(self.args)
-
-            self.optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
+            if self.args.optimizer == 'Adam':
+                self.optimizer = tf.keras.optimizers.Adam(learning_rate = self.args.lr, beta1 = 0.9)
+                params = {"learning_rate": self.args.learning_rate, "optimizer": "Adam"}
+            if self.args.optimizer == 'SGD':
+                self.optimizer = tf.keras.optimizers.SGD(learning_rate = self.args.lr)
+                params = {"learning_rate": self.args.learning_rate, "optimizer": "SGD"}
+            self.run["parameters"] = params
             #self.model.learningmodel.summary()
             self.F1_tr, self.P_tr, self.R_tr = [], [], []
             self.F1_vl, self.P_vl, self.R_vl = [], [], []

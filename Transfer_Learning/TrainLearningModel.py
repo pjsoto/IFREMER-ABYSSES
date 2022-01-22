@@ -15,12 +15,14 @@ parser.add_argument('--task', dest='task', type=str, default='Semantic_Segmentat
 parser.add_argument('--learning_model', dest='learning_model', type=str, default='Unet', help='Learning model used')
 parser.add_argument('--backbone_name', dest='backbone_name', type=str, default='movilenet', help='users can chosse between resnet50 and movilenet')
 parser.add_argument('--classweight_type', dest='classweight_type', type=str, default = 'global', help='users can chosse between global|batch fro the way the weights will be computed')
+parser.add_argument('--lr', dest='lr', type = float, default = 0.01, help = 'The learning rate parameter that will be used in the optimezer')
 parser.add_argument('--batch_size', dest='batch_size', type=int, default=5, help='number images in batch')
 parser.add_argument('--runs', dest='runs', type=int, default=1, help='number of executions of the algorithm')
 parser.add_argument('--crop_size', dest='crop_size', type=int, default=256, help='Size of the random crop performed as Data Augmentation technique')
 parser.add_argument('--epochs', dest = 'epochs', type = int, default = 100, help='Number of epochs')
 # Phase
-parser.add_argument('--phase', dest='phase', default='train', help='train, test, generate_image, create_dataset')
+parser.add_argument('--phase', dest='phase', type = str,default='train', help='train, test, generate_image, create_dataset')
+parser.add_argument('--optimizer', dest = 'optimizer', type = str, default = 'Adam', help = 'The optimizer that will update the gradients computed by backprop')
 parser.add_argument('--checkpoint_name', dest='checkpoint_name', default='Prove', help='Checkpoints folder name')
 # Images dir and names
 parser.add_argument('--dataset_name', dest='dataset_name', type = str, default='SUIM', help = 'Dataset Name: SUIM')
