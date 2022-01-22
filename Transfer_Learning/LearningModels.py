@@ -25,7 +25,7 @@ class LearningModels():
             print("Defining the data augmentation procedure")
             self.aug = Augmenter(self.args)
             if self.args.optimizer == 'Adam':
-                self.optimizer = tf.keras.optimizers.Adam(learning_rate = self.args.lr, beta1 = 0.9)
+                self.optimizer = tf.keras.optimizers.Adam(learning_rate = self.args.lr, beta_1 = 0.9)
                 params = {"learning_rate": self.args.learning_rate, "optimizer": "Adam"}
             if self.args.optimizer == 'SGD':
                 self.optimizer = tf.keras.optimizers.SGD(learning_rate = self.args.lr)
@@ -144,7 +144,7 @@ class LearningModels():
             F1_mean = np.mean(self.F1_vl)
             P_mean = np.mean(self.P_vl)
             R_mean = np.mean(self.R_vl)
-            self.run["valid/loss"].log(self.train_loss.result())
+            self.run["valid/loss"].log(self.valid_loss.result())
             self.run["valid/F1-Score"].log(F1_mean)
             print(f'Epoch {e + 1}, ' f'Loss: {self.valid_loss.result()} ,' f'Precision: {P_mean}, ' f'Recall: {R_mean}, ' f'F1-Score: {F1_mean}')
 
