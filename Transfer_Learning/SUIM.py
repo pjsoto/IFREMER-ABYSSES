@@ -2,7 +2,9 @@ import os
 import numpy as np
 import matplotlib.image as mpimg
 import matplotlib.pyplot as plt
+import tensorflow as tf
 
+from Tools import *
 
 class SUIM():
     def __init__(self, args):
@@ -11,8 +13,10 @@ class SUIM():
         self.classes = 8
         self.Train_Paths = []
         self.Label_Paths = []
+        images_dimensions = 0
+        labels_sum = tf.constant(0, shape = [1, self.classes], dtype = tf.float32)
         if self.args.phase == 'train':
-
+            images_counter = 0
             self.images_main_path = self.args.dataset_main_path + 'images/'
             self.labels_main_path = self.args.dataset_main_path + 'masks/'
             #Listing the images
@@ -25,12 +29,18 @@ class SUIM():
                     #reading images and labels
                     image = mpimg.imread(image_path)
                     label = mpimg.imread(label_path)
+
                     if image.shape[0] == label.shape[0] and image.shape[1] == label.shape[1]:
 
                         self.Train_Paths.append(image_path)
                         self.Label_Paths.append(label_path)
 
-
+                        if self.args.classweight_type == 'global':
+                            #Computing the global class weights
+                            labels_ = tf.keras.utils.to_categorical(Label_Converter(label), self.classes)
+                            #Computing class weights to mitigate the imabalance between classes
+                            labels_sum += (tf.reduce_sum(labels_, [0, 1])/tf.constant(np.shape(image)[0] * np.shape(image)[1], dtype = tf.float32))
+                            images_counter += 1
                     #    data = np.zeros((image.shape[0],image.shape[1],image.shape[2] + 1))
 
                         #Converting rgb labels to a int map
@@ -39,6 +49,8 @@ class SUIM():
                     #    data[:,:, 3] = label
 
                     #    self.data_list.append(data)
+            if self.args.classweight_type == 'global':
+                self.class_weights = 1 - (labels_sum/tf.constant(images_counter, dtype = tf.float32))
 
             print("Splitting the data into Training and Validation sets")
             num_samples = len(self.Train_Paths)

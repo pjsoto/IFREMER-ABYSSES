@@ -114,11 +114,14 @@ class LearningModels():
                 images = batch["image"]
                 labels = batch["label"]
                 #Hot encoding the labels
-                labels_ = tf.keras.utils.to_categorical(labels, self.args.classes)
-                #Computing class weights to mitigate the imabalance between classes
-                labels_sum = tf.reduce_sum(labels_, [0, 1, 2])/tf.constant(images.shape[0] * self.args.crop_size * self.args.crop_size,dtype = tf.float32)
+                labels_ = tf.keras.utils.to_categorical(labels, self.dataset.classes)
                 array = tf.constant(1, shape = [images.shape[0], self.args.crop_size, self.args.crop_size, self.args.classes], dtype = tf.float32)
-                class_weights = tf.multiply(labels_sum, array)
+                if self.args.classweight_type == 'batch':
+                    #Computing class weights to mitigate the imabalance between classes
+                    labels_sum = tf.reduce_sum(labels_, [0, 1, 2])/tf.constant(images.shape[0] * self.args.crop_size * self.args.crop_size, dtype = tf.float32)
+                    class_weights = tf.multiply(1 - labels_sum, array)
+                else:
+                    class_weights = tf.multiply(self.dataset.class_weights, array)
                 self.train_step(images, labels_, class_weights)
 
             F1_mean = np.mean(self.F1_tr)
@@ -131,7 +134,7 @@ class LearningModels():
             for batch in valid_dataset:
                 images = batch["image"]
                 labels = batch["label"]
-                labels_ = tf.keras.utils.to_categorical(labels, self.args.classes)
+                labels_ = tf.keras.utils.to_categorical(labels, self.dataset.classes)
                 class_weights = tf.constant(1, shape = [images.shape[0], self.args.crop_size, self.args.crop_size, self.args.classes], dtype = tf.float32)
                 self.test_step(images, labels_, class_weights)
 

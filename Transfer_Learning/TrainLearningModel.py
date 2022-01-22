@@ -14,6 +14,7 @@ parser = argparse.ArgumentParser(description='')
 parser.add_argument('--task', dest='task', type=str, default='Semantic_Segmentation', help='Learning Task, user can take among two alternatives Semantic_Segmentation|Image_Classification')
 parser.add_argument('--learning_model', dest='learning_model', type=str, default='Unet', help='Learning model used')
 parser.add_argument('--backbone_name', dest='backbone_name', type=str, default='movilenet', help='users can chosse between resnet50 and movilenet')
+parser.add_argument('--classweight_type', dest='classweight_type', type=str, default = 'global', help='users can chosse between global|batch fro the way the weights will be computed')
 parser.add_argument('--batch_size', dest='batch_size', type=int, default=5, help='number images in batch')
 parser.add_argument('--runs', dest='runs', type=int, default=1, help='number of executions of the algorithm')
 parser.add_argument('--crop_size', dest='crop_size', type=int, default=256, help='Size of the random crop performed as Data Augmentation technique')
@@ -44,7 +45,6 @@ def main():
     print("Dataset pre-processing...")
     if args.dataset_name == 'SUIM':
         dataset = SUIM(args)
-        args.classes = dataset.classes
 
     #Running several times
     for r in range(args.runs):
