@@ -103,7 +103,7 @@ class LearningModels():
         valid_dataset = (valid_dataset.batch(self.args.batch_size).prefetch(buffer_size = tf.data.experimental.AUTOTUNE))
 
         #Loop for epochs
-        self.args.epochs = 3
+        #self.args.epochs = 3
         counter = 0
         for e in range(self.args.epochs):
             self.train_loss.reset_states()
