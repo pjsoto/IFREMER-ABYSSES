@@ -28,7 +28,7 @@ if args.running_in == 'Datarmor_Interactive':
 
 if args.running_in == 'Datarmor_PBS':
     Schedule.append("python $HOME/CODE/IFREMER-ABYSSES/Transfer_Learning/TrainLearningModel.py --task Semantic_Segmentation --learning_model Unet "
-                    "--backbone_name None --classweight_type global --lr 0.0001 --optimizer Adam --batch_size 32 --runs 1 --crop_size 256 --epochs 100 --phase train "
+                    "--backbone_name None --classweight_type global --lr 0.0001 --optimizer Adam --batch_size 32 --runs 1 --crop_size 256 --epochs 200 --phase train "
                     "--dataset_name SUIM --checkpoint_name SUIM_SS_Train "
                     "--dataset_main_path /datawork/DATA/SUIM/train_val/train_val/ "
                     "--checkpoints_main_path /datawork/EXPERIMENTS/CHECKPOINTS/")
