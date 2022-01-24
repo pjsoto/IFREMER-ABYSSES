@@ -181,9 +181,13 @@ class LearningModels():
             if F1_mean > best_F1:
                 print('Model has improved from {} to {}'.format(best_F1, F1_mean))
                 best_F1 = F1_mean
+                validation_counter = 0
                 ckpt_save_path = self.manager.save()
                 print ('Saving checkpoint for epoch {} at {}'.format(e + 1, ckpt_save_path))
-
+            else:
+                validation_counter += 1
+                if validation_counter >= 20:
+                    break                    
                 #f, axarr = plt.subplots(1,2)
                 #axarr[0].imshow(images[0,:,:,:])
                 #axarr[1].imshow(labels[0,:,:,])
