@@ -25,7 +25,7 @@ def encode_single_sample(image_path, label_path):
     img = tf.io.decode_jpeg(img, channels=3)
     lbl = tf.io.decode_bmp(lbl, channels=3)
     # 3. Convert to float32 in [0,1] range
-    img = tf.image.cast(img, tf.float32)
+    img = tf.cast(img, tf.float32)
     img = img/255.
 
     return {"image": img, "label": lbl}
