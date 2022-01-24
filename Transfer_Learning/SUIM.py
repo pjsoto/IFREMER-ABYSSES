@@ -50,10 +50,12 @@ class SUIM():
 
                     #    self.data_list.append(data)
             if self.args.classweight_type == 'global':
+                print(labels_sum/tf.constant(images_counter, dtype = tf.float32))
+                print(1 - labels_sum/tf.constant(images_counter, dtype = tf.float32))
                 self.class_weights = (1 - (labels_sum/tf.constant(images_counter, dtype = tf.float32)))*10
                 print('Class weight used')
                 print(self.class_weights)
-
+            
             print("Splitting the data into Training and Validation sets")
             num_samples = len(self.Train_Paths)
             num_samples_val = int((num_samples * 10)/100)
