@@ -186,8 +186,8 @@ class LearningModels():
                 print ('Saving checkpoint for epoch {} at {}'.format(e + 1, ckpt_save_path))
             else:
                 validation_counter += 1
-                if validation_counter >= 20:
-                    break                    
+                if validation_counter >= 150:
+                    break
                 #f, axarr = plt.subplots(1,2)
                 #axarr[0].imshow(images[0,:,:,:])
                 #axarr[1].imshow(labels[0,:,:,])
