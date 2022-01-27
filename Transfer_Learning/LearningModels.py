@@ -128,7 +128,7 @@ class LearningModels():
                 if self.args.classweight_type == 'batch':
                     #Computing class weights to mitigate the imabalance between classes
                     labels_sum = tf.reduce_sum(labels_, [0, 1, 2])/tf.constant(images.shape[0] * self.args.crop_size_rows * self.args.crop_size_cols, dtype = tf.float32)
-                    class_weights = tf.multiply((1-labels_sum) * 10, array)
+                    class_weights = tf.multiply((1-labels_sum) * 100, array)
                 else:
                     class_weights = tf.multiply(self.dataset.class_weights, array)
 
