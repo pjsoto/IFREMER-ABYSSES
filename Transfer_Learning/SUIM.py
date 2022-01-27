@@ -11,6 +11,8 @@ class SUIM():
 
         self.args = args
         self.classes = 8
+        if self.args.class_grouping:
+            self.classes = 5
         self.Train_Paths = []
         self.Label_Paths = []
         images_dimensions = 0
@@ -79,6 +81,9 @@ class SUIM():
         Label_reshaped_[Label_reshaped <200]=0
 
         label = 4 * Label_reshaped_[:,0] + 2 * Label_reshaped_[:,1] + 1 * Label_reshaped_[:,2]
+        if self.args.class_grouping:
+            label[label == 2] = 0
+            label[label == 7] = 0
         return label.reshape((rgb_label.shape[0] , rgb_label.shape[1]))
 
     def label_encode_sample(self, image, label):

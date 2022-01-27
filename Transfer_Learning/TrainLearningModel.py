@@ -27,6 +27,7 @@ parser.add_argument('--optimizer', dest = 'optimizer', type = str, default = 'Ad
 parser.add_argument('--checkpoint_name', dest='checkpoint_name', default='Prove', help='Checkpoints folder name')
 # Images dir and names
 parser.add_argument('--dataset_name', dest='dataset_name', type = str, default='SUIM', help = 'Dataset Name: SUIM')
+parser.add_argument('--class_grouping', dest = 'class_grouping', type=eval, choices=[True, False], default=True, help = 'Decide if some classes in the dataset can be mixtured')
 parser.add_argument('--dataset_main_path', dest='dataset_main_path', type=str, default='/d/DATA/Pedro_Work/IFREMER_Work/DATA/Under_water_Image_Segmenetation/SUIM/train_val/train_val/', help='Main path of the dataset images')
 parser.add_argument('--checkpoints_main_path', dest='checkpoints_main_path', type=str, default='/d/DATA/Pedro_Work/IFREMER_Work/CODE/Transfer_Learning/', help='Path where checkpoints will be saved' )
 
@@ -39,7 +40,7 @@ def main():
         api_token="eyJhcGlfYWRkcmVzcyI6Imh0dHBzOi8vYXBwLm5lcHR1bmUuYWkiLCJhcGlfdXJsIjoiaHR0cHM6Ly9hcHAubmVwdHVuZS5haSIsImFwaV9rZXkiOiJhMjI4NTlkMS0zNzE4LTRjYTEtYWMwMi02MzQzMTY3ZWI5NzUifQ==",
     )  # your credentials
 
-    run["sys/tags"].add([args.task, args.learning_model, args.backbone_name])
+    run["sys/tags"].add([args.task, args.learning_model, args.backbone_name, args.classweight_type, args.class_grouping])
 
     print(args)
     if not os.path.exists(args.checkpoints_main_path + '/checkpoints/'):
