@@ -5,18 +5,6 @@ import numpy as np
 import tensorflow as tf
 from sklearn.metrics import f1_score, precision_score, recall_score, accuracy_score, confusion_matrix
 
-from SUIM import *
-
-def Label_Converter(rgb_label):
-
-    Label_reshaped = rgb_label.reshape((rgb_label.shape[0] * rgb_label.shape[1], rgb_label.shape[2]))
-    Label_reshaped_ = Label_reshaped.copy()
-    Label_reshaped_[Label_reshaped>=200]=1
-    Label_reshaped_[Label_reshaped <200]=0
-
-    label = 4 * Label_reshaped_[:,0] + 2 * Label_reshaped_[:,1] + 1 * Label_reshaped_[:,2]
-    return label.reshape((rgb_label.shape[0] , rgb_label.shape[1]))
-
 def encode_single_sample(image_path, label_path):
     # 1. Read image and labels
     img = tf.io.read_file(image_path)
@@ -32,12 +20,6 @@ def encode_single_sample(image_path, label_path):
 
 def create_dict(image, label):
     return {"image": image, "label": label}
-
-def label_encode_sample(image, label):
-    image = image.numpy()
-    label = label.numpy()
-    label = Label_Converter(label)
-    return (image, label)
 
 def compute_metrics(y_true, y_pred, average):
     f1score = 100*f1_score(y_true, y_pred, average=average, zero_division = 1)

@@ -85,7 +85,7 @@ class LearningModels():
         train_dataset = tf.data.Dataset.from_tensor_slices((self.dataset.Train_Paths, self.dataset.Train_Label_Paths))
         train_dataset = train_dataset.map(encode_single_sample, num_parallel_calls=tf.data.experimental.AUTOTUNE)
         #Encoding the labels' maps
-        train_dataset = train_dataset.map(lambda x: tf.py_function(label_encode_sample,
+        train_dataset = train_dataset.map(lambda x: tf.py_function(self.dataset.label_encode_sample,
                                                                     inp=[x['image'], x['label']],
                                                                     Tout=(tf.float32, tf.int32))).map(create_dict)
         #Applying Data augmrntation transformation to the images and as well to the labels

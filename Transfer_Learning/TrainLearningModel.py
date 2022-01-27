@@ -18,7 +18,8 @@ parser.add_argument('--classweight_type', dest='classweight_type', type=str, def
 parser.add_argument('--lr', dest='lr', type = float, default = 0.01, help = 'The learning rate parameter that will be used in the optimezer')
 parser.add_argument('--batch_size', dest='batch_size', type=int, default=5, help='number images in batch')
 parser.add_argument('--runs', dest='runs', type=int, default=1, help='number of executions of the algorithm')
-parser.add_argument('--crop_size', dest='crop_size', type=int, default=256, help='Size of the random crop performed as Data Augmentation technique')
+parser.add_argument('--crop_size_rows', dest='crop_size_rows', type=int, default=256, help='Size of the random crop performed as Data Augmentation technique')
+parser.add_argument('--crop_size_cols', dest='crop_size_cols', type=int, default=256, help='Size of the random crop performed as Data Augmentation technique')
 parser.add_argument('--epochs', dest = 'epochs', type = int, default = 100, help='Number of epochs')
 # Phase
 parser.add_argument('--phase', dest='phase', type = str,default='train', help='train, test, generate_image, create_dataset')

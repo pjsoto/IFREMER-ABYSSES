@@ -55,7 +55,7 @@ class SUIM():
                 self.class_weights = (1 - (labels_sum/tf.constant(images_counter, dtype = tf.float32)))*10
                 print('Class weight used')
                 print(self.class_weights)
-            
+
             print("Splitting the data into Training and Validation sets")
             num_samples = len(self.Train_Paths)
             num_samples_val = int((num_samples * 10)/100)
@@ -68,3 +68,19 @@ class SUIM():
             self.Valid_Label_Paths = self.Label_Paths[:num_samples_val]
             self.Train_Paths = self.Train_Paths[num_samples_val:]
             self.Train_Label_Paths = self.Label_Paths[num_samples_val:]
+
+    def Label_Converter(self, rgb_label):
+
+        Label_reshaped = rgb_label.reshape((rgb_label.shape[0] * rgb_label.shape[1], rgb_label.shape[2]))
+        Label_reshaped_ = Label_reshaped.copy()
+        Label_reshaped_[Label_reshaped>=200]=1
+        Label_reshaped_[Label_reshaped <200]=0
+
+        label = 4 * Label_reshaped_[:,0] + 2 * Label_reshaped_[:,1] + 1 * Label_reshaped_[:,2]
+        return label.reshape((rgb_label.shape[0] , rgb_label.shape[1]))
+
+    def label_encode_sample(self, image, label):
+        image = image.numpy()
+        label = label.numpy()
+        label = self.Label_Converter(label)
+        return (image, label)
