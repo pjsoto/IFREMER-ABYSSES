@@ -37,7 +37,7 @@ class SUIM():
 
                         if self.args.classweight_type == 'global':
                             #Computing the global class weights
-                            labels_ = tf.keras.utils.to_categorical(Label_Converter(label), self.classes)
+                            labels_ = tf.keras.utils.to_categorical(self.Label_Converter(label), self.classes)
                             #Computing class weights to mitigate the imabalance between classes
                             labels_sum += (tf.reduce_sum(labels_, [0, 1])/tf.constant(np.shape(image)[0] * np.shape(image)[1], dtype = tf.float32))
                             images_counter += 1
