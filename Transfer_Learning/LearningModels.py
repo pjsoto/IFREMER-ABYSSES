@@ -124,18 +124,18 @@ class LearningModels():
                 labels = batch["label"]
                 #Hot encoding the labels
                 labels_ = tf.keras.utils.to_categorical(labels, self.dataset.classes)
-                array = tf.constant(1, shape = [images.shape[0], self.args.crop_size, self.args.crop_size, self.args.classes], dtype = tf.float32)
+                array = tf.constant(1, shape = [images.shape[0], self.args.crop_size_rows, self.args.crop_size_cols, self.args.classes], dtype = tf.float32)
                 if self.args.classweight_type == 'batch':
                     #Computing class weights to mitigate the imabalance between classes
-                    labels_sum = tf.reduce_sum(labels_, [0, 1, 2])/tf.constant(images.shape[0] * self.args.crop_size * self.args.crop_size, dtype = tf.float32)
+                    labels_sum = tf.reduce_sum(labels_, [0, 1, 2])/tf.constant(images.shape[0] * self.args.crop_size_rows * self.args.crop_size_cols, dtype = tf.float32)
                     class_weights = tf.multiply((1-labels_sum) * 10, array)
                 else:
                     class_weights = tf.multiply(self.dataset.class_weights, array)
 
                 loss, predictions = self.train_step(images, labels_, class_weights)
 
-                y_pred = np.argmax(predictions.numpy(), axis = 3).reshape((images.shape[0] * self.args.crop_size * self.args.crop_size,1))
-                y_true = labels.numpy().reshape((images.shape[0] * self.args.crop_size * self.args.crop_size,1))
+                y_pred = np.argmax(predictions.numpy(), axis = 3).reshape((images.shape[0] * self.args.crop_size_rows * self.args.crop_size_cols,1))
+                y_true = labels.numpy().reshape((images.shape[0] * self.args.crop_size_rows * self.args.crop_size_cols,1))
 
                 F1, P, R = compute_metrics(y_true, y_pred, 'macro')
 
@@ -156,11 +156,11 @@ class LearningModels():
                 images = batch["image"]
                 labels = batch["label"]
                 labels_ = tf.keras.utils.to_categorical(labels, self.dataset.classes)
-                class_weights = tf.constant(1, shape = [images.shape[0], self.args.crop_size, self.args.crop_size, self.args.classes], dtype = tf.float32)
+                class_weights = tf.constant(1, shape = [images.shape[0], self.args.crop_size_rows, self.args.crop_size_cols, self.args.classes], dtype = tf.float32)
                 loss, predictions = self.test_step(images, labels_, class_weights)
 
-                y_pred = np.argmax(predictions.numpy(), axis = 3).reshape((images.shape[0] * self.args.crop_size * self.args.crop_size,1))
-                y_true = labels.numpy().reshape((images.shape[0] * self.args.crop_size * self.args.crop_size,1))
+                y_pred = np.argmax(predictions.numpy(), axis = 3).reshape((images.shape[0] * self.args.crop_size_rows * self.args.crop_size_cols, 1))
+                y_true = labels.numpy().reshape((images.shape[0] * self.args.crop_size_rows * self.args.crop_size_cols, 1))
 
                 F1, P, R = compute_metrics(y_true, y_pred, 'macro')
 
