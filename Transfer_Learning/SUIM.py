@@ -12,7 +12,7 @@ class SUIM():
         self.args = args
         self.classes = 8
         if self.args.class_grouping:
-            self.classes = 6
+            self.classes = 7
         self.Train_Paths = []
         self.Label_Paths = []
         images_dimensions = 0
