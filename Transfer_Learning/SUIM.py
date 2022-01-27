@@ -52,9 +52,9 @@ class SUIM():
             if self.args.classweight_type == 'global':
                 print(labels_sum/tf.constant(images_counter, dtype = tf.float32))
                 print(1 - labels_sum/tf.constant(images_counter, dtype = tf.float32))
-                self.class_weights = (1 - (labels_sum/tf.constant(images_counter, dtype = tf.float32)))*100
+                self.class_weights = (1 - (labels_sum/tf.constant(images_counter, dtype = tf.float32)))*10
             elif self.args.classweight_type == 'None':
-                self.class_weights = tf.constant(1, shape = [1, self.classes], dtype = tf.float32)                    
+                self.class_weights = tf.constant(1, shape = [1, self.classes], dtype = tf.float32)
             print('Class weight used')
             print(self.class_weights)
 
