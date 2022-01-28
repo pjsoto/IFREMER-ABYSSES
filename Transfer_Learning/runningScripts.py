@@ -21,16 +21,16 @@ if args.running_in == 'Local_Anaconda_Environment':
 
 if args.running_in == 'Datarmor_Interactive':
     Schedule.append("python TrainLearningModel.py --task Semantic_Segmentation --learning_model Unet "
-                    "--backbone_name None --classweight_type None --lr 0.0001 --optimizer Adam --batch_size 2 --runs 1 --crop_size_rows 320 --crop_size_cols 240 "
-                    "--epochs 300 --phase train "
+                    "--backbone_name None --classweight_type global --lr 0.0001 --optimizer Adam --batch_size 2 --runs 1 --crop_size_rows 320 --crop_size_cols 240 "
+                    "--epochs 400 --phase train "
                     "--dataset_name SUIM --class_grouping True --checkpoint_name SUIM_SS_Train "
                     "--dataset_main_path /datawork/DATA/SUIM/train_val/train_val/ "
                     "--checkpoints_main_path /datawork/EXPERIMENTS/CHECKPOINTS/")
 
 if args.running_in == 'Datarmor_PBS':
     Schedule.append("python $HOME/CODE/IFREMER-ABYSSES/Transfer_Learning/TrainLearningModel.py --task Semantic_Segmentation --learning_model Unet "
-                    "--backbone_name None --classweight_type None --lr 0.0001 --optimizer Adam --batch_size 2 --runs 1 --crop_size_rows 320 --crop_size_cols 240 "
-                    "--epochs 300 --phase train "
+                    "--backbone_name None --classweight_type global --lr 0.0001 --optimizer Adam --batch_size 2 --runs 1 --crop_size_rows 320 --crop_size_cols 240 "
+                    "--epochs 400 --phase train "
                     "--dataset_name SUIM --class_grouping True --checkpoint_name SUIM_SS_Train "
                     "--dataset_main_path /datawork/DATA/SUIM/train_val/train_val/ "
                     "--checkpoints_main_path /datawork/EXPERIMENTS/CHECKPOINTS/")
