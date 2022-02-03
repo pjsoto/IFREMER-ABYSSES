@@ -5,6 +5,7 @@ import json
 import numpy as np
 import tensorflow as tf
 import matplotlib.pyplot as plt
+from sklearn.manifold import TSNE
 import neptune.new as neptune
 from tensorflow.keras.backend import epsilon
 
@@ -14,19 +15,19 @@ from Augmenter import *
 from Tools import *
 class LearningModels():
     def __init__(self, args, dataset, run):
+        self.run = run
         self.args = args
         self.dataset = dataset
         self.args.classes = self.dataset.classes
-        self.run = run
         dataset = []
         self.model = Networks(self.args)
+        print("Defining the data augmentation procedure")
+        self.aug = Augmenter(self.args)
         #ckpt = tf.train.Checkpoint(step=tf.Variable(1), optimizer=opt, net=net, iterator=iterator)
         self.checkpoint = tf.train.Checkpoint(net = self.model.learningmodel)
         self.manager = tf.train.CheckpointManager(self.checkpoint, self.args.save_checkpoint_path, max_to_keep = 2)
         if self.args.phase == 'train':
             self.run["args"] = self.args
-            print("Defining the data augmentation procedure")
-            self.aug = Augmenter(self.args)
             if self.args.optimizer == 'Adam':
                 self.optimizer = tf.keras.optimizers.Adam(learning_rate = self.args.lr, beta_1 = 0.9)
                 params = {"learning_rate": self.args.lr, "optimizer": "Adam"}
@@ -43,11 +44,13 @@ class LearningModels():
             #with open(args.save_checkpoint_path + 'modelsummary.txt', 'w') as f:
             #    self.model.learningmodel.summary(print_fn=lambda x: f.write(x + '\n'))
         if self.args.phase == 'test':
-            if self.manager.latest_chekpoint:
-                self.checkpoint.restore(self.manager.latest_chekpoint)
+            self.latest_checkpoint_path = tf.train.latest_checkpoint(checkpoint_dir = self.args.save_checkpoint_path)
+            if self.latest_checkpoint_path is not None:
+                self.checkpoint.restore(self.latest_checkpoint_path)
                 print('[*]The trained model has been loaded sucessfully!')
             else:
                 print('[!]There are no checkpoints in the current {} path'.format(self.args.save_checkpoint_path))
+
     #def weighted_cross_entropy_c(self, y, prediction_c, class_weights):
     #    temp = -y * tf.math.log(prediction_c + 1e-3)#[Batch_size, patch_dimension, patc_dimension, 2]
     #    temp_weighted = class_weights * temp
@@ -64,7 +67,7 @@ class LearningModels():
     def train_step(self, data, labels, class_weights):
 
         with tf.GradientTape() as tape:
-            predictions = self.model.learningmodel(data, training = True)
+            predictions, _, _ = self.model.learningmodel(data, training = True)
             loss = self.weighted_cross_entropy_c(labels, predictions, class_weights)
         gradients = tape.gradient(loss, self.model.learningmodel.trainable_variables)
         self.optimizer.apply_gradients(zip(gradients, self.model.learningmodel.trainable_variables))
@@ -73,10 +76,19 @@ class LearningModels():
         return loss, predictions
 
     def test_step(self, data, labels, class_weights):
-        predictions = self.model.learningmodel(data, training = False)
+        predictions, _, _ = self.model.learningmodel(data, training = False)
         loss = self.weighted_cross_entropy_c(labels, predictions, class_weights)
         #self.valid_loss(loss)
         return loss, predictions
+
+    def tsne_features(self, data):
+        tsne = TSNE(perplexity=30, n_components=2, init='pca', n_iter=3000)
+
+        features_tsne_proj = tsne.fit_transform(data)
+        features_tsne_proj_min, features_tsne_proj_max = np.min(features_tsne_proj, 0), np.max(features_tsne_proj, 0)
+        features_tsne_proj = (features_tsne_proj - features_tsne_proj_min) / (features_tsne_proj_max - features_tsne_proj_min)
+
+        return features_tsne_proj
 
     def Train(self):
 
@@ -192,3 +204,47 @@ class LearningModels():
                 #axarr[0].imshow(images[0,:,:,:])
                 #axarr[1].imshow(labels[0,:,:,])
                 #plt.show()
+
+    def Test(self):
+        #Pre-processing data to be evaluated
+        print("Dataset pre-processing according tensorflow methods...")
+        # Pre-proecessing the Train set
+        test_dataset = tf.data.Dataset.from_tensor_slices((self.dataset.Testi_Paths, self.dataset.Label_Paths))
+
+        test_dataset = test_dataset.map(encode_single_sample, num_parallel_calls=tf.data.experimental.AUTOTUNE)
+
+        test_dataset = test_dataset.map(lambda x: tf.py_function(self.dataset.label_encode_sample,
+                                                                 inp=[x['image'], x['label']],
+                                                                 Tout=(tf.float32, tf.int32))).map(create_dict)
+
+        #Applying Images transformations to the set aiming at regularizing image dimensions
+        test_dataset = test_dataset.map(lambda x: tf.py_function(self.aug.apply_augmentations,
+                                                                   inp = [x['image'], x['label']],
+                                                                   Tout = (tf.float32, tf.int32))).map(create_dict)
+
+        test_dataset = (test_dataset.batch(self.args.batch_size).prefetch(buffer_size = tf.data.experimental.AUTOTUNE))
+        num_samples = len(test_dataset)
+        LABELS = np.zeros((num_samples, self.args.testcrop_size_cols * self.args.testcrop_size_rows, 1))
+        counter = 0
+        for sample in test_dataset:
+            image = sample["image"]
+            label = sample["label"]
+            LABELS[counter, :, :] = label.numpy().reshape((self.args.testcrop_size_cols * self.args.testcrop_size_rows, 1))
+            if self.args.train_task == 'Semantic_Segmentation':
+                Predictions, Pixels_Features, Image_Features = self.model.learningmodel(image, training = False)
+
+            if self.args.test_task == 'Feature_representation':
+
+                if self.args.test_task_level == 'Image_Level':
+                    print('Coming soon!!!')
+                if self.args.test_task_level == 'Pixel_Level':
+                    features = Pixels_Features.numpy()
+                    if counter == 0:
+                        FEATURES = np.zeros((num_samples, features.shape[1] * features.shape[2], features.shape[3]))
+
+                    FEATURES[counter, :, :] = features.reshape((features.shape[0] * features.shape[1] * features.shape[2], features.shape[3]))
+            counter += 1
+
+        if self.args.test_task == 'Feature_representation':
+            FEATURES_PROJECTED = self.tsne_features(FEATURES.reshape((FEATURES.shape[0] * FEATURES.shape[1], FEATURES.shape[2])))
+            plottsne_features(FEATURES_PROJECTED, LABELS.reshape((LABELS.shape[0] * LABELS.shape[1], LABELS.shape[2])), save_path = self.args.results_dir ,USE_LABELS = True)

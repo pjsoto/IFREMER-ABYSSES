@@ -9,12 +9,12 @@ from tensorflow.keras import layers
 class Networks():
     def __init__(self, args):
         self.args = args
-        if self.args.task == 'Semantic_Segmentation':
+        if self.args.train_task == 'Semantic_Segmentation':
             if self.args.learning_model == 'Unet':
                 self.learningmodel = Unet(self.args)
             if self.args.learning_model == 'DeepLab':
                 print("Coming soon...")
-        if self.args.task == 'Image_Classfication':
+        if self.args.train_task == 'Image_Classfication':
             print("Coming soon...")
 
 class Unet(Model):
@@ -90,4 +90,4 @@ class Unet(Model):
         features = self.conv1d(dc11)
 
         output = self.softmax(features)
-        return output
+        return output, features, oc10
