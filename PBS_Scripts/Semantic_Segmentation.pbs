@@ -13,4 +13,4 @@ source /etc/profile.d/modules.sh
 echo "Load singularity..."
 module load singularity/3.4.1
 echo "Executing singularity..."
-singularity exec --nv --bind $DATAWORK/:/datawork $HOME/Singularities/tf2.6.0_retinanet.sif python $HOME/CODE/IFREMER-ABYSSES/Transfer_Learning/runningScripts.py --running_in Datarmor_PBS
+singularity exec --nv --bind $DATAWORK/:/datawork $HOME/Singularities/tf2.6.0_retinanet.sif python $HOME/CODE/IFREMER-ABYSSES/Transfer_Learning/runningScripts.py --running_in Datarmor_PBS --phase Test
