@@ -42,8 +42,27 @@ if args.phase == 'Test':
                         "--train_task Semantic_Segmentation --learning_model Unet --backbone_name None --class_grouping True --train_dataset_name SUIM --checkpoint_name SUIM_SS_Train "
                         "--checkpoints_main_path D:/DATA/Pedro_Work/IFREMER_Work/CODE/IFREMER-ABYSSES-checkpoints/ "
                         "--test_task Feature_representation --test_task_level Pixel_Level --image_handling Entire_Image --batch_size 1 --testcrop_size_rows 128 --testcrop_size_cols 128 "
-                        "--test_dataset_name SUIM "
+                        "--test_dataset_name SUIM --results_name SUIM_SS_Train "
+                        "--results_main_path D:/DATA/Pedro_Work/IFREMER_Work/CODE/IFREMER-ABYSSES-results/ "
                         "--dataset_main_path D:/DATA/Pedro_Work/IFREMER_Work/DATA/Under_water_Image_Segmenetation/SUIM/TEST/TEST/"
+                        )
+    if args.running_in == 'Datarmor_Interactive':
+        Schedule.append("python TestLearningModel.py --phase test "
+                        "--train_task Semantic_Segmentation --learning_model Unet --backbone_name None --class_grouping True --train_dataset_name SUIM --checkpoint_name SUIM_SS_Train "
+                        "--checkpoints_main_path /datawork/EXPERIMENTS/CHECKPOINTS/ "
+                        "--test_task Feature_representation --test_task_level Pixel_Level --image_handling Entire_Image --batch_size 1 --testcrop_size_rows 128 --testcrop_size_cols 128 "
+                        "--test_dataset_name SUIM --results_name SUIM_SS_Train "
+                        "--results_main_path /datawork/EXPERIMENTS/RESULTS/ "
+                        "--dataset_main_path /datawork/DATA/SUIM/TEST/TEST/"
+                        )
+    if args.running_in == 'Datarmor_PBS':
+        Schedule.append("python $HOME/CODE/IFREMER-ABYSSES/Transfer_Learning/TestLearningModel.py --phase test "
+                        "--train_task Semantic_Segmentation --learning_model Unet --backbone_name None --class_grouping True --train_dataset_name SUIM --checkpoint_name SUIM_SS_Train "
+                        "--checkpoints_main_path /datawork/EXPERIMENTS/CHECKPOINTS/ "
+                        "--test_task Feature_representation --test_task_level Pixel_Level --image_handling Entire_Image --batch_size 1 --testcrop_size_rows 128 --testcrop_size_cols 128 "
+                        "--test_dataset_name SUIM --results_name SUIM_SS_Train "
+                        "--results_main_path /datawork/EXPERIMENTS/RESULTS/ "
+                        "--dataset_main_path /datawork/DATA/SUIM/TEST/TEST/"
                         )
 
 
