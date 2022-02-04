@@ -244,8 +244,8 @@ class LearningModels():
 
                     FEATURES[counter, :, :] = features.reshape((features.shape[0] * features.shape[1] * features.shape[2], features.shape[3]))
             counter += 1
-        FEATURES = FEATURES[:1,:,:]
-        LABELS = LABELS[:1,:,:]
+        #FEATURES = FEATURES[:1,:,:]
+        #LABELS = LABELS[:1,:,:]
         if self.args.test_task == 'Feature_representation':
             FEATURES_PROJECTED = self.tsne_features(FEATURES.reshape((FEATURES.shape[0] * FEATURES.shape[1], FEATURES.shape[2])))
             plottsne_features(FEATURES_PROJECTED, LABELS.reshape((LABELS.shape[0] * LABELS.shape[1], LABELS.shape[2])), save_path = self.args.save_results_dir ,USE_LABELS = True)
