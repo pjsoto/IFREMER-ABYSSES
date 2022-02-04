@@ -65,6 +65,8 @@ def main():
     checkpoint_folders = os.listdir(args.checkpoint_dir)
     #Loop for evry folder inside the checkpoint
     for r in range(len(checkpoint_folders)):
+        now = datetime.now()
+        dt_string = now.strftime("%d_%m_%Y_%H_%M_%S")
         model_folder = checkpoint_folders[r]
         # Creating the dir where the checkpoints are stored
         args.save_checkpoint_path = args.checkpoint_dir + '/' + model_folder + '/'
