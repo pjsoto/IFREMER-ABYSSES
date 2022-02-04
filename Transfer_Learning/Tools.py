@@ -50,5 +50,5 @@ def plottsne_features(features, labels, save_path, USE_LABELS = True):
             ax.plot(features[i, 0], features[i, 1], marker='o',
                       color='b')
 
-    plt.savefig(save_path + '/graphs/scatter_plot.png')
+    plt.savefig(save_path + 'scatter_plot.png')
     plt.clf()
