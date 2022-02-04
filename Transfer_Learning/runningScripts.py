@@ -61,7 +61,7 @@ if args.phase == 'Test':
                         "--checkpoints_main_path /datawork/EXPERIMENTS/CHECKPOINTS/ "
                         "--test_task Feature_representation --test_task_level Pixel_Level --image_handling Entire_Image --batch_size 1 --testcrop_size_rows 128 --testcrop_size_cols 128 "
                         "--test_dataset_name SUIM --results_name SUIM_SS_Train "
-                        "--results_main_path /datawork/EXPERIMENTS/RESULTS/ "
+                        "--results_main_path /datawork/EXPERIMENTS/ "
                         "--dataset_main_path /datawork/DATA/SUIM/TEST/TEST/"
                         )
 
