@@ -277,6 +277,7 @@ class LearningModels():
 
                 if self.args.test_task_level == 'Pixel_Level':
                     features = Pixels_Features.numpy()
+                    print(np.shape(features))
                     if counter == 0:
                         FEATURES = np.zeros((num_samples, features.shape[1] * features.shape[2], features.shape[3]))
 
