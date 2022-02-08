@@ -281,6 +281,7 @@ class LearningModels():
 
                     FEATURES[counter, :, :] = features.reshape((features.shape[0] * features.shape[1] * features.shape[2], features.shape[3]))
             counter += 1
+            print(counter)
         #FEATURES = FEATURES[:1,:,:]
         #LABELS = LABELS[:1,:,:]
         print(np.shape(FEATURES))
