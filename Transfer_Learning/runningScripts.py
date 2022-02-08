@@ -59,7 +59,7 @@ if args.phase == 'Test':
         Schedule.append("python $HOME/CODE/IFREMER-ABYSSES/Transfer_Learning/TestLearningModel.py --phase test "
                         "--train_task Image_Classification --learning_model CNN --backbone_name resnet50 --class_grouping True --train_dataset_name Imagenet --checkpoint_name None "
                         "--checkpoints_main_path None "
-                        "--test_task Feature_representation --test_task_level Image_Level --image_handling Entire_Image --batch_size 1 --testcrop_size_rows 128 --testcrop_size_cols 128 "
+                        "--test_task Feature_representation --test_task_level Image_Level --image_handling Entire_Image --batch_size 1 --testcrop_size_rows 512 --testcrop_size_cols 512 "
                         "--test_dataset_name IFREMERData_S2 --results_name Resnet_Trained_Imagenet_Tested_IFREMERData "
                         "--results_main_path /datawork/EXPERIMENTS/ "
                         "--dataset_main_path /datawork/DATA/IFREMERData_S2/"
