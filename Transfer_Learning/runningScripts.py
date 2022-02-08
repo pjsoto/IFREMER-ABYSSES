@@ -39,30 +39,30 @@ if args.phase == 'Train':
 if args.phase == 'Test':
     if args.running_in == 'Local_Anaconda_Environment':
         Schedule.append("python TestLearningModel.py --phase test "
-                        "--train_task Semantic_Segmentation --learning_model Unet --backbone_name None --class_grouping True --train_dataset_name SUIM --checkpoint_name SUIM_SS_Train "
-                        "--checkpoints_main_path D:/DATA/Pedro_Work/IFREMER_Work/CODE/IFREMER-ABYSSES-checkpoints/ "
+                        "--train_task Image_Classification --learning_model None --backbone_name resnet50 --class_grouping True --train_dataset_name Imagenet --checkpoint_name None "
+                        "--checkpoints_main_path None "
                         "--test_task Feature_representation --test_task_level Image_Level --image_handling Entire_Image --batch_size 1 --testcrop_size_rows 128 --testcrop_size_cols 128 "
-                        "--test_dataset_name IFREMERData_S1 --results_name SUIM_SS_Train_on_IFREMERData_Test "
+                        "--test_dataset_name IFREMERData_S3 --results_name Resnet_Trained_Imagenet_Tested_IFREMERData "
                         "--results_main_path D:/DATA/Pedro_Work/IFREMER_Work/CODE/IFREMER-ABYSSES-results/ "
-                        "--dataset_main_path D:/DATA/Pedro_Work/IFREMER_Work/DATA/IFREMERData_S1/"
+                        "--dataset_main_path D:/DATA/Pedro_Work/IFREMER_Work/DATA/IFREMERData_S3/"
                         )
     if args.running_in == 'Datarmor_Interactive':
         Schedule.append("python TestLearningModel.py --phase test "
-                        "--train_task Semantic_Segmentation --learning_model Unet --backbone_name None --class_grouping True --train_dataset_name SUIM --checkpoint_name SUIM_SS_Train "
-                        "--checkpoints_main_path /datawork/EXPERIMENTS/CHECKPOINTS/ "
-                        "--test_task Feature_representation --test_task_level Pixel_Level --image_handling Entire_Image --batch_size 1 --testcrop_size_rows 128 --testcrop_size_cols 128 "
-                        "--test_dataset_name IFREMERData_S3 --results_name SUIM_SS_Train_on_IFREMERData_Test "
+                        "--train_task Image_Classification --learning_model CNN --backbone_name resnet50 --class_grouping True --train_dataset_name Imagenet --checkpoint_name None "
+                        "--checkpoints_main_path None "
+                        "--test_task Feature_representation --test_task_level Image_Level --image_handling Entire_Image --batch_size 1 --testcrop_size_rows 128 --testcrop_size_cols 128 "
+                        "--test_dataset_name IFREMERData_S2 --results_name Resnet_Trained_Imagenet_Tested_IFREMERData "
                         "--results_main_path /datawork/EXPERIMENTS/ "
-                        "--dataset_main_path /datawork/DATA/IFREMERData_S3/"
+                        "--dataset_main_path /datawork/DATA/IFREMERData_S2/"
                         )
     if args.running_in == 'Datarmor_PBS':
         Schedule.append("python $HOME/CODE/IFREMER-ABYSSES/Transfer_Learning/TestLearningModel.py --phase test "
-                        "--train_task Semantic_Segmentation --learning_model Unet --backbone_name None --class_grouping True --train_dataset_name SUIM --checkpoint_name SUIM_SS_Train "
-                        "--checkpoints_main_path /datawork/EXPERIMENTS/CHECKPOINTS/ "
-                        "--test_task Feature_representation --test_task_level Pixel_Level --image_handling Entire_Image --batch_size 1 --testcrop_size_rows 128 --testcrop_size_cols 128 "
-                        "--test_dataset_name IFREMERData_S3 --results_name SUIM_SS_Train_on_IFREMERData_Test "
+                        "--train_task Image_Classification --learning_model CNN --backbone_name resnet50 --class_grouping True --train_dataset_name Imagenet --checkpoint_name None "
+                        "--checkpoints_main_path None "
+                        "--test_task Feature_representation --test_task_level Image_Level --image_handling Entire_Image --batch_size 1 --testcrop_size_rows 128 --testcrop_size_cols 128 "
+                        "--test_dataset_name IFREMERData_S2 --results_name Resnet_Trained_Imagenet_Tested_IFREMERData "
                         "--results_main_path /datawork/EXPERIMENTS/ "
-                        "--dataset_main_path /datawork/DATA/IFREMERData_S3/"
+                        "--dataset_main_path /datawork/DATA/IFREMERData_S2/"
                         )
 
 

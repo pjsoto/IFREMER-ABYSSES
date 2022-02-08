@@ -6,6 +6,17 @@ import tensorflow as tf
 import matplotlib.pyplot as plt
 from sklearn.metrics import f1_score, precision_score, recall_score, accuracy_score, confusion_matrix
 
+def preprocess_input(data, backbone_name):
+    if backbone_name is None:
+        data = data/255.
+    elif backbone_name == 'movilenet':
+        data = tf.keras.applications.mobilenet.preprocess_input(data)
+    elif backbone_name == 'resnet50':
+        data = tf.keras.applications.resnet.preprocess_input(data)
+
+    return data
+
+
 def encode_single_sample_labels(image_path, label_path):
     # 1. Read image and labels
     img = tf.io.read_file(image_path)
@@ -15,7 +26,6 @@ def encode_single_sample_labels(image_path, label_path):
     lbl = tf.io.decode_bmp(lbl, channels=3)
     # 3. Convert to float32 in [0,1] range
     img = tf.cast(img, tf.float32)
-    img = img/255.
 
     return {"image": img, "label": lbl}
 
@@ -26,7 +36,6 @@ def encode_single_sample(image_path):
     img = tf.io.decode_jpeg(img, channels=3)
     # 3. Convert to float32 in [0,1] range
     img = tf.cast(img, tf.float32)
-    img = img/255.
 
     return {"image": img}
 

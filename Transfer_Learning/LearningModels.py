@@ -135,6 +135,7 @@ class LearningModels():
             for batch in train_dataset:
                 images = batch["image"]
                 labels = batch["label"]
+                image = preprocess_input(image, self.args.backbone_name)
                 #Hot encoding the labels
                 labels_ = tf.keras.utils.to_categorical(labels, self.dataset.classes)
                 array = tf.constant(1, shape = [images.shape[0], self.args.crop_size_rows, self.args.crop_size_cols, self.args.classes], dtype = tf.float32)
@@ -168,6 +169,7 @@ class LearningModels():
             for batch in valid_dataset:
                 images = batch["image"]
                 labels = batch["label"]
+                image = preprocess_input(image, self.args.backbone_name)
                 labels_ = tf.keras.utils.to_categorical(labels, self.dataset.classes)
                 class_weights = tf.constant(1, shape = [images.shape[0], self.args.crop_size_rows, self.args.crop_size_cols, self.args.classes], dtype = tf.float32)
                 loss, predictions = self.test_step(images, labels_, class_weights)
@@ -253,10 +255,13 @@ class LearningModels():
             if self.dataset.Labels_Available:
                 image = sample["image"]
                 label = sample["label"]
+                image = preprocess_input(image, self.args.backbone_name)
                 if self.args.test_task_level == 'Pixel_Level':
                     LABELS[counter, :, :] = label.numpy().reshape((self.args.testcrop_size_cols * self.args.testcrop_size_rows, 1))
             else:
                 image = sample
+                image = preprocess_input(image, self.args.backbone_name)
+                print(np.shape(image))
                 if self.args.test_task_level == 'Pixel_Level':
                     LABELS[counter, :, :] = np.zeros((self.args.testcrop_size_cols * self.args.testcrop_size_rows, 1))
                 if self.args.test_task_level == 'Image_Level':
@@ -265,14 +270,24 @@ class LearningModels():
             if self.args.train_task == 'Semantic_Segmentation':
                 Predictions, Pixels_Features, Image_Features = self.model.learningmodel(image, training = False)
 
+            if self.args.train_task == 'Image_Classification':
+                Predictions, Image_Features = self.model.learningmodel(image, training = False)
+                print(np.shape(Predictions))
+                print(np.shape(Image_Features))
             if self.args.test_task == 'Feature_representation':
 
                 if self.args.test_task_level == 'Image_Level':
                     features = Image_Features.numpy()
                     if counter == 0:
-                        FEATURES = np.zeros((num_samples, features.shape[1] * features.shape[2] * features.shape[3]))
+                        if len(np.shape(features)) > 2:
+                            FEATURES = np.zeros((num_samples, features.shape[1] * features.shape[2] * features.shape[3]))
+                        if len(np.shape(features)) == 2:
+                            FEATURES = np.zeros((num_samples, features.shape[1]))
 
-                    FEATURES[counter, :] = features.reshape((features.shape[0] * features.shape[1] * features.shape[2] * features.shape[3],))
+                    if len(np.shape(features)) > 2:
+                        FEATURES[counter, :] = features.reshape((features.shape[0] * features.shape[1] * features.shape[2] * features.shape[3],))
+                    if len(np.shape(features)) == 2:
+                        FEATURES[counter, :] = features.reshape((features.shape[0] * features.shape[1]))
 
                 if self.args.test_task_level == 'Pixel_Level':
                     features = Pixels_Features.numpy()

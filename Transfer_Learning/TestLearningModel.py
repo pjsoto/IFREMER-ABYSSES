@@ -65,26 +65,41 @@ def main():
 
     args.checkpoint_dir = args.checkpoints_main_path + args.train_dataset_name + '_checkpoints/' + args.checkpoint_name
     args.results_dir = args.results_main_path + 'RESULTS/' + args.results_name + '/'
-    #Listing the runs inside the checkpoints folder
-    checkpoint_folders = os.listdir(args.checkpoint_dir)
-    #Loop for evry folder inside the checkpoint
-    for r in range(len(checkpoint_folders)):
+    if os.path.exists(args.checkpoint_dir):
+        #Listing the runs inside the checkpoints folder
+        checkpoint_folders = os.listdir(args.checkpoint_dir)
+        #Loop for evry folder inside the checkpoint
+        for r in range(len(checkpoint_folders)):
+            now = datetime.now()
+            dt_string = now.strftime("%d_%m_%Y_%H_%M_%S")
+            model_folder = checkpoint_folders[r]
+            # Creating the dir where the checkpoints are stored
+            args.save_checkpoint_path = args.checkpoint_dir + '/' + model_folder + '/'
+            print(args.save_checkpoint_path)
+            args.save_results_dir = args.results_dir + 'Results_Trained_' + model_folder + '_Tested_' + args.test_dataset_name + '_' + dt_string + '/'
+            if not os.path.exists(args.save_results_dir):
+                os.makedirs(args.save_results_dir)
+            #Writing the args into a file
+            with open(args.save_results_dir + 'commandline_args.txt', 'w') as f:
+                json.dump(args.__dict__, f, indent=2)
+
+            print("[*] Initializing the model...")
+            model = LearningModels(args, dataset, run)
+            model.Test()
+    elif args.test_task == 'Feature_representation' and args.train_task == 'Image_Classification' and args.train_dataset_name == 'Imagenet':
+        args.save_checkpoint_path = ' '
         now = datetime.now()
         dt_string = now.strftime("%d_%m_%Y_%H_%M_%S")
-        model_folder = checkpoint_folders[r]
-        # Creating the dir where the checkpoints are stored
-        args.save_checkpoint_path = args.checkpoint_dir + '/' + model_folder + '/'
-        print(args.save_checkpoint_path)
-        args.save_results_dir = args.results_dir + 'Results_Trained_' + model_folder + '_Tested_' + args.test_dataset_name + '_' + dt_string + '/'
+        args.save_results_dir = args.results_dir + 'Results_Trained_' + args.train_dataset_name + '_Tested_' + args.test_dataset_name + '_' + dt_string + '/'
         if not os.path.exists(args.save_results_dir):
             os.makedirs(args.save_results_dir)
         #Writing the args into a file
         with open(args.save_results_dir + 'commandline_args.txt', 'w') as f:
             json.dump(args.__dict__, f, indent=2)
-
         print("[*] Initializing the model...")
         model = LearningModels(args, dataset, run)
         model.Test()
+
 
 
 if __name__ == '__main__':

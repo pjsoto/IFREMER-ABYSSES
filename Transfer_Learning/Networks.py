@@ -5,6 +5,7 @@ import numpy as np
 import tensorflow as tf
 from tensorflow.keras import Model
 from tensorflow.keras import layers
+from tensorflow.keras import applications
 
 class Networks():
     def __init__(self, args):
@@ -14,8 +15,9 @@ class Networks():
                 self.learningmodel = Unet(self.args)
             if self.args.learning_model == 'DeepLab':
                 print("Coming soon...")
-        if self.args.train_task == 'Image_Classfication':
-            print("Coming soon...")
+        if self.args.train_task == 'Image_Classification':
+            if self.args.backbone_name != 'None' and self.args.learning_model == 'CNN':
+                self.learningmodel = CNN(self.args)
 
 class Unet(Model):
     def __init__(self, args):
@@ -91,3 +93,24 @@ class Unet(Model):
 
         output = self.softmax(features)
         return output, features, oc10
+
+class CNN(Model):
+    def __init__(self, args):
+        super(CNN, self).__init__()
+        self.args = args
+        IMG_SHAPE = (None, None, 3)
+        if self.args.backbone_name == 'movilenet':
+            self.base_model = applications.MobileNetV2(input_shape=IMG_SHAPE, include_top=False, weights='imagenet')
+        if self.args.backbone_name == 'resnet50':
+            self.base_model = applications.ResNet50(input_shape=IMG_SHAPE, include_top=False, weights='imagenet')
+
+        self.globalaveragepool = layers.GlobalAveragePooling2D()
+        self.dense = layers.Dense(self.args.classes, activation = 'softmax')
+
+    def call(self, input):
+
+        out1 = self.base_model(input)
+        features = self.globalaveragepool(out1)
+        output = self.dense(features)
+
+        return output, features
