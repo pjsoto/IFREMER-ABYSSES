@@ -6,7 +6,7 @@ import tensorflow as tf
 import matplotlib.pyplot as plt
 from sklearn.metrics import f1_score, precision_score, recall_score, accuracy_score, confusion_matrix
 
-def encode_single_sample(image_path, label_path):
+def encode_single_sample_labels(image_path, label_path):
     # 1. Read image and labels
     img = tf.io.read_file(image_path)
     lbl = tf.io.read_file(label_path)
@@ -18,6 +18,17 @@ def encode_single_sample(image_path, label_path):
     img = img/255.
 
     return {"image": img, "label": lbl}
+
+def encode_single_sample(image_path):
+    # 1. Read image and labels
+    img = tf.io.read_file(image_path)
+    # 2. Decode
+    img = tf.io.decode_jpeg(img, channels=3)
+    # 3. Convert to float32 in [0,1] range
+    img = tf.cast(img, tf.float32)
+    img = img/255.
+
+    return {"image": img}
 
 def create_dict(image, label):
     return {"image": image, "label": label}

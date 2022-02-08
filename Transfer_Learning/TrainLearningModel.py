@@ -51,6 +51,8 @@ def main():
     print("Dataset pre-processing...")
     if args.dataset_name == 'SUIM':
         dataset = SUIM(args)
+    if args.test_dataset_name == 'IFREMERData':
+        dataset = IFREMER(args)
 
     #Running several times
     for r in range(args.runs):

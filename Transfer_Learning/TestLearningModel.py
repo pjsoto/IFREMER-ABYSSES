@@ -6,6 +6,8 @@ import numpy as np
 from datetime import datetime
 import neptune.new as neptune
 
+from SUIM import *
+from IFREMER import *
 from LearningModels import *
 
 
@@ -58,6 +60,8 @@ def main():
     print("Dataset pre-processing...")
     if args.test_dataset_name == 'SUIM':
         dataset = SUIM(args)
+    if args.test_dataset_name == 'IFREMERData_S1':
+        dataset = IFREMER(args)
 
     args.checkpoint_dir = args.checkpoints_main_path + args.train_dataset_name + '_checkpoints/' + args.checkpoint_name
     args.results_dir = args.results_main_path + 'RESULTS/' + args.results_name + '/'
@@ -71,7 +75,7 @@ def main():
         # Creating the dir where the checkpoints are stored
         args.save_checkpoint_path = args.checkpoint_dir + '/' + model_folder + '/'
         print(args.save_checkpoint_path)
-        args.save_results_dir = args.results_dir + 'Results_Trained_' + model_folder + '_Tested_' + args.test_dataset_name + dt_string + '/'
+        args.save_results_dir = args.results_dir + 'Results_Trained_' + model_folder + '_Tested_' + args.test_dataset_name + '_' + dt_string + '/'
         if not os.path.exists(args.save_results_dir):
             os.makedirs(args.save_results_dir)
         #Writing the args into a file
