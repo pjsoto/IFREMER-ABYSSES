@@ -60,7 +60,7 @@ def main():
     print("Dataset pre-processing...")
     if args.test_dataset_name == 'SUIM':
         dataset = SUIM(args)
-    if args.test_dataset_name == 'IFREMERData_S1':
+    if 'IFREMER' in args.test_dataset_name:
         dataset = IFREMER(args)
 
     args.checkpoint_dir = args.checkpoints_main_path + args.train_dataset_name + '_checkpoints/' + args.checkpoint_name
