@@ -49,7 +49,7 @@ def main():
         api_token="eyJhcGlfYWRkcmVzcyI6Imh0dHBzOi8vYXBwLm5lcHR1bmUuYWkiLCJhcGlfdXJsIjoiaHR0cHM6Ly9hcHAubmVwdHVuZS5haSIsImFwaV9rZXkiOiJhMjI4NTlkMS0zNzE4LTRjYTEtYWMwMi02MzQzMTY3ZWI5NzUifQ==",
     )  # your credentials
 
-    run["sys/tags"].add([args.phase, args.test_task, args.test_task_level, args.image_handling, args.learning_model, args.backbone_name])
+    run["sys/tags"].add([args.phase, args.test_task, args.test_task_level, args.image_handling, args.test_dataset_name ,args.learning_model, args.backbone_name])
 
     if not os.path.exists(args.results_main_path + 'RESULTS/'):
         os.makedirs(args.results_main_path + 'RESULTS/')
