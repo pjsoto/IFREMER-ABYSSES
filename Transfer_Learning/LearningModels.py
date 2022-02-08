@@ -257,7 +257,6 @@ class LearningModels():
                     LABELS[counter, :, :] = label.numpy().reshape((self.args.testcrop_size_cols * self.args.testcrop_size_rows, 1))
             else:
                 image = sample
-                print(np.shape(image))
                 if self.args.test_task_level == 'Pixel_Level':
                     LABELS[counter, :, :] = np.zeros((self.args.testcrop_size_cols * self.args.testcrop_size_rows, 1))
                 if self.args.test_task_level == 'Image_Level':
@@ -282,12 +281,9 @@ class LearningModels():
 
                     FEATURES[counter, :, :] = features.reshape((features.shape[0] * features.shape[1] * features.shape[2], features.shape[3]))
             counter += 1
-            print(counter)
+
         #FEATURES = FEATURES[:1,:,:]
         #LABELS = LABELS[:1,:,:]
-        print(np.shape(FEATURES))
-        print(np.shape(LABELS))
-        sys.exit()
         if self.args.test_task == 'Feature_representation':
             print('Computing the features and representing them into 2D dimensional space')
             if self.args.test_task_level == 'Image_Level':
