@@ -40,7 +40,7 @@ def main():
         api_token="eyJhcGlfYWRkcmVzcyI6Imh0dHBzOi8vYXBwLm5lcHR1bmUuYWkiLCJhcGlfdXJsIjoiaHR0cHM6Ly9hcHAubmVwdHVuZS5haSIsImFwaV9rZXkiOiJhMjI4NTlkMS0zNzE4LTRjYTEtYWMwMi02MzQzMTY3ZWI5NzUifQ==",
     )  # your credentials
 
-    run["sys/tags"].add([args.task, args.learning_model, args.backbone_name, args.classweight_type])
+    run["sys/tags"].add([args.train_task, args.learning_model, args.backbone_name, args.classweight_type])
 
     print(args)
     if not os.path.exists(args.checkpoints_main_path + '/checkpoints/'):
