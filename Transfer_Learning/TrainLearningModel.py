@@ -11,7 +11,7 @@ from LearningModels import *
 
 parser = argparse.ArgumentParser(description='')
 
-parser.add_argument('--task', dest='task', type=str, default='Semantic_Segmentation', help='Learning Task, user can take among two alternatives Semantic_Segmentation|Image_Classification')
+parser.add_argument('--train_task', dest='train_task', type=str, default='Semantic_Segmentation', help='Learning Task, user can take among two alternatives Semantic_Segmentation|Image_Classification')
 parser.add_argument('--learning_model', dest='learning_model', type=str, default='Unet', help='Learning model used')
 parser.add_argument('--backbone_name', dest='backbone_name', type=str, default='movilenet', help='users can chosse between resnet50 and movilenet')
 parser.add_argument('--classweight_type', dest='classweight_type', type=str, default = 'global', help='users can chosse between global|batch fro the way the weights will be computed')
