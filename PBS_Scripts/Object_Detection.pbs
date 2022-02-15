@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+#PBS -q gpuq
+#PBS -l ncpus=1
+#PBS -l mem=32gb
+#PBS -l walltime=24:00:00
+
+#$ -cwd
+#$ -S /bin/bash
+#$ -pe orte-32-ib.pe 32
+
+source /etc/profile.d/modules.sh
+
+echo "Load singularity..."
+module load singularity/3.4.1
+echo "Executing singularity..."
+singularity exec --nv --bind $DATAWORK/:/datawork $HOME/Singularities/tf2.6.0_retinanet.sif python $HOME/CODE/IFREMER-ABYSSES/Object_Detector/RetinaNet/running_script.py --running_in Datarmor_PBS --phase Train
