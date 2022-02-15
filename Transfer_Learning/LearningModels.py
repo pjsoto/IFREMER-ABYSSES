@@ -96,7 +96,7 @@ class LearningModels():
         print("Dataset pre-processing according tensorflow methods...")
         # Pre-proecessing the Train set
         train_dataset = tf.data.Dataset.from_tensor_slices((self.dataset.Train_Paths, self.dataset.Train_Label_Paths))
-        train_dataset = train_dataset.map(encode_single_sample, num_parallel_calls=tf.data.experimental.AUTOTUNE)
+        train_dataset = train_dataset.map(encode_single_sample_labels, num_parallel_calls=tf.data.experimental.AUTOTUNE)
         #Encoding the labels' maps
         train_dataset = train_dataset.map(lambda x: tf.py_function(self.dataset.label_encode_sample,
                                                                     inp=[x['image'], x['label']],
@@ -110,7 +110,7 @@ class LearningModels():
 
         # Pre-proecessing the Validation set
         valid_dataset = tf.data.Dataset.from_tensor_slices((self.dataset.Valid_Paths, self.dataset.Valid_Label_Paths))
-        valid_dataset = valid_dataset.map(encode_single_sample, num_parallel_calls=tf.data.experimental.AUTOTUNE)
+        valid_dataset = valid_dataset.map(encode_single_sample_labels, num_parallel_calls=tf.data.experimental.AUTOTUNE)
         #Encoding the labels' maps
         valid_dataset = valid_dataset.map(lambda x: tf.py_function(self.dataset.label_encode_sample,
                                                                     inp=[x['image'], x['label']],
