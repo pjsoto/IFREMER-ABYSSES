@@ -102,7 +102,7 @@ class LearningModels():
                                                                     inp=[x['image'], x['label']],
                                                                     Tout=(tf.float32, tf.int32))).map(create_dict)
         #Applying Data augmrntation transformation to the images and as well to the labels
-        train_dataset = train_dataset.map(lambda x: tf.py_function(self.aug.apply_augmentations,
+        train_dataset = train_dataset.map(lambda x: tf.py_function(self.aug.apply_ss_augmentations,
                                                                    inp = [x['image'], x['label']],
                                                                    Tout = (tf.float32, tf.int32))).map(create_dict)
 
@@ -116,7 +116,7 @@ class LearningModels():
                                                                     inp=[x['image'], x['label']],
                                                                     Tout=(tf.float32, tf.int32))).map(create_dict)
         #Applying Data augmrntation transformation to the images and as well to the labels
-        valid_dataset = valid_dataset.map(lambda x: tf.py_function(self.aug.apply_augmentations,
+        valid_dataset = valid_dataset.map(lambda x: tf.py_function(self.aug.apply_ss_augmentations,
                                                                    inp = [x['image'], x['label']],
                                                                    Tout = (tf.float32, tf.int32))).map(create_dict)
 
