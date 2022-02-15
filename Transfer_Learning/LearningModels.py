@@ -169,7 +169,7 @@ class LearningModels():
             for batch in valid_dataset:
                 images = batch["image"]
                 labels = batch["label"]
-                image = preprocess_input(image, self.args.backbone_name)
+                images = preprocess_input(images, self.args.backbone_name)
                 labels_ = tf.keras.utils.to_categorical(labels, self.dataset.classes)
                 class_weights = tf.constant(1, shape = [images.shape[0], self.args.crop_size_rows, self.args.crop_size_cols, self.args.classes], dtype = tf.float32)
                 loss, predictions = self.test_step(images, labels_, class_weights)
