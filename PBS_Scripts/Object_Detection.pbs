@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 #PBS -q gpuq
 #PBS -l ncpus=64
-#PBS -l mem=64gb
+#PBS -l mem=64G
 #PBS -l walltime=24:00:00
 
 #$ -cwd
 #$ -S /bin/bash
-#$ -pe orte-32-ib.pe 32
+
 
 source /etc/profile.d/modules.sh
 
