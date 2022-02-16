@@ -6,7 +6,7 @@
 
 #$ -cwd
 #$ -S /bin/bash
-#$ -pe orte-32-ib.pe 32
+
 
 source /etc/profile.d/modules.sh
 
