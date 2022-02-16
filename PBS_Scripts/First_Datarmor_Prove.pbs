@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 #PBS -q gpuq
-#PBS -l ncpus=64
-#PBS -l mem=64Gb
-#PBS -l walltime=00:05:00
+#PBS -l select=1:ncpus=64:mem=64gb:walltime=24:00:00
 
 #$ -cwd
 #$ -S /bin/bash
