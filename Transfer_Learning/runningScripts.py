@@ -32,7 +32,7 @@ if args.phase == 'Train':
 
     if args.running_in == 'Datarmor_Interactive':
         Schedule.append("python TrainLearningModel.py --train_task Image_Classification --learning_model CNN --backbone_name vgg16 "
-                        "--crop_size_rows 4000 --crop_size_cols 6000 --labels_type multiple_labels --learning_ratedecay True --lr 0.001 --gamma 2.0 --alpha 4.0 --optimizer SGD --batch_size 2 --runs 1 "
+                        "--crop_size_rows 4000 --crop_size_cols 4000 --labels_type multiple_labels --learning_ratedecay True --lr 0.001 --gamma 2.0 --alpha 4.0 --optimizer SGD --batch_size 2 --runs 1 "
                         "--epochs 400 --phase train --loss weighted_binary_crossentropy --checkpoint_name VGG16_F1 "
                         "--dataset_name OTUSIFREMER_IMAGELABEL --class_grouping False --classweight_type global --csvfile_name OTUS_Image_Classification_F1.csv "
                         "--dataset_csv_main_path /datawork/DATA/CSVs/OTUS_2018/ "
@@ -41,7 +41,7 @@ if args.phase == 'Train':
 
     if args.running_in == 'Datarmor_PBS':
         Schedule.append("python $HOME/CODE/IFREMER-ABYSSES/Transfer_Learning/TrainLearningModel.py --train_task Image_Classification --learning_model CNN --backbone_name vgg16 "
-                        "--crop_size_rows 2000 --crop_size_cols 3000 --labels_type multiple_labels --learning_ratedecay True --lr 0.001 --gamma 2.0 --alpha 4.0 --optimizer SGD --batch_size 2 --runs 1 "
+                        "--crop_size_rows 3000 --crop_size_cols 3000 --labels_type multiple_labels --learning_ratedecay True --lr 0.001 --gamma 2.0 --alpha 4.0 --optimizer SGD --batch_size 2 --runs 1 "
                         "--epochs 400 --phase train --loss weighted_binary_crossentropy --checkpoint_name VGG16_F1 "
                         "--dataset_name OTUSIFREMER_IMAGELABEL --class_grouping False --classweight_type global --csvfile_name OTUS_Image_Classification_F1.csv "
                         "--dataset_csv_main_path /datawork/DATA/CSVs/OTUS_2018/ "
