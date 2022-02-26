@@ -19,7 +19,7 @@ class LearningModels():
         self.run = run
         self.args = args
         self.dataset = dataset
-        self.args.classes = self.dataset.classes
+        self.args.classes_number = self.dataset.class_number
         dataset = []
         self.model = Networks(self.args)
         print("Defining the data augmentation procedure")
@@ -29,11 +29,14 @@ class LearningModels():
         self.manager = tf.train.CheckpointManager(self.checkpoint, self.args.save_checkpoint_path, max_to_keep = 2)
         if self.args.phase == 'train':
             self.run["args"] = self.args
+            lr = self.args.lr
+            if self.args.learning_ratedecay:
+                lr = tf.keras.optimizers.schedules.ExponentialDecay(lr, decay_steps=1000, decay_rate=0.96, staircase=True)
             if self.args.optimizer == 'Adam':
-                self.optimizer = tf.keras.optimizers.Adam(learning_rate = self.args.lr, beta_1 = 0.9)
+                self.optimizer = tf.keras.optimizers.Adam(learning_rate = lr, beta_1 = 0.9)
                 params = {"learning_rate": self.args.lr, "optimizer": "Adam"}
             if self.args.optimizer == 'SGD':
-                self.optimizer = tf.keras.optimizers.SGD(learning_rate = self.args.lr)
+                self.optimizer = tf.keras.optimizers.SGD(learning_rate = lr)
                 params = {"learning_rate": self.args.lr, "optimizer": "SGD"}
             self.run["parameters"] = params
             #self.model.learningmodel.summary()
@@ -52,24 +55,55 @@ class LearningModels():
             else:
                 print('[!]There are no checkpoints in the current {} path'.format(self.args.save_checkpoint_path))
 
-    #def weighted_cross_entropy_c(self, y, prediction_c, class_weights):
-    #    temp = -y * tf.math.log(prediction_c + 1e-3)#[Batch_size, patch_dimension, patc_dimension, 2]
-    #    temp_weighted = class_weights * temp
-    #    loss = tf.reduce_sum(temp_weighted,3)
-    #    return tf.reduce_mean(loss)
-
-    def weighted_cross_entropy_c(self, y_true, y_pred, class_weights):
+    def weighted_bin_cross_entropy(self, y_true, y_pred, class_weights):
         epsilon_ = tf.convert_to_tensor(epsilon(), dtype=y_pred.dtype.base_dtype)
         y_pred_ = tf.clip_by_value(y_pred, epsilon_, 1. - epsilon_)
-        cost = tf.multiply(tf.multiply(y_true, tf.math.log(y_pred_)), class_weights) #+ tf.multiply((1-y_true), tf.math.log(1-y_pred_))
+        cost = tf.multiply(tf.multiply(y_true, tf.math.log(y_pred_)), class_weights) + tf.multiply((1-y_true), tf.math.log(1-y_pred_))
+        if self.args.train_task == 'Semantic_Segmentation':
+            cost = tf.reduce_sum(cost, axis = 3)
+        elif self.args.train_task == 'Image_Classification':
+            cost = tf.reduce_sum(cost, axis = 1)
         return -tf.reduce_mean(cost)
+
+    def weighted_cat_cross_entropy(self, y_true, y_pred, class_weights):
+        epsilon_ = tf.convert_to_tensor(epsilon(), dtype=y_pred.dtype.base_dtype)
+        y_pred_ = tf.clip_by_value(y_pred, epsilon_, 1. - epsilon_)
+        cost = tf.multiply(tf.multiply(y_true, tf.math.log(y_pred_)), class_weights)
+        if self.args.train_task == 'Semantic_Segmentation':
+            cost = tf.reduce_sum(cost, axis = 3)
+        elif self.args.train_task == 'Image_Classification':
+            cost = tf.reduce_sum(cost, axis = 1)
+        return -tf.reduce_mean(cost)
+
+    def focal_loss(self, y_true, y_pred):
+        epsilon_ = tf.convert_to_tensor(epsilon(), dtype=y_pred.dtype.base_dtype)
+        y_pred_ = tf.clip_by_value(y_pred, epsilon_, 1. - epsilon_)
+        if self.args.gamma != 0 and self.args.alpha != 0:
+            gamma_ = tf.convert_to_tensor(self.args.gamma, dtype = y_pred.dtype.base_dtype)
+            alpha_ = tf.convert_to_tensor(self.args.alpha, dtype = y_pred.dtype.base_dtype)
+            cross_entropy = tf.multiply(y_true, -tf.math.log(y_pred))
+            weight = tf.multiply(y_true, tf.pow(1. - y_pred_, gamma_))
+            fl = tf.multiply(alpha_, tf.multiply(weight, cross_entropy))
+            if self.args.train_task == 'Semantic_Segmentation':
+                cost = tf.reduce_sum(fl, axis = 3)
+            elif self.args.train_task == 'Image_Classification':
+                cost = tf.reduce_sum(fl, axis = 1)
+            return tf.reduce_mean(cost)
+        else:
+            print("[!]The hyperparameters gamma and alpha must take values different of zero!")
+            sys.exit()
 
     @tf.function
     def train_step(self, data, labels, class_weights):
 
         with tf.GradientTape() as tape:
             predictions, _, _ = self.model.learningmodel(data, training = True)
-            loss = self.weighted_cross_entropy_c(labels, predictions, class_weights)
+            if self.args.loss == 'weighted_categorical_crossentropy':
+                loss = self.weighted_cat_cross_entropy(labels, predictions, class_weights)
+            if self.args.loss == 'weighted_binary_crossentropy':
+                loss = self.weighted_bin_cross_entropy(labels, predictions, class_weights)
+            if self.args.loss == 'focal_loss':
+                loss = self.focal_loss(labels, predictions)
         gradients = tape.gradient(loss, self.model.learningmodel.trainable_variables)
         self.optimizer.apply_gradients(zip(gradients, self.model.learningmodel.trainable_variables))
         #self.Loss.append(loss.numpy())
@@ -78,7 +112,12 @@ class LearningModels():
 
     def test_step(self, data, labels, class_weights):
         predictions, _, _ = self.model.learningmodel(data, training = False)
-        loss = self.weighted_cross_entropy_c(labels, predictions, class_weights)
+        if self.args.loss == 'weighted_categorical_crossentropy':
+            loss = self.weighted_cat_cross_entropy(labels, predictions, class_weights)
+        if self.args.loss == 'weighted_binary_crossentropy':
+            loss = self.weighted_bin_cross_entropy(labels, predictions, class_weights)
+        if self.args.loss == 'focal_loss':
+            loss = self.focal_loss(labels, predictions)
         #self.valid_loss(loss)
         return loss, predictions
 
@@ -94,32 +133,41 @@ class LearningModels():
     def Train(self):
 
         print("Dataset pre-processing according tensorflow methods...")
+        if self.args.train_task == 'Semantic_Segmentation':
         # Pre-proecessing the Train set
-        train_dataset = tf.data.Dataset.from_tensor_slices((self.dataset.Train_Paths, self.dataset.Train_Label_Paths))
-        train_dataset = train_dataset.map(encode_single_sample_labels, num_parallel_calls=tf.data.experimental.AUTOTUNE)
-        #Encoding the labels' maps
-        train_dataset = train_dataset.map(lambda x: tf.py_function(self.dataset.label_encode_sample,
-                                                                    inp=[x['image'], x['label']],
-                                                                    Tout=(tf.float32, tf.int32))).map(create_dict)
-        #Applying Data augmrntation transformation to the images and as well to the labels
-        train_dataset = train_dataset.map(lambda x: tf.py_function(self.aug.apply_ss_augmentations,
+            train_dataset = tf.data.Dataset.from_tensor_slices((self.dataset.Train_Paths, self.dataset.Train_Label_Paths))
+            train_dataset = train_dataset.map(self.dataset.encode_single_sample_labels, num_parallel_calls=tf.data.experimental.AUTOTUNE)
+            #Encoding the labels' maps
+            train_dataset = train_dataset.map(lambda x: tf.py_function(self.dataset.label_encode_sample,
+                                                                        inp=[x['image'], x['label']],
+                                                                        Tout=(tf.float32, tf.int32))).map(create_dict)
+        # Pre-proecessing the Validation set
+            valid_dataset = tf.data.Dataset.from_tensor_slices((self.dataset.Valid_Paths, self.dataset.Valid_Label_Paths))
+            valid_dataset = valid_dataset.map(self.dataset.encode_single_sample_labels, num_parallel_calls=tf.data.experimental.AUTOTUNE)
+            #Encoding the labels' maps
+            valid_dataset = valid_dataset.map(lambda x: tf.py_function(self.dataset.label_encode_sample,
+                                                                        inp=[x['image'], x['label']],
+                                                                        Tout=(tf.float32, tf.int32))).map(create_dict)
+
+
+        if self.args.train_task == 'Image_Classification':
+        # Pre-Processing the Train set
+            train_dataset = tf.data.Dataset.from_tensor_slices((self.dataset.Train_Paths, self.dataset.Train_Labels))
+            train_dataset = train_dataset.map(self.dataset.encode_single_sample_labels, num_parallel_calls=tf.data.experimental.AUTOTUNE)
+        # Pre-Processing the Validation set
+            valid_dataset = tf.data.Dataset.from_tensor_slices((self.dataset.Valid_Paths, self.dataset.Valid_Labels))
+            valid_dataset = valid_dataset.map(self.dataset.encode_single_sample_labels, num_parallel_calls=tf.data.experimental.AUTOTUNE)
+
+
+        #Applying Data augmrntation transformation to the images and as well as the labels if needed
+        train_dataset = train_dataset.map(lambda x: tf.py_function(self.aug.apply_augmentations_train,
+                                                                   inp = [x['image'], x['label']],
+                                                                   Tout = (tf.float32, tf.int32))).map(create_dict)
+        valid_dataset = valid_dataset.map(lambda x: tf.py_function(self.aug.apply_augmentations_train,
                                                                    inp = [x['image'], x['label']],
                                                                    Tout = (tf.float32, tf.int32))).map(create_dict)
 
         train_dataset = (train_dataset.batch(self.args.batch_size).prefetch(buffer_size = tf.data.experimental.AUTOTUNE))
-
-        # Pre-proecessing the Validation set
-        valid_dataset = tf.data.Dataset.from_tensor_slices((self.dataset.Valid_Paths, self.dataset.Valid_Label_Paths))
-        valid_dataset = valid_dataset.map(encode_single_sample_labels, num_parallel_calls=tf.data.experimental.AUTOTUNE)
-        #Encoding the labels' maps
-        valid_dataset = valid_dataset.map(lambda x: tf.py_function(self.dataset.label_encode_sample,
-                                                                    inp=[x['image'], x['label']],
-                                                                    Tout=(tf.float32, tf.int32))).map(create_dict)
-        #Applying Data augmrntation transformation to the images and as well to the labels
-        valid_dataset = valid_dataset.map(lambda x: tf.py_function(self.aug.apply_ss_augmentations,
-                                                                   inp = [x['image'], x['label']],
-                                                                   Tout = (tf.float32, tf.int32))).map(create_dict)
-
         valid_dataset = (valid_dataset.batch(self.args.batch_size).prefetch(buffer_size = tf.data.experimental.AUTOTUNE))
 
         #Loop for epochs
@@ -129,68 +177,112 @@ class LearningModels():
         for e in range(self.args.epochs):
             #self.train_loss.reset_states()
             #self.valid_loss.reset_states()
-            self.F1_tr, self.P_tr, self.R_tr = [], [], []
-            self.F1_vl, self.P_vl, self.R_vl = [], [], []
+            self.Ac_tr, self.F1_tr, self.P_tr, self.R_tr = [], [], [], []
+            self.Ac_vl, self.F1_vl, self.P_vl, self.R_vl = [], [], [], []
             self.train_loss, self.valid_loss = [], []
             for batch in train_dataset:
                 images = batch["image"]
                 labels = batch["label"]
                 images = preprocess_input(images, self.args.backbone_name)
-                #Hot encoding the labels
-                labels_ = tf.keras.utils.to_categorical(labels, self.dataset.classes)
-                array = tf.constant(1, shape = [images.shape[0], self.args.crop_size_rows, self.args.crop_size_cols, self.args.classes], dtype = tf.float32)
-                if self.args.classweight_type == 'batch':
-                    #Computing class weights to mitigate the imabalance between classes
-                    labels_sum = tf.reduce_sum(labels_, [0, 1, 2])/tf.constant(images.shape[0] * self.args.crop_size_rows * self.args.crop_size_cols, dtype = tf.float32)
-                    class_weights = tf.multiply((1-labels_sum) * 10, array)
-                else:
-                    class_weights = tf.multiply(self.dataset.class_weights, array)
+                if self.args.train_task == 'Semantic_Segmentation':
+                    #Hot encoding the labels
+                    labels_ = tf.keras.utils.to_categorical(labels, self.dataset.classes)
+                    array = tf.constant(1, shape = [images.shape[0], self.args.crop_size_rows, self.args.crop_size_cols, self.args.classes_number], dtype = tf.float32)
+                    if self.args.classweight_type == 'batch':
+                        #Computing class weights to mitigate the imabalance between classes
+                        labels_sum = tf.reduce_sum(labels_, [0, 1, 2])/tf.constant(images.shape[0] * self.args.crop_size_rows * self.args.crop_size_cols, dtype = tf.float32)
+                        class_weights = tf.multiply((1-labels_sum) * 10, array)
+                    else:
+                        class_weights = tf.multiply(self.dataset.class_weights, array)
+
+                elif self.args.train_task == 'Image_Classification':
+                    labels_ = tf.cast(labels, dtype = tf.float32)
+                    array = tf.constant(1, shape = [labels.shape[0], self.args.classes_number], dtype = tf.float32)
+                    if self.args.classweight_type == 'batch':
+                        labels_sum = tf.reduce_sum(labels_, [0, 1])/tf.constant(labels_.shape[0], dtype = tf.float32)
+                        class_weights = tf.multiply(1 - labels_sum, array)
+                    else:
+                        class_weights = tf.multiply(self.dataset.class_weights, array)
 
                 loss, predictions = self.train_step(images, labels_, class_weights)
+                if self.args.train_task == 'Semantic_Segmentation':
+                    y_pred = np.argmax(predictions.numpy(), axis = 3).reshape((images.shape[0] * self.args.crop_size_rows * self.args.crop_size_cols,1))
+                    y_true = labels.numpy().reshape((images.shape[0] * self.args.crop_size_rows * self.args.crop_size_cols,1))
+                if self.args.train_task == 'Image_Classification':
+                    if self.args.labels_type == 'onehot_labels':
+                        y_pred = np.argmax(predictions.numpy(), axis = 1)
+                        y_true = np.argmax(labels_[:, 0, :].numpy(), axis = 1)
+                        Ac, F1, P, R = compute_metrics(y_true, y_pred, 'macro')
+                    if self.args.labels_type == 'multiple_labels':
+                        y_pred = ((predictions.numpy() > 0.5) * 1.0)
+                        y_true = (labels_[:, 0, :].numpy())
+                        Ac, F1, P, R = compute_metrics(y_true, y_pred, None)
+                        F1 = np.mean(F1)
+                        P = np.mean(P)
+                        R = np.mean(R)
 
-                y_pred = np.argmax(predictions.numpy(), axis = 3).reshape((images.shape[0] * self.args.crop_size_rows * self.args.crop_size_cols,1))
-                y_true = labels.numpy().reshape((images.shape[0] * self.args.crop_size_rows * self.args.crop_size_cols,1))
-
-                F1, P, R = compute_metrics(y_true, y_pred, 'macro')
 
                 self.train_loss.append(loss)
+                self.Ac_tr.append(Ac)
                 self.F1_tr.append(F1)
                 self.P_tr.append(P)
                 self.R_tr.append(R)
 
             train_loss = np.mean(self.train_loss)
+            Ac_mean = np.mean(self.Ac_tr)
             F1_mean = np.mean(self.F1_tr)
             P_mean = np.mean(self.P_tr)
             R_mean = np.mean(self.R_tr)
             self.run["train/loss"].log(train_loss)
             self.run["train/F1-Score"].log(F1_mean)
-            print(f'Epoch {e + 1}, ' f'Loss: {train_loss} ,' f'Precision: {P_mean}, ' f'Recall: {R_mean}, ' f'F1-Score: {F1_mean}')
+            self.run["train/Accuracy"].log(Ac_mean)
+            print(f'Epoch {e + 1}, ' f'Loss: {train_loss} ,' f'Precision: {P_mean}, ' f'Recall: {R_mean}, ' f'F1-Score: {F1_mean}, ' f'Accuracy: {Ac_mean}')
 
             for batch in valid_dataset:
                 images = batch["image"]
                 labels = batch["label"]
+
                 images = preprocess_input(images, self.args.backbone_name)
-                labels_ = tf.keras.utils.to_categorical(labels, self.dataset.classes)
-                class_weights = tf.constant(1, shape = [images.shape[0], self.args.crop_size_rows, self.args.crop_size_cols, self.args.classes], dtype = tf.float32)
+
+                if self.args.train_task == 'Semantic_Segmentation':
+                    labels_ = tf.keras.utils.to_categorical(labels, self.dataset.classes)
+                    class_weights = tf.constant(1, shape = [images.shape[0], self.args.crop_size_rows, self.args.crop_size_cols, self.args.classes_number], dtype = tf.float32)
+                elif self.args.train_task == 'Image_Classification':
+                    labels_ = tf.cast(labels, dtype = tf.float32)
+                    class_weights = tf.constant(1, shape = [labels_.shape[0], self.args.classes_number], dtype = tf.float32)
+
                 loss, predictions = self.test_step(images, labels_, class_weights)
-
-                y_pred = np.argmax(predictions.numpy(), axis = 3).reshape((images.shape[0] * self.args.crop_size_rows * self.args.crop_size_cols, 1))
-                y_true = labels.numpy().reshape((images.shape[0] * self.args.crop_size_rows * self.args.crop_size_cols, 1))
-
-                F1, P, R = compute_metrics(y_true, y_pred, 'macro')
+                if self.args.train_task == 'Semantic_Segmentation':
+                    y_pred = np.argmax(predictions.numpy(), axis = 3).reshape((images.shape[0] * self.args.crop_size_rows * self.args.crop_size_cols,1))
+                    y_true = labels.numpy().reshape((images.shape[0] * self.args.crop_size_rows * self.args.crop_size_cols,1))
+                if self.args.train_task == 'Image_Classification':
+                    if self.args.labels_type == 'onehot_labels':
+                        y_pred = np.argmax(predictions.numpy(), axis = 1)
+                        y_true = np.argmax(labels_[:, 0, :].numpy(), axis = 1)
+                        Ac, F1, P, R = compute_metrics(y_true, y_pred, 'macro')
+                    if self.args.labels_type == 'multiple_labels':
+                        y_pred = ((predictions.numpy() > 0.5) * 1.0)
+                        y_true = (labels_[:, 0, :].numpy())
+                        Ac, F1, P, R = compute_metrics(y_true, y_pred, None)
+                        F1 = np.mean(F1)
+                        P = np.mean(P)
+                        R = np.mean(R)
 
                 self.valid_loss.append(loss)
+                self.Ac_vl.append(Ac)
                 self.F1_vl.append(F1)
                 self.P_vl.append(P)
                 self.R_vl.append(R)
 
             valid_loss = np.mean(self.valid_loss)
+            Ac_mean = np.mean(self.Ac_vl)
             F1_mean = np.mean(self.F1_vl)
             P_mean = np.mean(self.P_vl)
             R_mean = np.mean(self.R_vl)
             self.run["valid/loss"].log(valid_loss)
             self.run["valid/F1-Score"].log(F1_mean)
-            print(f'Epoch {e + 1}, ' f'Loss: {valid_loss} ,' f'Precision: {P_mean}, ' f'Recall: {R_mean}, ' f'F1-Score: {F1_mean}')
+            self.run["valid/Accuracy"].log(Ac_mean)
+            print(f'Epoch {e + 1}, ' f'Loss: {valid_loss} ,' f'Precision: {P_mean}, ' f'Recall: {R_mean}, ' f'F1-Score: {F1_mean}, ' f'Accuracy: {Ac_mean}')
 
             #Saving the best model according the best value of F1-f1_score
             if F1_mean > best_F1:
@@ -223,7 +315,7 @@ class LearningModels():
 
             #Applying Images transformations to the set aiming at regularizing image dimensions
             if self.args.test_task_level == 'Pixel_Level':
-                test_dataset = test_dataset.map(lambda x: tf.py_function(self.aug.apply_ss_augmentations,
+                test_dataset = test_dataset.map(lambda x: tf.py_function(self.aug.apply_augmentations_test,
                                                                            inp = [x['image'], x['label']],
                                                                            Tout = (tf.float32, tf.int32))).map(create_dict)
             if self.args.test_task_level == 'Image_Level':
@@ -233,7 +325,7 @@ class LearningModels():
 
             test_dataset = test_dataset.map(encode_single_sample, num_parallel_calls=tf.data.experimental.AUTOTUNE)
 
-            test_dataset = test_dataset.map(lambda x: tf.py_function(self.aug.apply_ci_augmentations,
+            test_dataset = test_dataset.map(lambda x: tf.py_function(self.aug.apply_augmentations_test,
                                                                        inp = [x['image']],
                                                                        Tout = (tf.float32)))
 

@@ -10,9 +10,9 @@ class SUIM():
     def __init__(self, args):
 
         self.args = args
-        self.classes = 8
+        self.class_number = 8
         if self.args.class_grouping:
-            self.classes = 7
+            self.class_number = 7
 
         images_dimensions = 0
         labels_sum = tf.constant(0, shape = [1, self.classes], dtype = tf.float32)
@@ -41,7 +41,7 @@ class SUIM():
 
                         if self.args.classweight_type == 'global':
                             #Computing the global class weights
-                            labels_ = tf.keras.utils.to_categorical(self.Label_Converter(label), self.classes)
+                            labels_ = tf.keras.utils.to_categorical(self.Label_Converter(label), self.class_number)
                             #Computing class weights to mitigate the imabalance between classes
                             labels_sum += (tf.reduce_sum(labels_, [0, 1])/tf.constant(np.shape(image)[0] * np.shape(image)[1], dtype = tf.float32))
                             images_counter += 1
@@ -107,3 +107,15 @@ class SUIM():
         label = label.numpy()
         label = self.Label_Converter(label)
         return (image, label)
+
+    def encode_single_sample_labels(self, image_path, label_path):
+        # 1. Read image and labels
+        img = tf.io.read_file(image_path)
+        lbl = tf.io.read_file(label_path)
+        # 2. Decode
+        img = tf.io.decode_jpeg(img, channels=3)
+        lbl = tf.io.decode_bmp(lbl, channels=3)
+        # 3. Convert to float32 in [0,1] range
+        img = tf.cast(img, tf.float32)
+
+        return {"image": img, "label": lbl}

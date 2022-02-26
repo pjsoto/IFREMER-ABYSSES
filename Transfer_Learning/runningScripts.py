@@ -13,27 +13,38 @@ Schedule = []
 
 if args.phase == 'Train':
     if args.running_in == 'Local_Docker_Container':
-        Schedule.append("python TrainLearningModel.py --train_task Semantic_Segmentation --learning_model Unet --crop_size 256 --checkpoint_name Prove "
-                        "--classweight_type global --dataset_name SUIM --dataset_main_path /d/DATA/Pedro_Work/IFREMER_Work/DATA/Under_water_Image_Segmenetation/SUIM/train_val/train_val/ "
-                        "--checkpoints_main_path /d/DATA/Pedro_Work/IFREMER_Work/CODE/Transfer_Learning")
+        Schedule.append("python TrainLearningModel.py --train_task Image_Classification --learning_model CNN --backbone_name vgg16 "
+                        "--crop_size_rows 224 --crop_size_cols 512 --labels_type multiple_labels --learning_ratedecay True --lr 0.001 --gamma 2.0 --alpha 4.0 --optimizer SGD --batch_size 2 --runs 1 "
+                        "--epochs 400 --phase train --loss weighted_binary_crossentropy --checkpoint_name Prove "
+                        "--dataset_name OTUSIFREMER_IMAGELABEL --class_grouping False --classweight_type global --csvfile_name OTUS_Image_Classification_F1.csv "
+                        "--dataset_csv_main_path D:/DATA/Pedro_Work/IFREMER_Work/DATA/IFREMER_OTUS/BIGLI_CSVs/ "
+                        "--dataset_main_path E:/OTUS/2018/Donneesbrutes/Montsegur(MS)/acq_20180825T010450/ "
+                        "--checkpoints_main_path D:/DATA/Pedro_Work/IFREMER_Work/CODE/Transfer_Learning/")
+
     if args.running_in == 'Local_Anaconda_Environment':
-        Schedule.append("python TrainLearningModel.py --task Semantic_Segmentation --learning_model Unet --crop_size 256 --checkpoint_name Prove "
-                        "--classweight_type global --dataset_name SUIM --dataset_main_path D:/DATA/Pedro_Work/IFREMER_Work/DATA/Under_water_Image_Segmenetation/SUIM/train_val/train_val/ "
-                        "--checkpoints_main_path D:/DATA/Pedro_Work/IFREMER_Work/CODE/Transfer_Learning")
+        Schedule.append("python TrainLearningModel.py --train_task Image_Classification --learning_model CNN --backbone_name vgg16 "
+                        "--crop_size_rows 224 --crop_size_cols 512 --labels_type multiple_labels --learning_ratedecay True --lr 0.001 --gamma 2.0 --alpha 4.0 --optimizer SGD --batch_size 2 --runs 1 "
+                        "--epochs 400 --phase train --loss weighted_binary_crossentropy --checkpoint_name Prove "
+                        "--dataset_name OTUSIFREMER_IMAGELABEL --class_grouping False --classweight_type global --csvfile_name OTUS_Image_Classification_F1.csv "
+                        "--dataset_csv_main_path D:/DATA/Pedro_Work/IFREMER_Work/DATA/IFREMER_OTUS/BIGLI_CSVs/ "
+                        "--dataset_main_path E:/OTUS/2018/Donneesbrutes/Biigle_Montsegur(MS)/ "
+                        "--checkpoints_main_path D:/DATA/Pedro_Work/IFREMER_Work/CODE/Transfer_Learning/")
 
     if args.running_in == 'Datarmor_Interactive':
-        Schedule.append("python TrainLearningModel.py --train_task Semantic_Segmentation --learning_model Unet "
-                        "--backbone_name None --classweight_type global --lr 0.0001 --optimizer Adam --batch_size 2 --runs 1 --crop_size_rows 320 --crop_size_cols 240 "
-                        "--epochs 400 --phase train "
-                        "--dataset_name SUIM --class_grouping True --checkpoint_name SUIM_SS_Train "
+        Schedule.append("python TrainLearningModel.py --train_task Image_Classification --learning_model CNN --backbone_name vgg16 "
+                        "--crop_size_rows 4000 --crop_size_cols 6000 --labels_type multiple_labels --learning_ratedecay True --lr 0.001 --gamma 2.0 --alpha 4.0 --optimizer SGD --batch_size 5 --runs 1 "
+                        "--epochs 400 --phase train --loss weighted_binary_crossentropy --checkpoint_name Prove "
+                        "--dataset_name OTUSIFREMER_IMAGELABEL --class_grouping False --classweight_type global --csvfile_name OTUS_Image_Classification_F1.csv "
+                        "--dataset_csv_main_path D:/DATA/Pedro_Work/IFREMER_Work/DATA/IFREMER_OTUS/BIGLI_CSVs/ "
                         "--dataset_main_path /datawork/DATA/SUIM/train_val/train_val/ "
-                        "--checkpoints_main_path /datawork/EXPERIMENTS/CHECKPOINTS/")
+                        "--checkpoints_main_path /datawork/EXPERIMENTS/")
 
     if args.running_in == 'Datarmor_PBS':
-        Schedule.append("python $HOME/CODE/IFREMER-ABYSSES/Transfer_Learning/TrainLearningModel.py --train_task Semantic_Segmentation --learning_model Unet "
-                        "--backbone_name None --classweight_type global --lr 0.0001 --optimizer Adam --batch_size 2 --runs 1 --crop_size_rows 320 --crop_size_cols 240 "
-                        "--epochs 400 --phase train "
-                        "--dataset_name SUIM --class_grouping True --checkpoint_name SUIM_SS_Train "
+        Schedule.append("python $HOME/CODE/IFREMER-ABYSSES/Transfer_Learning/TrainLearningModel.py --train_task Image_Classification --learning_model CNN --backbone_name vgg16 "
+                        "--crop_size_rows 4000 --crop_size_cols 6000 --labels_type multiple_labels --learning_ratedecay True --lr 0.001 --gamma 2.0 --alpha 4.0 --optimizer SGD --batch_size 5 --runs 1 "
+                        "--epochs 400 --phase train --loss weighted_binary_crossentropy --checkpoint_name Prove "
+                        "--dataset_name OTUSIFREMER_IMAGELABEL --class_grouping False --classweight_type global --csvfile_name OTUS_Image_Classification_F1.csv "
+                        "--dataset_csv_main_path D:/DATA/Pedro_Work/IFREMER_Work/DATA/IFREMER_OTUS/BIGLI_CSVs/ "
                         "--dataset_main_path /datawork/DATA/SUIM/train_val/train_val/ "
                         "--checkpoints_main_path /datawork/EXPERIMENTS/CHECKPOINTS/")
 if args.phase == 'Test':

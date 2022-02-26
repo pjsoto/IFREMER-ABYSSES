@@ -34,7 +34,7 @@ class Unet(Model):
         self.conv8 = layers.Conv2D(512, 3, padding = 'same', activation = 'relu')
         self.conv9 = layers.Conv2D(1024, 3, padding = 'same', activation = 'relu')
         self.conv10 = layers.Conv2D(1024, 3, padding = 'same', activation = 'relu')
-        self.softmax = layers.Conv2D(self.args.classes, 1, padding = 'same', activation = 'softmax')
+        self.softmax = layers.Conv2D(self.args.classes_number, 1, padding = 'same', activation = 'softmax')
 
         self.dconv1 = layers.Conv2DTranspose(512, 2, strides = (2 , 2), padding = 'same')
         self.dconv2 = layers.Conv2DTranspose(256, 2, strides = (2 , 2), padding = 'same')
@@ -101,11 +101,19 @@ class CNN(Model):
         IMG_SHAPE = (None, None, 3)
         if self.args.backbone_name == 'movilenet':
             self.base_model = applications.MobileNetV2(input_shape=IMG_SHAPE, include_top=False, weights='imagenet')
+            self.base_model.trainable = True
         if self.args.backbone_name == 'resnet50':
             self.base_model = applications.ResNet50(input_shape=IMG_SHAPE, include_top=False, weights='imagenet')
+            self.base_model.trainable = True
+        if self.args.backbone_name == 'vgg16':
+            self.base_model = applications.VGG16(input_shape=IMG_SHAPE, include_top=False, weights='imagenet')
+            self.base_model.trainable = True
 
         self.globalaveragepool = layers.GlobalAveragePooling2D()
-        self.dense = layers.Dense(self.args.classes, activation = 'softmax')
+        if self.args.labels_type == 'onehot_labels':
+            self.dense = layers.Dense(self.args.classes_number, activation = 'softmax')
+        if self.args.labels_type == 'multiple_labels':
+            self.dense = layers.Dense(self.args.classes_number, activation = 'sigmoid')
 
     def call(self, input):
 
@@ -113,4 +121,4 @@ class CNN(Model):
         features = self.globalaveragepool(out1)
         output = self.dense(features)
 
-        return output, features
+        return output, features, out1

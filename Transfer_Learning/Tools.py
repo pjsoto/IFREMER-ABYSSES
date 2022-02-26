@@ -13,40 +13,20 @@ def preprocess_input(data, backbone_name):
         data = tf.keras.applications.mobilenet.preprocess_input(data)
     elif backbone_name == 'resnet50':
         data = tf.keras.applications.resnet.preprocess_input(data)
+    elif backbone_name == 'vgg16':
+        data = tf.keras.applications.vgg16.preprocess_input(data)
 
     return data
-
-
-def encode_single_sample_labels(image_path, label_path):
-    # 1. Read image and labels
-    img = tf.io.read_file(image_path)
-    lbl = tf.io.read_file(label_path)
-    # 2. Decode
-    img = tf.io.decode_jpeg(img, channels=3)
-    lbl = tf.io.decode_bmp(lbl, channels=3)
-    # 3. Convert to float32 in [0,1] range
-    img = tf.cast(img, tf.float32)
-
-    return {"image": img, "label": lbl}
-
-def encode_single_sample(image_path):
-    # 1. Read image and labels
-    img = tf.io.read_file(image_path)
-    # 2. Decode
-    img = tf.io.decode_jpeg(img, channels=3)
-    # 3. Convert to float32 in [0,1] range
-    img = tf.cast(img, tf.float32)
-
-    return {"image": img}
 
 def create_dict(image, label):
     return {"image": image, "label": label}
 
 def compute_metrics(y_true, y_pred, average):
+    accuracy = 100*accuracy_score(y_true, y_pred)
     f1score = 100*f1_score(y_true, y_pred, average=average, zero_division = 1)
     recall = 100*recall_score(y_true, y_pred,average=average, zero_division = 1)
     precision = 100*precision_score(y_true, y_pred,average=average, zero_division = 1)
-    return f1score, precision, recall
+    return accuracy, f1score, precision, recall
 
 def plottsne_features(features, labels, save_path, USE_LABELS = True):
     colors = []
