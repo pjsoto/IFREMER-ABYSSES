@@ -46,7 +46,7 @@ if args.phase == 'Train':
                         "--dataset_name OTUSIFREMER_IMAGELABEL --class_grouping False --classweight_type global --csvfile_name OTUS_Image_Classification_F1.csv "
                         "--dataset_csv_main_path /datawork/DATA/CSVs/OTUS_2018/ "
                         "--dataset_main_path /datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur/ "
-                        "--checkpoints_main_path /datawork/EXPERIMENTS/CHECKPOINTS/")
+                        "--checkpoints_main_path /datawork/EXPERIMENTS/")
 if args.phase == 'Test':
     if args.running_in == 'Local_Anaconda_Environment':
         Schedule.append("python TestLearningModel.py --phase test "
