@@ -36,7 +36,7 @@ if args.phase == 'Train':
                         "--epochs 400 --phase train --loss weighted_binary_crossentropy --checkpoint_name VGG16_F1 "
                         "--dataset_name OTUSIFREMER_IMAGELABEL --class_grouping False --classweight_type global --csvfile_name OTUS_Image_Classification_F1.csv "
                         "--dataset_csv_main_path /datawork/DATA/CSVs/OTUS_2018/ "
-                        "--dataset_main_path /datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur/ "
+                        "--dataset_main_path /datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/ "
                         "--checkpoints_main_path /datawork/EXPERIMENTS/")
 
     if args.running_in == 'Datarmor_PBS':
@@ -45,7 +45,7 @@ if args.phase == 'Train':
                         "--epochs 400 --phase train --loss weighted_binary_crossentropy --checkpoint_name VGG16_F1 "
                         "--dataset_name OTUSIFREMER_IMAGELABEL --class_grouping False --classweight_type global --csvfile_name OTUS_Image_Classification_F1.csv "
                         "--dataset_csv_main_path /datawork/DATA/CSVs/OTUS_2018/ "
-                        "--dataset_main_path /datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur/ "
+                        "--dataset_main_path /datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/ "
                         "--checkpoints_main_path /datawork/EXPERIMENTS/")
 if args.phase == 'Test':
     if args.running_in == 'Local_Anaconda_Environment':
