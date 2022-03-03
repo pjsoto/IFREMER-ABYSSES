@@ -12,4 +12,4 @@ source /etc/profile.d/modules.sh
 echo "Load singularity..."
 module load singularity/3.4.1
 echo "Executing singularity..."
-singularity exec --nv --bind $DATAWORK/:/datawork $HOME/Singularities/tf1.15.5-gpu_rs.sif python $HOME/CODE/CODE/CHANGE_DETECTION/CD_FROM_NOISY_LABELS/Main_Script_Executor_Tr_APA_Ts_APA_ARO_CMA.py
+singularity exec --nv --bind $DATAWORK/:/datawork $HOME/Singularities/tf1.15.5-gpu_rs.sif python $HOME/CODE/CHANGE_DETECTION/CD_FROM_NOISY_LABELS/Main_Script_Executor_Tr_APA_Ts_APA_ARO_CMA.py
