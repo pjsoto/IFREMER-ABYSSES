@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+#PBS -q gpuq
+#PBS -l select=1:ncpus=1:ngpus=1:mem=12g
+#PBS -l walltime=48:00:00
+
+#$ -cwd
+#$ -S /bin/bash
+
+
+source /etc/profile.d/modules.sh
+
+echo "Load singularity..."
+module load singularity/3.4.1
+echo "Executing singularity..."
+singularity exec --nv --bind $DATAWORK/:/datawork $HOME/Singularities/tf1.15.5-gpu_rs python $HOME/CODE/CODE/CHANGE_DETECTION/CD_FROM_NOISY_LABELS/Main_Script_Executor_Tr_APA_Ts_APA_ARO_CMA.py
