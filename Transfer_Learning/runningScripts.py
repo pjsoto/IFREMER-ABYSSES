@@ -31,7 +31,7 @@ if args.phase == 'Train':
                         "--checkpoints_main_path D:/DATA/Pedro_Work/IFREMER_Work/CODE/Transfer_Learning/")
 
     if args.running_in == 'Datarmor_Interactive':
-        Schedule.append("python TrainLearningModel.py --train_task Image_Classification --learning_model CNN --backbone_name vgg16 "
+        Schedule.append("python TrainLearningModel.py --train_task Image_Classification --learning_model CNN --backbone_name movilenet "
                         "--crop_size_rows 1024 --crop_size_cols 1024 --labels_type multiple_labels --learning_ratedecay True --lr 0.0001 --gamma 2.0 --alpha 4.0 --optimizer Adam --batch_size 2 --runs 1 "
                         "--epochs 400 --phase train --loss weighted_binary_crossentropy --checkpoint_name VGG16_F1 "
                         "--dataset_name OTUSIFREMER_IMAGELABEL --class_grouping False --classweight_type global --csvfile_name OTUS_Image_Classification_F1.csv "
@@ -40,23 +40,45 @@ if args.phase == 'Train':
                         "--checkpoints_main_path /datawork/EXPERIMENTS/")
 
     if args.running_in == 'Datarmor_PBS':
-        Schedule.append("python $HOME/CODE/IFREMER-ABYSSES/Transfer_Learning/TrainLearningModel.py --train_task Image_Classification --learning_model CNN --backbone_name vgg16 "
+        Schedule.append("python $HOME/CODE/IFREMER-ABYSSES/Transfer_Learning/TrainLearningModel.py --train_task Image_Classification --learning_model CNN --backbone_name movilenet "
                         "--crop_size_rows 1024 --crop_size_cols 1024 --labels_type multiple_labels --learning_ratedecay True --lr 0.0001 --gamma 2.0 --alpha 4.0 --optimizer Adam --batch_size 2 --runs 1 "
-                        "--epochs 400 --phase train --loss weighted_binary_crossentropy --checkpoint_name VGG/VGG16_F1 "
+                        "--epochs 400 --phase train --loss weighted_binary_crossentropy --checkpoint_name MovileNet/MONT_F1 "
                         "--dataset_name OTUSIFREMER_IMAGELABEL --class_grouping False --classweight_type global --csvfile_name OTUS_Image_Classification_F1.csv "
                         "--dataset_csv_main_path /datawork/DATA/CSVs/OTUS_2018/ "
                         "--dataset_main_path /datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/ "
                         "--checkpoints_main_path /datawork/EXPERIMENTS/")
-        Schedule.append("python $HOME/CODE/IFREMER-ABYSSES/Transfer_Learning/TrainLearningModel.py --train_task Image_Classification --learning_model CNN --backbone_name vgg16 "
+        Schedule.append("python $HOME/CODE/IFREMER-ABYSSES/Transfer_Learning/TrainLearningModel.py --train_task Image_Classification --learning_model CNN --backbone_name movilenet "
                         "--crop_size_rows 1024 --crop_size_cols 1024 --labels_type multiple_labels --learning_ratedecay True --lr 0.0001 --gamma 2.0 --alpha 4.0 --optimizer Adam --batch_size 2 --runs 1 "
-                        "--epochs 400 --phase train --loss weighted_binary_crossentropy --checkpoint_name VGG/VGG16_F2 "
+                        "--epochs 400 --phase train --loss weighted_binary_crossentropy --checkpoint_name MovileNet/MONT_F2 "
                         "--dataset_name OTUSIFREMER_IMAGELABEL --class_grouping False --classweight_type global --csvfile_name OTUS_Image_Classification_F2.csv "
                         "--dataset_csv_main_path /datawork/DATA/CSVs/OTUS_2018/ "
                         "--dataset_main_path /datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/ "
                         "--checkpoints_main_path /datawork/EXPERIMENTS/")
-        Schedule.append("python $HOME/CODE/IFREMER-ABYSSES/Transfer_Learning/TrainLearningModel.py --train_task Image_Classification --learning_model CNN --backbone_name vgg16 "
+        Schedule.append("python $HOME/CODE/IFREMER-ABYSSES/Transfer_Learning/TrainLearningModel.py --train_task Image_Classification --learning_model CNN --backbone_name movilenet "
                         "--crop_size_rows 1024 --crop_size_cols 1024 --labels_type multiple_labels --learning_ratedecay True --lr 0.0001 --gamma 2.0 --alpha 4.0 --optimizer Adam --batch_size 2 --runs 1 "
-                        "--epochs 400 --phase train --loss weighted_binary_crossentropy --checkpoint_name VGG/VGG16_F3 "
+                        "--epochs 400 --phase train --loss weighted_binary_crossentropy --checkpoint_name MovileNet/MONT_F3 "
+                        "--dataset_name OTUSIFREMER_IMAGELABEL --class_grouping False --classweight_type global --csvfile_name OTUS_Image_Classification_F3.csv "
+                        "--dataset_csv_main_path /datawork/DATA/CSVs/OTUS_2018/ "
+                        "--dataset_main_path /datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/ "
+                        "--checkpoints_main_path /datawork/EXPERIMENTS/")
+
+        Schedule.append("python $HOME/CODE/IFREMER-ABYSSES/Transfer_Learning/TrainLearningModel.py --train_task Image_Classification --learning_model CNN --backbone_name resnet50 "
+                        "--crop_size_rows 1024 --crop_size_cols 1024 --labels_type multiple_labels --learning_ratedecay True --lr 0.0001 --gamma 2.0 --alpha 4.0 --optimizer Adam --batch_size 2 --runs 1 "
+                        "--epochs 400 --phase train --loss weighted_binary_crossentropy --checkpoint_name ResNet/ResNet50_F1 "
+                        "--dataset_name OTUSIFREMER_IMAGELABEL --class_grouping False --classweight_type global --csvfile_name OTUS_Image_Classification_F1.csv "
+                        "--dataset_csv_main_path /datawork/DATA/CSVs/OTUS_2018/ "
+                        "--dataset_main_path /datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/ "
+                        "--checkpoints_main_path /datawork/EXPERIMENTS/")
+        Schedule.append("python $HOME/CODE/IFREMER-ABYSSES/Transfer_Learning/TrainLearningModel.py --train_task Image_Classification --learning_model CNN --backbone_name resnet50 "
+                        "--crop_size_rows 1024 --crop_size_cols 1024 --labels_type multiple_labels --learning_ratedecay True --lr 0.0001 --gamma 2.0 --alpha 4.0 --optimizer Adam --batch_size 2 --runs 1 "
+                        "--epochs 400 --phase train --loss weighted_binary_crossentropy --checkpoint_name ResNet/ResNet50_F2 "
+                        "--dataset_name OTUSIFREMER_IMAGELABEL --class_grouping False --classweight_type global --csvfile_name OTUS_Image_Classification_F2.csv "
+                        "--dataset_csv_main_path /datawork/DATA/CSVs/OTUS_2018/ "
+                        "--dataset_main_path /datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/ "
+                        "--checkpoints_main_path /datawork/EXPERIMENTS/")
+        Schedule.append("python $HOME/CODE/IFREMER-ABYSSES/Transfer_Learning/TrainLearningModel.py --train_task Image_Classification --learning_model CNN --backbone_name resnet50 "
+                        "--crop_size_rows 1024 --crop_size_cols 1024 --labels_type multiple_labels --learning_ratedecay True --lr 0.0001 --gamma 2.0 --alpha 4.0 --optimizer Adam --batch_size 2 --runs 1 "
+                        "--epochs 400 --phase train --loss weighted_binary_crossentropy --checkpoint_name ResNet/ResNet50_F1 "
                         "--dataset_name OTUSIFREMER_IMAGELABEL --class_grouping False --classweight_type global --csvfile_name OTUS_Image_Classification_F3.csv "
                         "--dataset_csv_main_path /datawork/DATA/CSVs/OTUS_2018/ "
                         "--dataset_main_path /datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/ "
