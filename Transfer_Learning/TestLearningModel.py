@@ -20,7 +20,6 @@ parser.add_argument('--phase', dest='phase', type = str,default='train', help='t
 parser.add_argument('--train_task', dest='train_task', type=str, default='Semantic_Segmentation', help='Learning Task, user can take among two alternatives Semantic_Segmentation|Image_Classification')
 parser.add_argument('--learning_model', dest='learning_model', type=str, default='Unet', help='Learning model used')
 parser.add_argument('--backbone_name', dest='backbone_name', type=str, default='movilenet', help='users can chosse between resnet50 and movilenet')
-parser.add_argument('--class_grouping', dest = 'class_grouping', type=eval, choices=[True, False], default=True, help = 'Decide if some classes in the dataset can be mixtured')
 
 parser.add_argument('--checkpoint_name', dest='checkpoint_name', default='Prove', help='Checkpoints folder name')
 parser.add_argument('--train_dataset_name', dest='train_dataset_name', type = str, default='SUIM', help = 'Dataset Name where the model has been trained: SUIM')
@@ -37,6 +36,9 @@ parser.add_argument('--test_dataset_name', dest = 'test_dataset_name', type = st
 parser.add_argument('--results_name', dest = 'results_name', default='Prove', help = 'Results folder name')
 parser.add_argument('--results_main_path', dest='results_main_path', type=str, default='/home/d/DATA/Pedro_Work/Jose_Work/', help='Path were results will be saved')
 # Images dir and names
+parser.add_argument('--class_grouping', dest = 'class_grouping', type=eval, choices=[True, False], default=True, help = 'Decide if some classes in the dataset can be mixtured')
+parser.add_argument('--dataset_csv_main_path', dest='dataset_csv_main_path', type=str, default=' ', help='Dataset CSV main path')
+parser.add_argument('--csvfile_name', dest = 'csvfile_name', type = str, default = ' ', help = 'CSV file name')
 parser.add_argument('--dataset_main_path', dest='dataset_main_path', type=str, default='/d/DATA/Pedro_Work/IFREMER_Work/DATA/Under_water_Image_Segmenetation/SUIM/TEST/TEST/', help='Main path of the dataset images')
 
 
@@ -60,9 +62,11 @@ def main():
     print("Dataset pre-processing...")
     if args.test_dataset_name == 'SUIM':
         dataset = SUIM(args)
-    if 'IFREMER' in args.test_dataset_name:
+    if args.test_dataset_name == 'IFREMERData':
         dataset = IFREMER(args)
-
+    if args.test_dataset_name == 'OTUSIFREMER_IMAGELABEL':
+        dataset = OTUSIFREMER_IMAGELABEL(args)
+        
     args.checkpoint_dir = args.checkpoints_main_path + args.train_dataset_name + '_checkpoints/' + args.checkpoint_name
     args.results_dir = args.results_main_path + 'RESULTS/' + args.results_name + '/'
     if os.path.exists(args.checkpoint_dir):

@@ -130,7 +130,7 @@ class OTUSIFREMER_IMAGELABEL():
             self.Test_Labels = []
 
             for i in range(len(test_files_names)):
-                self.Train_Paths.append(self.args.dataset_main_path + test_files_names[i])
+                self.Test_Paths.append(self.args.dataset_main_path + test_files_names[i])
                 self.Test_Labels.append(self.hot_encoding(np.array(test_labels_ids[i][1:-1].split(', '), dtype=np.int32)))
 
     def hot_encoding(self, labels):
