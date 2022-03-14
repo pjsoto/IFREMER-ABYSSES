@@ -32,6 +32,7 @@ parser.add_argument('--batch_size', dest='batch_size', type=int, default=5, help
 parser.add_argument('--testcrop_size_rows', dest='testcrop_size_rows', type=int, default=256, help='Size of the random crop performed as Data Augmentation technique')
 parser.add_argument('--testcrop_size_cols', dest='testcrop_size_cols', type=int, default=256, help='Size of the random crop performed as Data Augmentation technique')
 parser.add_argument('--test_dataset_name', dest = 'test_dataset_name', type = str, default = 'SUIM', help = 'Dataset name where the model will be tested')
+parser.add_argument('--labels_type', dest='labels_type', type=str, default='onehot', help='users can choose between onehot_labels(Image Classification) or multiple_labels(Multilabel Image Classification)')
 
 parser.add_argument('--results_name', dest = 'results_name', default='Prove', help = 'Results folder name')
 parser.add_argument('--results_main_path', dest='results_main_path', type=str, default='/home/d/DATA/Pedro_Work/Jose_Work/', help='Path were results will be saved')
@@ -66,8 +67,9 @@ def main():
         dataset = IFREMER(args)
     if args.test_dataset_name == 'OTUSIFREMER_IMAGELABEL':
         dataset = OTUSIFREMER_IMAGELABEL(args)
-        
+
     args.checkpoint_dir = args.checkpoints_main_path + args.train_dataset_name + '_checkpoints/' + args.checkpoint_name
+    print(args.checkpoint_dir)
     args.results_dir = args.results_main_path + 'RESULTS/' + args.results_name + '/'
     if os.path.exists(args.checkpoint_dir):
         #Listing the runs inside the checkpoints folder

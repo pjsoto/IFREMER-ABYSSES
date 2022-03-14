@@ -64,19 +64,17 @@ class OTUSIFREMER_IMAGELABEL():
         #Computing the number of classes
         Labels = datadf['Labels_IDs'].values
         for l in Labels:
-            l = np.array(l[1:-1].split(', '), dtype=np.int32)
+            l = np.array(l[1:-1].split(' '), dtype=np.int32)
             for i in range(len(l)):
                 labels.append(l[i])
-        self.class_ids = np.unique(labels)
-        self.class_number = len(np.unique(labels))
 
-        labels_names = datadf['Labels_Names'].values
-        for l in labels_names:
-            fields = l[1:-1].split("' '")
-            for i in range(len(fields)):
-                if "'" not in fields[i]:
-                    names.append(fields[i])
-        self.class_names = np.unique(names)
+        self.class_ids = np.unique(labels)
+        self.class_number = len(self.class_ids)
+        if 'H1' in self.args.csvfile_name:
+            self.class_names = ['0-10 %','10-50%','50-100%','Hard substrate','Scree / rubbles','Soft substrate','Substrate','Uncertain']
+        else:
+            self.class_names = ['0-10 %','10-50%','50-100%','Fractured','Hard substrate','Marbled','Pelagic mud','Scree / rubbles','Sedimented','Slab','Sulfurs','Uncertain','Volcanoclastic']
+
 
         #Computing the weights
         number_samples = np.zeros((1, self.class_number))
@@ -115,13 +113,14 @@ class OTUSIFREMER_IMAGELABEL():
 
             for i in range(len(train_files_names)):
                 self.Train_Paths.append(self.args.dataset_main_path + train_files_names[i])
-                self.Train_Labels.append(self.hot_encoding(np.array(train_labels_ids[i][1:-1].split(', '), dtype=np.int32)))
+                self.Train_Labels.append(self.hot_encoding(np.array(train_labels_ids[i][1:-1].split(' '), dtype=np.int32)))
 
             for i in range(len(valid_files_names)):
                 self.Valid_Paths.append(self.args.dataset_main_path + valid_files_names[i])
-                self.Valid_Labels.append(self.hot_encoding(np.array(valid_labels_ids[i][1:-1].split(', '), dtype=np.int32)))
+                self.Valid_Labels.append(self.hot_encoding(np.array(valid_labels_ids[i][1:-1].split(' '), dtype=np.int32)))
 
         if self.args.phase == 'test':
+            self.Labels_Available = True
             test_files_names = datadf[datadf['Set'] == 2]['File_Names'].values
             test_labels_ids  = datadf[datadf['Set'] == 2]['Labels_IDs'].values
             self.ts_num_samples = len(test_files_names)
@@ -131,7 +130,7 @@ class OTUSIFREMER_IMAGELABEL():
 
             for i in range(len(test_files_names)):
                 self.Test_Paths.append(self.args.dataset_main_path + test_files_names[i])
-                self.Test_Labels.append(self.hot_encoding(np.array(test_labels_ids[i][1:-1].split(', '), dtype=np.int32)))
+                self.Test_Labels.append(self.hot_encoding(np.array(test_labels_ids[i][1:-1].split(' '), dtype=np.int32)))
 
     def hot_encoding(self, labels):
         hot_vector = np.zeros((1, self.class_number))

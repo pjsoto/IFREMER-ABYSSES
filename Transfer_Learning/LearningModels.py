@@ -305,23 +305,23 @@ class LearningModels():
         print("Dataset pre-processing according tensorflow methods...")
         # Pre-proecessing the Train set
         if self.dataset.Labels_Available:
-            test_dataset = tf.data.Dataset.from_tensor_slices((self.dataset.Testi_Paths, self.dataset.Label_Paths))
+            if self.args.train_task == 'Semantic_Segmentation':
+                test_dataset = tf.data.Dataset.from_tensor_slices((self.dataset.Testi_Paths, self.dataset.Label_Paths))
 
-            test_dataset = test_dataset.map(encode_single_sample_labels, num_parallel_calls=tf.data.experimental.AUTOTUNE)
+                test_dataset = test_dataset.map(self.dataset.encode_single_sample_labels, num_parallel_calls=tf.data.experimental.AUTOTUNE)
 
-            test_dataset = test_dataset.map(lambda x: tf.py_function(self.dataset.label_encode_sample,
-                                                                     inp=[x['image'], x['label']],
-                                                                     Tout=(tf.float32, tf.int32))).map(create_dict)
-
-            #Applying Images transformations to the set aiming at regularizing image dimensions
-            if self.args.test_task_level == 'Pixel_Level':
-                test_dataset = test_dataset.map(lambda x: tf.py_function(self.aug.apply_augmentations_test,
-                                                                           inp = [x['image'], x['label']],
-                                                                           Tout = (tf.float32, tf.int32))).map(create_dict)
-            if self.args.test_task_level == 'Image_Level':
-                print("Coming soon!!!")
+                test_dataset = test_dataset.map(lambda x: tf.py_function(self.dataset.label_encode_sample,
+                                                                        inp=[x['image'], x['label']],
+                                                                        Tout=(tf.float32, tf.int32))).map(create_dict)
+            if self.args.train_task == 'Image_Classification':
+                test_dataset = tf.data.Dataset.from_tensor_slices((self.dataset.Test_Paths, self.dataset.Test_Labels))
+                test_dataset = test_dataset.map(self.dataset.encode_single_sample_labels, num_parallel_calls=tf.data.experimental.AUTOTUNE)
+            #Applying Data augmrntation transformation to the images and as well as the labels if needed
+            test_dataset = test_dataset.map(lambda x: tf.py_function(self.aug.apply_augmentations_test,
+                                                                       inp = [x['image'], x['label']],
+                                                                       Tout = (tf.float32, tf.int32))).map(create_dict)
         else:
-            test_dataset = tf.data.Dataset.from_tensor_slices((self.dataset.Testi_Paths))
+            test_dataset = tf.data.Dataset.from_tensor_slices((self.dataset.Test_Paths))
 
             test_dataset = test_dataset.map(encode_single_sample, num_parallel_calls=tf.data.experimental.AUTOTUNE)
 
@@ -332,28 +332,37 @@ class LearningModels():
         test_dataset = (test_dataset.batch(self.args.batch_size).prefetch(buffer_size = tf.data.experimental.AUTOTUNE))
         num_samples = len(test_dataset)
 
-        if self.dataset.Labels_Available:
-            if self.args.test_task_level == 'Pixel_Level':
-                LABELS = np.zeros((num_samples, self.args.testcrop_size_cols * self.args.testcrop_size_rows, 1))
-        else:
-            if self.args.test_task_level == 'Pixel_Level':
-                LABELS = np.zeros((num_samples, self.args.testcrop_size_cols * self.args.testcrop_size_rows, 1))
-            if self.args.test_task_level == 'Image_Level':
+        #if self.dataset.Labels_Available:
+        #    if self.args.test_task_level == 'Pixel_Level':
+        #        LABELS = np.zeros((num_samples, self.args.testcrop_size_cols * self.args.testcrop_size_rows, 1))
+        #else:
+        if self.args.test_task_level == 'Pixel_Level':
+            LABELS = np.zeros((num_samples, self.args.testcrop_size_cols * self.args.testcrop_size_rows, 1))
+        if self.args.test_task_level == 'Image_Level':
+            if self.args.labels_type == 'onehot_labels':
                 LABELS = np.zeros((num_samples, 1))
-        counter = 0
-        print('Extracting features from the input samples...')
-        for sample in test_dataset:
+                PREDIS = np.zeros((num_samples, 1))
+            if self.args.labels_type == 'multiple_labels':
+                LABELS = np.zeros((num_samples, self.args.classes_number))
+                PREDIS = np.zeros((num_samples, self.args.classes_number))
 
+        counter = 0
+        print('Extracting features and predicting from the input samples...')
+        for sample in test_dataset:
             if self.dataset.Labels_Available:
                 image = sample["image"]
                 label = sample["label"]
                 image = preprocess_input(image, self.args.backbone_name)
                 if self.args.test_task_level == 'Pixel_Level':
                     LABELS[counter, :, :] = label.numpy().reshape((self.args.testcrop_size_cols * self.args.testcrop_size_rows, 1))
+                if self.args.test_task_level == 'Image_Level':
+                    if self.args.labels_type == 'onehot_labels':
+                        LABELS[counter, 0] = label
+                    if self.args.labels_type == 'multiple_labels':
+                        LABELS[counter, :] = label
             else:
                 image = sample
                 image = preprocess_input(image, self.args.backbone_name)
-                print(np.shape(image))
                 if self.args.test_task_level == 'Pixel_Level':
                     LABELS[counter, :, :] = np.zeros((self.args.testcrop_size_cols * self.args.testcrop_size_rows, 1))
                 if self.args.test_task_level == 'Image_Level':
@@ -363,9 +372,9 @@ class LearningModels():
                 Predictions, Pixels_Features, Image_Features = self.model.learningmodel(image, training = False)
 
             if self.args.train_task == 'Image_Classification':
-                Predictions, Image_Features = self.model.learningmodel(image, training = False)
-                print(np.shape(Predictions))
-                print(np.shape(Image_Features))
+                predictions, Image_Features, _ = self.model.learningmodel(image, training = False)
+                PREDIS[counter, :] = ((predictions.numpy() > 0.5) * 1.0)
+
             if self.args.test_task == 'Feature_representation':
 
                 if self.args.test_task_level == 'Image_Level':
@@ -389,8 +398,6 @@ class LearningModels():
                     FEATURES[counter, :, :] = features.reshape((features.shape[0] * features.shape[1] * features.shape[2], features.shape[3]))
             counter += 1
 
-        #FEATURES = FEATURES[:1,:,:]
-        #LABELS = LABELS[:1,:,:]
         if self.args.test_task == 'Feature_representation':
             print('Computing the features and representing them into 2D dimensional space')
             if self.args.test_task_level == 'Image_Level':
@@ -399,3 +406,11 @@ class LearningModels():
             if self.args.test_task_level == 'Pixel_Level':
                 FEATURES_PROJECTED = self.tsne_features(FEATURES.reshape((FEATURES.shape[0] * FEATURES.shape[1], FEATURES.shape[2])))
                 plottsne_features(FEATURES_PROJECTED, LABELS.reshape((LABELS.shape[0] * LABELS.shape[1], LABELS.shape[2])), save_path = self.args.save_results_dir ,USE_LABELS = True)
+        if self.args.test_task == 'Classification':
+            print('Computing the evaluation metrics...')
+            print(self.dataset.class_names)
+            Ac, F1, P, R = compute_metrics(LABELS, PREDIS, None)
+            print(Ac)
+            print(F1)
+            print(P)
+            print(R)

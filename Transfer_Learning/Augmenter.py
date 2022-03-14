@@ -39,11 +39,12 @@ class Augmenter():
             images_aug = self.ic_seq(images = image_reshape)
             return (images_aug[0], label_numpy)
 
-    def apply_augmentations_test(self, image):
+    def apply_augmentations_test(self, image, label):
         image_numpy = image.numpy()
+        label_numpy = label.numpy()
         image_reshape = image_numpy.reshape((1, image_numpy.shape[0], image_numpy.shape[1], image_numpy.shape[2]))
         if self.args.test_task_level == 'Pixel_Level':
             images_aug = self.ss_seq(images = image_reshape)
         if self.args.test_task_level == 'Image_Level':
             images_aug = self.ic_seq(images = image_reshape)
-        return images_aug[0]
+        return (images_aug[0], label_numpy)
