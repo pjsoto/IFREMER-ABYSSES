@@ -28,7 +28,11 @@ def compute_metrics(y_true, y_pred, average):
     precision = 100*precision_score(y_true, y_pred,average=average)
     return accuracy, f1score, precision, recall
 
-def plottsne_features(features, labels, save_path, USE_LABELS = True):
+def plottsne_features(features, labels, save_path, epoch ,USE_LABELS = True):
+    save_path = save_path + '/scatter_plots/'
+    if not os.path.exists(save_path):
+        os.makedirs(save_path)
+        
     colors = []
     plt.figure(figsize=(20,20))
     ax = plt.subplot(111)
@@ -50,5 +54,5 @@ def plottsne_features(features, labels, save_path, USE_LABELS = True):
             ax.plot(features[i, 0], features[i, 1], marker='o',
                       color='b')
 
-    plt.savefig(save_path + 'scatter_plot.png')
+    plt.savefig(save_path + str(epoch) + '_scatter_plot.png')
     plt.clf()

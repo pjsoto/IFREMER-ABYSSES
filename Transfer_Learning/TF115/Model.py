@@ -282,8 +282,11 @@ class Model():
                 self.R_vl.append(R)
 
                 if self.args.feature_representation:
-                    print(batch_features)
-                    features[b * self.args.batch_size : (b + 1) * self.args.batch_size, :] = batch_features
+                    true_labels[b * self.args.batch_size : (b + 1) * self.args.batch_size, 0] = y_true
+                    if len(self.feature_shape) > 2:
+                        features[b * self.args.batch_size : (b + 1) * self.args.batch_size, :] = batch_features.reshape((self.batch_features.shape[0], self.batch_features.shape[1] * self.batch_features.shape[2] * self.batch_features.shape[3]))
+                    else:
+                        features[b * self.args.batch_size : (b + 1) * self.args.batch_size, :] = batch_features
 
             valid_loss = np.mean(self.valid_loss)
             Ac_mean = np.mean(self.Ac_vl)
@@ -304,4 +307,8 @@ class Model():
                 pat += 1
                 if pat > self.args.patience:
                     break
+            # plotting the representation if required
+            if self.args.feature_representation:
+                features_projected = self.tsne_features(features)
+                plottsne_features(features_projected, true_labels, save_path = self.args.save_checkpoint_path , USE_LABELS = True)
             e += 1
