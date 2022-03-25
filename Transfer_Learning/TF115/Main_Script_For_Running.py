@@ -24,7 +24,7 @@ if args.phase == 'train':
     for backbone_name in BACKBONE_NAME:
         for csv_name in CSV_FILES_NAMES:
             Schedule.append("python " + MAIN_COMMAND + " --train_task Image_Classification --learning_model CNN --backbone_name " + backbone_name + " --pretrained_backbone False --labels_type onehot_labels "
-                            "--weights_definition manual --learning_ratedecay True --lr 0.0001 --batch_size 5 --epochs 100 --runs 1 --phase train --optimizer Adam "
+                            "--weights_definition manual --learning_ratedecay True --lr 0.0001 --batch_size 5 --epochs 100 --runs 1 --phase train --optimizer Adam --feature_representation True --layer_index 19 "
                             "--image_rows 1024 --image_cols 1024 --image_channels 3 --new_size_rows 224 --new_size_cols 224 --split_patch True --data_augmentation True --overlap_porcent 0.25 "
                             "--dataset_name OTUSIFREMER_IMAGELABEL --csvfile_name " + csv_name + " --checkpoint_name " + backbone_name + "/Model_CNN_" + backbone_name + "_" + csv_name + " "
                             "--dataset_csv_main_path /datawork/DATA/CSVs/OTUS_2018/ "

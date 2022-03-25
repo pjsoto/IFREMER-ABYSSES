@@ -31,6 +31,8 @@ class Model():
         Classifier_Outputs = self.model.learningmodel.build_Model(self.data, reuse = False, name = "CNN" )
         self.logits_c = Classifier_Outputs[-2]
         self.prediction_c = Classifier_Outputs[-1]
+        self.features = Classifier_Outputs[self.args.layer_index]
+        self.feature_shape = self.features.get_shape().as_list()[1:]
 
         if self.args.phase == 'train':
             self.summary(Classifier_Outputs, 'Classifier:')
@@ -123,6 +125,14 @@ class Model():
             return aux
         else:
             return ''
+    def tsne_features(self, data):
+        tsne = TSNE(perplexity=30, n_components=2, init='pca', n_iter=3000)
+
+        features_tsne_proj = tsne.fit_transform(data)
+        features_tsne_proj_min, features_tsne_proj_max = np.min(features_tsne_proj, 0), np.max(features_tsne_proj, 0)
+        features_tsne_proj = (features_tsne_proj - features_tsne_proj_min) / (features_tsne_proj_max - features_tsne_proj_min)
+
+        return features_tsne_proj
 
     def Train(self):
         best_val_fs = 0
@@ -165,6 +175,7 @@ class Model():
                 print("Percentage of epochs: " + str(self.p))
                 self.lr = self.Learning_rate_decay()
                 print("Learning rate decay: " + str(self.lr))
+
 
             batchs = trange(num_batches_tr)
             print('Training procedure...')
@@ -220,8 +231,12 @@ class Model():
             #self.run["train/F1-Score"].log(F1_mean)
             #self.run["train/Accuracy"].log(Ac_mean)
             print(f'Epoch {e + 1}, ' f'Loss: {train_loss} ,' f'Precision: {P_mean}, ' f'Recall: {R_mean}, ' f'F1-Score: {F1_mean}, ' f'Accuracy: {Ac_mean}')
+            f.write("%d [Tr loss: %f, acc.: %.2f%%, precission: %.2f%%, recall: %.2f%%, fscore: %.2f%%]\n" % (e, train_loss, Ac_mean, P_mean, R_mean, F1_mean))
 
             print('Computing the validation metrics...')
+            if self.args.feature_representation:
+                features = np.zeros((self.args.batch_size * num_batches_vl, np.prod(self.feature_shape)))
+                true_labels = np.zeros((self.args.batch_size * num_batches_vl, 1))
             batchs = trange(num_batches_vl)
             for b in batchs:
 
@@ -241,7 +256,7 @@ class Model():
                 if self.args.weights_definition == 'manual':
                     weights = [1, 1, 1] * array
 
-                batch_loss, batch_prediction = self.sess.run([self.classifier_loss, self.prediction_c],
+                batch_loss, batch_prediction, batch_features = self.sess.run([self.classifier_loss, self.prediction_c, self.features],
                                                              feed_dict={self.data: data_batch, self.label: labels_batch,
                                                                            self.class_weights: weights})
                 #Computing the Metrics
@@ -266,6 +281,10 @@ class Model():
                 self.P_vl.append(P)
                 self.R_vl.append(R)
 
+                if self.args.feature_representation:
+                    print(batch_features)
+                    features[b * self.args.batch_size : (b + 1) * self.args.batch_size, :] = batch_features
+
             valid_loss = np.mean(self.valid_loss)
             Ac_mean = np.mean(self.Ac_vl)
             F1_mean = np.mean(self.F1_vl)
@@ -275,5 +294,14 @@ class Model():
             #self.run["train/F1-Score"].log(F1_mean)
             #self.run["train/Accuracy"].log(Ac_mean)
             print(f'Epoch {e + 1}, ' f'Loss: {valid_loss} ,' f'Precision: {P_mean}, ' f'Recall: {R_mean}, ' f'F1-Score: {F1_mean}, ' f'Accuracy: {Ac_mean}')
-
+            f.write("%d [Vl loss: %f, acc.: %.2f%%, precission: %.2f%%, recall: %.2f%%, fscore: %.2f%%]\n" % (e, valid_loss, Ac_mean, P_mean, R_mean, F1_mean))
+            if best_val_fs < F1_mean:
+                best_val_fs = F1_mean
+                pat = 0
+                print('[!]Saving best model ...')
+                self.save(self.args.save_checkpoint_path, e)
+            else:
+                pat += 1
+                if pat > self.args.patience:
+                    break
             e += 1
