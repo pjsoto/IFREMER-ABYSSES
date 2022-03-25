@@ -5,6 +5,7 @@ import json
 import numpy as np
 import tensorflow as tf
 from tqdm import trange
+from sklearn.manifold import TSNE
 from tensorflow.keras.backend import epsilon
 
 from IFREMER import *
