@@ -6,51 +6,9 @@ import matplotlib.image as mpimg
 import matplotlib.pyplot as plt
 import tensorflow as tf
 
+from PIL import Image
 from Tools import *
 
-class IFREMER():
-    def __init__(self, args):
-        self.args = args
-        self.classes = 8
-        if self.args.class_grouping:
-            self.classes = 7
-
-        if self.args.phase == 'train':
-            print('Coming soon!!!')
-        elif self.args.phase == 'test':
-            self.Testi_Paths = []
-            self.Label_Paths = []
-            images_counter = 0
-            self.images_main_path = self.args.dataset_main_path + 'images/'
-            self.labels_main_path = self.args.dataset_main_path + 'masks/'
-            #Listing the images
-            images_names = os.listdir(self.images_main_path)
-            labels_names = os.listdir(self.labels_main_path)
-
-            #Validating the path for images and labels is correct
-            if len(images_names) > 0:
-                for image_name in images_names:
-                    if image_name[-4:] in ['.jpg', '.jpeg', '.png', '.bmp']:
-                        self.Labels_Available = True
-                        image_path = self.images_main_path + image_name
-                        label_path = self.labels_main_path + image_name[:-4] + '.bmp'
-                        self.Testi_Paths.append(image_path)
-                        self.Label_Paths.append(label_path)
-                if len(labels_names) == 0:
-                    self.Labels_Available = False
-            else:
-                print("Please check the images' path provided. There is no files in the path provided.")
-                sys.exit()
-
-    def encode_single_sample(image_path):
-        # 1. Read image and labels
-        img = tf.io.read_file(image_path)
-        # 2. Decode
-        img = tf.io.decode_jpeg(img, channels=3)
-        # 3. Convert to float32 in [0,1] range
-        img = tf.cast(img, tf.float32)
-
-        return {"image": img}
 class OTUSIFREMER_IMAGELABEL():
     def __init__(self, args):
         labels = []
@@ -60,7 +18,6 @@ class OTUSIFREMER_IMAGELABEL():
 
         datadf=pd.read_csv(CSV_FILE_PATH)
         datadf = datadf.sample(frac=1)
-        print(datadf)
         #Computing the number of classes
         Labels = datadf['Labels_IDs'].values
         for l in Labels:
@@ -70,12 +27,6 @@ class OTUSIFREMER_IMAGELABEL():
 
         self.class_ids = np.unique(labels)
         self.class_number = len(self.class_ids)
-        if 'H1' in self.args.csvfile_name:
-            self.class_names = ['0-10 %','10-50%','50-100%','Hard substrate','Scree / rubbles','Soft substrate','Substrate','Uncertain']
-        else:
-            self.class_names = ['0-10 %','10-50%','50-100%','Fractured','Hard substrate','Marbled','Pelagic mud','Scree / rubbles','Sedimented','Slab','Sulfurs','Uncertain','Volcanoclastic']
-
-
         #Computing the weights
         number_samples = np.zeros((1, self.class_number))
         for label in labels:
@@ -87,6 +38,7 @@ class OTUSIFREMER_IMAGELABEL():
             # Taking the image names
             train_files_names = datadf[datadf['Set'] == 1]['File_Names'].values
             train_labels_ids  = datadf[datadf['Set'] == 1]['Labels_IDs'].values
+
             num_samples = len(train_files_names)
             index = np.arange(num_samples)
             np.random.shuffle(index)
@@ -107,17 +59,38 @@ class OTUSIFREMER_IMAGELABEL():
 
             self.Train_Paths = []
             self.Train_Labels = []
+            self.Train_Coordinates = []
 
             self.Valid_Paths = []
             self.Valid_Labels = []
+            self.Valid_Coordinates = []
 
-            for i in range(len(train_files_names)):
-                self.Train_Paths.append(self.args.dataset_main_path + train_files_names[i])
-                self.Train_Labels.append(self.hot_encoding(np.array(train_labels_ids[i][1:-1].split(' '), dtype=np.int32)))
+            if self.args.split_patch:
+                image_dimensions = [self.args.image_rows, self.args.image_cols]
+                patch_dimension = self.args.new_size_rows
+                coordinates, self.pad_tuple = self.corner_coordinates_definition(image_dimensions, patch_dimension, self.args.overlap_porcent)
+                for i in range(len(train_files_names)):
+                    for j in range(coordinates.shape[0]):
+                        self.Train_Paths.append(self.args.dataset_main_path + train_files_names[i])
+                        self.Train_Labels.append(self.hot_encoding(np.array(train_labels_ids[i][1:-1].split(' '), dtype=np.int32)))
+                        self.Train_Coordinates.append(coordinates[j, :])
 
-            for i in range(len(valid_files_names)):
-                self.Valid_Paths.append(self.args.dataset_main_path + valid_files_names[i])
-                self.Valid_Labels.append(self.hot_encoding(np.array(valid_labels_ids[i][1:-1].split(' '), dtype=np.int32)))
+                for i in range(len(valid_files_names)):
+                    for j in range(coordinates.shape[0]):
+                        self.Valid_Paths.append(self.args.dataset_main_path + valid_files_names[i])
+                        self.Valid_Labels.append(self.hot_encoding(np.array(valid_labels_ids[i][1:-1].split(' '), dtype=np.int32)))
+                        self.Valid_Coordinates.append(coordinates[j, :])
+
+            else:
+                self.pad_tuple = []
+                for i in range(len(train_files_names)):
+                    self.Train_Paths.append(self.args.dataset_main_path + train_files_names[i])
+                    self.Train_Labels.append(self.hot_encoding(np.array(train_labels_ids[i][1:-1].split(' '), dtype=np.int32)))
+                    self.Train_Coordinates.append([])
+                for i in range(len(valid_files_names)):
+                    self.Valid_Paths.append(self.args.dataset_main_path + valid_files_names[i])
+                    self.Valid_Labels.append(self.hot_encoding(np.array(valid_labels_ids[i][1:-1].split(' '), dtype=np.int32)))
+                    self.Valid_Coordinates.append([])
 
         if self.args.phase == 'test':
             self.Labels_Available = True
@@ -138,12 +111,61 @@ class OTUSIFREMER_IMAGELABEL():
             hot_vector[0, labels[i]] = 1
         return hot_vector
 
-    def encode_single_sample_labels(self, image_path, labels):
+    def read_samples(self, image_paths, hot_labels, coordinates, pad_tuple):
         # 1. Read image and labels
-        img = tf.io.read_file(image_path)
-        # 2. Decode
-        img = tf.io.decode_jpeg(img, channels=3)
-        # 3. Convert to float32 in [0,1] range
-        img = tf.cast(img, tf.float32)
+        images = np.zeros((self.args.batch_size, self.args.new_size_rows, self.args.new_size_cols, self.args.image_channels))
+        labels = np.zeros((self.args.batch_size, self.class_number))
 
-        return {"image": img, "label": labels}
+        for i in range(len(image_paths)):
+            image = self.preprocess_input(np.array(Image.open(image_paths[i]), dtype=np.float32), self.args.backbone_name)
+            labels[i, :] = hot_labels[i]
+            if not coordinates[i].any():
+                images[i, :, :, :] = image
+            else:
+                #Applying the padding
+                c = coordinates[i]
+                image = np.pad(image, pad_tuple, mode='symmetric')
+                images[i, :, :, :] = image[int(c[0]) : int(c[2]) , int(c[1]) : int(c[3]),:]
+
+        return images, labels
+
+    def corner_coordinates_definition(self, image_dimensions, patch_dimension, overlap_porcent):
+
+        rows = image_dimensions[0]
+        cols = image_dimensions[1]
+
+        # Computing the overlaps and other things to extract patches
+        overlap = round(patch_dimension * overlap_porcent)
+        overlap -= overlap % 2
+        stride = patch_dimension - overlap
+        step_row = (stride - rows % stride) % stride
+        step_col = (stride - cols % stride) % stride
+
+        k1, k2 = (rows + step_row)//stride, (cols + step_col)//stride
+
+        #Taking the initial coordinates
+        coordinates = np.zeros((k1 * k2 , 4))
+        counter = 0
+        for i in range(k1):
+            for j in range(k2):
+                coordinates[counter, 0] = i * stride
+                coordinates[counter, 1] = j * stride
+                coordinates[counter, 2] = i * stride + patch_dimension
+                coordinates[counter, 3] = j * stride + patch_dimension
+                counter += 1
+
+        pad_tuple = ((overlap//2, overlap//2 + step_row) , (overlap//2, overlap//2 + step_col), (0 , 0))
+
+        return coordinates, pad_tuple
+
+    def preprocess_input(self, data, backbone_name):
+        if backbone_name == 'movilenet':
+            data = tf.keras.applications.mobilenet.preprocess_input(data)
+        elif backbone_name == 'resnet50':
+            data = tf.keras.applications.resnet.preprocess_input(data)
+        elif backbone_name == 'vgg16':
+            data = tf.keras.applications.vgg16.preprocess_input(data)
+        else:
+            data = data/255.
+
+        return data

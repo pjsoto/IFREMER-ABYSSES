@@ -4,7 +4,7 @@ import json
 import argparse
 import numpy as np
 from datetime import datetime
-import neptune.new as neptune
+#import neptune.new as neptune
 
 from SUIM import *
 from LearningModels import *
@@ -42,12 +42,12 @@ args = parser.parse_args()
 
 def main():
 
-    run = neptune.init(
-        project="pjsotove/UnderWater-image-Segmentation",
-        api_token="eyJhcGlfYWRkcmVzcyI6Imh0dHBzOi8vYXBwLm5lcHR1bmUuYWkiLCJhcGlfdXJsIjoiaHR0cHM6Ly9hcHAubmVwdHVuZS5haSIsImFwaV9rZXkiOiJhMjI4NTlkMS0zNzE4LTRjYTEtYWMwMi02MzQzMTY3ZWI5NzUifQ==",
-    )  # your credentials
+#    run = neptune.init(
+#        project="pjsotove/UnderWater-image-Segmentation",
+#        api_token="eyJhcGlfYWRkcmVzcyI6Imh0dHBzOi8vYXBwLm5lcHR1bmUuYWkiLCJhcGlfdXJsIjoiaHR0cHM6Ly9hcHAubmVwdHVuZS5haSIsImFwaV9rZXkiOiJhMjI4NTlkMS0zNzE4LTRjYTEtYWMwMi02MzQzMTY3ZWI5NzUifQ==",
+#    )  # your credentials
 
-    run["sys/tags"].add([args.train_task, args.learning_model, args.backbone_name, args.classweight_type])
+#    run["sys/tags"].add([args.train_task, args.learning_model, args.backbone_name, args.classweight_type])
 
     args.checkpoints_main_path = args.checkpoints_main_path + '/CHECKPOINTS/'
     if not os.path.exists(args.checkpoints_main_path):

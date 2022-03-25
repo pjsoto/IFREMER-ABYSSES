@@ -23,9 +23,9 @@ def create_dict(image, label):
 
 def compute_metrics(y_true, y_pred, average):
     accuracy = 100*accuracy_score(y_true, y_pred)
-    f1score = 100*f1_score(y_true, y_pred, average=average, zero_division = 1)
-    recall = 100*recall_score(y_true, y_pred,average=average, zero_division = 1)
-    precision = 100*precision_score(y_true, y_pred,average=average, zero_division = 1)
+    f1score = 100*f1_score(y_true, y_pred, average=average)
+    recall = 100*recall_score(y_true, y_pred,average=average)
+    precision = 100*precision_score(y_true, y_pred,average=average)
     return accuracy, f1score, precision, recall
 
 def plottsne_features(features, labels, save_path, USE_LABELS = True):
