@@ -260,7 +260,7 @@ class Model():
                     P = np.mean(P)
                     R = np.mean(R)
 
-                self.train_loss.append(batch_loss)
+                self.valid_loss.append(batch_loss)
                 self.Ac_vl.append(Ac)
                 self.F1_vl.append(F1)
                 self.P_vl.append(P)
