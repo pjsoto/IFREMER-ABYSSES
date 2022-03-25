@@ -30,3 +30,7 @@ if args.phase == 'train':
                             "--dataset_csv_main_path /datawork/DATA/CSVs/OTUS_2018/ "
                             "--dataset_main_path /datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur/ "
                             "--checkpoints_main_path /datawork/EXPERIMENTS/")
+
+
+for i in range(len(Schedule)):
+    os.system(Schedule[i])
