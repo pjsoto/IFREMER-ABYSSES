@@ -55,7 +55,7 @@ class CNN(Model):
             else:
                 assert tf.get_variable_scope().reuse is False
 
-            if self.args.pretrained_bakbone:
+            if self.args.pretrained_backbone:
                 Layers.append(self.base_model(input_data))
             else:
                 Layers = self.obj.build_Encoder_Layers(input_data, name = self.args.backbone_name)
