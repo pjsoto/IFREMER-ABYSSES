@@ -311,5 +311,5 @@ class Model():
             # plotting the representation if required
             if self.args.feature_representation:
                 features_projected = self.tsne_features(features)
-                plottsne_features(features_projected, true_labels, save_path = self.args.save_checkpoint_path , e, USE_LABELS = True)
+                plottsne_features(features_projected, true_labels, save_path = self.args.save_checkpoint_path , epoch = e, USE_LABELS = True)
             e += 1
