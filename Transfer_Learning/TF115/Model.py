@@ -78,7 +78,6 @@ class Model():
         elif self.args.train_task == 'Image_Classification':
             cost = tf.reduce_sum(cost, axis = 1)
         return -tf.reduce_mean(cost)
-
     def weighted_bin_cross_entropy(self, y_true, y_pred, class_weights):
         epsilon_ = tf.convert_to_tensor(epsilon(), dtype=y_pred.dtype.base_dtype)
         y_pred_ = tf.clip_by_value(y_pred, epsilon_, 1. - epsilon_)
@@ -88,11 +87,9 @@ class Model():
         elif self.args.train_task == 'Image_Classification':
             cost = tf.reduce_sum(cost, axis = 1)
         return -tf.reduce_mean(cost)
-
     def Learning_rate_decay(self):
         lr = self.args.lr / (1. + 10 * self.p)**0.75
         return lr
-
     def summary(self, net, name):
         print(net)
         f = open(self.args.save_checkpoint_path + "Architecture.txt","a")
@@ -101,15 +98,14 @@ class Model():
             print(net[i].get_shape().as_list())
             f.write(str(net[i].get_shape().as_list()) + "\n")
         f.close()
-
     def save(self, checkpoint_dir, epoch):
-        model_name = "DANN.model"
+        #model_name = "DANN.model"
+        model_name = self.args.learning_model + '_' + self.args.backbone_name + '.model'
 
         self.saver.save(self.sess,
                         os.path.join(checkpoint_dir, model_name),
                         global_step=epoch)
         print("Checkpoint Saved with SUCCESS!")
-
     def load(self, checkpoint_dir):
         print(" [*] Reading checkpoint...")
         print(checkpoint_dir)
@@ -285,7 +281,7 @@ class Model():
                 if self.args.feature_representation:
                     true_labels[b * self.args.batch_size : (b + 1) * self.args.batch_size, 0] = y_true
                     if len(self.feature_shape) > 2:
-                        features[b * self.args.batch_size : (b + 1) * self.args.batch_size, :] = batch_features.reshape((self.batch_features.shape[0], self.batch_features.shape[1] * self.batch_features.shape[2] * self.batch_features.shape[3]))
+                        features[b * self.args.batch_size : (b + 1) * self.args.batch_size, :] = batch_features.reshape((batch_features.shape[0], batch_features.shape[1] * batch_features.shape[2] * batch_features.shape[3]))
                     else:
                         features[b * self.args.batch_size : (b + 1) * self.args.batch_size, :] = batch_features
 
