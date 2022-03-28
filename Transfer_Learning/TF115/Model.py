@@ -309,3 +309,4 @@ class Model():
                 features_projected = self.tsne_features(features)
                 plottsne_features(features_projected, true_labels, save_path = self.args.save_checkpoint_path , epoch = e, USE_LABELS = True)
             e += 1
+            f.close()
