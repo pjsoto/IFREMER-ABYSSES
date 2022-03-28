@@ -21,6 +21,7 @@ parser.add_argument('--learning_ratedecay', dest = 'learning_ratedecay', type=ev
 parser.add_argument('--lr', dest='lr', type = float, default = 0.01, help = 'The learning rate parameter that will be used in the optimezer')
 parser.add_argument('--batch_size', dest='batch_size', type=int, default=5, help='number images in batch')
 parser.add_argument('--epochs', dest = 'epochs', type = int, default = 100, help='Number of epochs')
+parser.add_argument('--patience', dest='patience', type=int, default=10, help='number of epochs without improvement to apply early stop')
 parser.add_argument('--runs', dest='runs', type=int, default=1, help='number of executions of the algorithm')
 
 parser.add_argument('--phase', dest='phase', type = str,default='train', help='train, test, generate_image, create_dataset')
@@ -39,7 +40,7 @@ parser.add_argument('--overlap_porcent', dest = 'overlap_porcent', type = float,
 # Images dir and names
 parser.add_argument('--dataset_name', dest='dataset_name', type = str, default='OTUSIFREMER_IMAGELABEL', help = 'Dataset Name: SUIM')
 parser.add_argument('--dataset_csv_main_path', dest='dataset_csv_main_path', type=str, default='/e/DATARMOR/DATA/IFREMER_OTUS/BIGLI_CSVs/', help='Dataset CSV main path')
-parser.add_argument('--csvfile_name', dest = 'csvfile_name', type = str, default = 'OTUS_Image_Classification_F1_Lithology.csv', help = 'CSV file name')
+parser.add_argument('--csvfile_name', dest = 'csvfile_name', type = str, default = 'OTUS_Image_Classification_F1_Shells_White_fragments.csv', help = 'CSV file name')
 parser.add_argument('--dataset_main_path', dest='dataset_main_path', type=str, default='/e/OTUS/2018/Donneesbrutes/Biigle_Montsegur(MS)/', help='Main path of the dataset images')
 parser.add_argument('--checkpoint_name', dest='checkpoint_name', default='Prove', help='Checkpoints folder name')
 parser.add_argument('--checkpoints_main_path', dest='checkpoints_main_path', type=str, default='/d/DATA/Pedro_Work/IFREMER_Work/CODE/Transfer_Learning/', help='Path where checkpoints will be saved' )

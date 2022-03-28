@@ -31,6 +31,7 @@ class OTUSIFREMER_IMAGELABEL():
         number_samples = np.zeros((1, self.class_number))
         for label in labels:
             number_samples[0, label] += 1
+        print(number_samples)
         samples_proportions = number_samples/len(Labels)
         print(samples_proportions)
         self.class_weights = 1/samples_proportions

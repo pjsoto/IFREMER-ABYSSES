@@ -15,7 +15,7 @@ Schedule = []
 if args.phase == 'train':
 
     BACKBONE_NAME  = ['Vgg']
-    CSV_FILES_NAMES = ['OTUS_Image_Classification_F1_Shells_White_fragments.csv']
+    CSV_FILES_NAMES = ['OTUS_Image_Classification_F1_Shells_White_fragments.csv', 'OTUS_Image_Classification_F2_Shells_White_fragments.csv', 'OTUS_Image_Classification_F3_Shells_White_fragments.csv']
 
     if args.running_in == 'Datarmor_Interactive':
         MAIN_COMMAND = "TrainModel.py"
@@ -24,7 +24,7 @@ if args.phase == 'train':
     for backbone_name in BACKBONE_NAME:
         for csv_name in CSV_FILES_NAMES:
             Schedule.append("python " + MAIN_COMMAND + " --train_task Image_Classification --learning_model CNN --backbone_name " + backbone_name + " --pretrained_backbone False --labels_type onehot_labels "
-                            "--weights_definition automatic --learning_ratedecay True --lr 0.0001 --batch_size 5 --epochs 100 --runs 1 --phase train --optimizer Adam --feature_representation True --layer_index 18 "
+                            "--weights_definition automatic --learning_ratedecay True --lr 0.0001 --batch_size 5 --epochs 100 --patience 10 --runs 1 --phase train --optimizer Adam --feature_representation True --layer_index 18 "
                             "--image_rows 1024 --image_cols 1024 --image_channels 3 --new_size_rows 224 --new_size_cols 224 --split_patch True --data_augmentation True --overlap_porcent 0.25 "
                             "--dataset_name OTUSIFREMER_IMAGELABEL --csvfile_name " + csv_name + " --checkpoint_name " + backbone_name + "/Model_CNN_" + backbone_name + "_" + csv_name + " "
                             "--dataset_csv_main_path /datawork/DATA/CSVs/OTUS_2018/ "
