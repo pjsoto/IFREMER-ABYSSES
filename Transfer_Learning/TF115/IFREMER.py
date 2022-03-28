@@ -32,8 +32,9 @@ class OTUSIFREMER_IMAGELABEL():
         for label in labels:
             number_samples[0, label] += 1
         samples_proportions = number_samples/len(Labels)
-        self.class_weights = 1 - samples_proportions
-
+        print(samples_proportions)
+        self.class_weights = 1/samples_proportions
+        print(self.class_weights)
         if self.args.phase == 'train':
             # Taking the image names
             train_files_names = datadf[datadf['Set'] == 1]['File_Names'].values
