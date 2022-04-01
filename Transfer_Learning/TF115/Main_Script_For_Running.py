@@ -14,7 +14,7 @@ Schedule = []
 
 if args.phase == 'train':
 
-    BACKBONE_NAME  = ['ResNetV1_18', 'ResNetV1_50']
+    BACKBONE_NAME  = ['ResNetV1_18', 'ResNetV1_50', 'ResNetV2_18', 'ResNetV2_50']
     CSV_FILES_NAMES = ['OTUS_Image_Classification_F1_Lithology', 'OTUS_Image_Classification_F2_Lithology', 'OTUS_Image_Classification_F3_Lithology',
                        'OTUS_Image_Classification_F1_Shells_White_fragments.csv', 'OTUS_Image_Classification_F2_Shells_White_fragments.csv', 'OTUS_Image_Classification_F3_Shells_White_fragments.csv']
 
