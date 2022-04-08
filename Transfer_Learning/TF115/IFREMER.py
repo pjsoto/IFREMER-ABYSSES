@@ -94,7 +94,7 @@ class OTUSIFREMER_IMAGELABEL():
                     self.Valid_Labels.append(self.hot_encoding(np.array(valid_labels_ids[i][1:-1].split(' '), dtype=np.int32)))
                     self.Valid_Coordinates.append([])
 
-        if self.args.phase == 'test':
+        if self.args.phase == 'test' or self.args.phase == 'gradcam':
             self.Labels_Available = True
             test_files_names = datadf[datadf['Set'] == 2]['File_Names'].values
             test_labels_ids  = datadf[datadf['Set'] == 2]['Labels_IDs'].values
