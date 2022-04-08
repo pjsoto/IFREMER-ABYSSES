@@ -121,7 +121,8 @@ class OTUSIFREMER_IMAGELABEL():
         for i in range(len(image_paths)):
             image = self.preprocess_input(np.array(Image.open(image_paths[i]), dtype=np.float32), self.args.backbone_name)
             labels[i, :] = hot_labels[i]
-            if not coordinates[i]:
+
+            if np.sum(coordinates[i]) == 0.0:
                 images[i, :, :, :] = image
             else:
                 #Applying the padding
