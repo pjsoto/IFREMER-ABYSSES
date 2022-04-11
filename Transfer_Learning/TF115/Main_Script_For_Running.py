@@ -20,9 +20,11 @@ if args.phase == 'train':
     if args.running_in == 'Datarmor_Interactive':
         Train_MAIN_COMMAND = "TrainModel.py"
         Test_MAIN_COMMAND = "TestModel.py"
+        GradCAM_MAIN_COMMAND = "TestModelGradCam.py"
     if args.running_in == 'Datarmor_PBS':
         Train_MAIN_COMMAND = "$HOME/CODE/IFREMER-ABYSSES/Transfer_Learning/TF115/TrainModel.py"
         Test_MAIN_COMMAND = "$HOME/CODE/IFREMER-ABYSSES/Transfer_Learning/TF115/TestModel.py"
+        GradCAM_MAIN_COMMAND = "$HOME/CODE/IFREMER-ABYSSES/Transfer_Learning/TF115/TestModelGradCam.py"
     for backbone_name in BACKBONE_NAME:
         if  'Vgg' in backbone_name:
             layer_position = '19'
@@ -39,8 +41,16 @@ if args.phase == 'train':
             #                "--dataset_main_path /datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/ "
             #                "--checkpoints_main_path /datawork/EXPERIMENTS/")
 
-            Schedule.append("python " + Test_MAIN_COMMAND + " --train_task Image_Classification --learning_model CNN --backbone_name " + backbone_name + " --pretrained_backbone False --labels_type onehot_labels "
-                            "--phase test --feature_representation True --layer_index " + layer_position + " "
+            #Schedule.append("python " + Test_MAIN_COMMAND + " --train_task Image_Classification --learning_model CNN --backbone_name " + backbone_name + " --pretrained_backbone False --labels_type onehot_labels "
+            #                "--phase test --feature_representation True --layer_index " + layer_position + " "
+            #                "--image_rows 1024 --image_cols 1024 --image_channels 3 --new_size_rows 1024 --new_size_cols 1024 --split_patch False --overlap_porcent 0.25 "
+            #                "--dataset_name OTUSIFREMER_IMAGELABEL --csvfile_name " + csv_name + " --checkpoint_name " + backbone_name + "/Model_CNN_" + backbone_name + "_" + csv_name + " "
+            #                "--dataset_csv_main_path /datawork/DATA/CSVs/OTUS_2018/ "
+            #                "--dataset_main_path /datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/ "
+            #                "--checkpoints_main_path /datawork/EXPERIMENTS/ "
+            #                "--results_main_path /datawork/EXPERIMENTS/")
+            Schedule.append("python " + GradCAM_MAIN_COMMAND + " --train_task Image_Classification --learning_model CNN --backbone_name " + backbone_name + " --pretrained_backbone False --labels_type onehot_labels "
+                            "--phase gradcam --layer_index 1 "
                             "--image_rows 1024 --image_cols 1024 --image_channels 3 --new_size_rows 1024 --new_size_cols 1024 --split_patch False --overlap_porcent 0.25 "
                             "--dataset_name OTUSIFREMER_IMAGELABEL --csvfile_name " + csv_name + " --checkpoint_name " + backbone_name + "/Model_CNN_" + backbone_name + "_" + csv_name + " "
                             "--dataset_csv_main_path /datawork/DATA/CSVs/OTUS_2018/ "

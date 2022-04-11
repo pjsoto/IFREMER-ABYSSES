@@ -32,7 +32,7 @@ def plottsne_features(features, labels, save_path, epoch ,USE_LABELS = True):
     save_path = save_path + '/scatter_plots/'
     if not os.path.exists(save_path):
         os.makedirs(save_path)
-        
+
     colors = []
     plt.figure(figsize=(20,20))
     ax = plt.subplot(111)
@@ -56,3 +56,41 @@ def plottsne_features(features, labels, save_path, epoch ,USE_LABELS = True):
 
     plt.savefig(save_path + str(epoch) + '_scatter_plot.png')
     plt.clf()
+
+def sigmoid(x, a, b, c):
+    return c / (1 + np.exp(-a * (x-b)))
+
+def superimpose(img_bgr, heatmap, thresh, save_path, emphasize=False):
+
+    '''
+    Superimposes a grad-cam heatmap onto an image for model interpretation and visualization.
+
+
+    Args:
+      image: (img_width x img_height x 3) numpy array
+      grad-cam heatmap: (img_width x img_width) numpy array
+      threshold: float
+      emphasize: boolean
+
+    Returns
+      uint8 numpy array with shape (img_height, img_width, 3)
+
+    '''
+    #heatmap = cv2.resize(cam, (img_bgr.shape[1], img_bgr.shape[0]))
+    if emphasize:
+        heatmap = sigmoid(heatmap, 50, thresh, 1)
+
+    heatmap = np.uint8(255 * heatmap)
+    plt.figure(figsize=(20,20))
+    ax = plt.subplot(111)
+    plt.imshow(img_bgr)
+    plt.imshow(heatmap, 'jet', interpolation='none', alpha=0.5)
+    #heatmap = cv2.applyColorMap(heatmap, cv2.COLORMAP_JET)
+
+    #hif = .8
+    #superimposed_img = heatmap * hif + img_bgr
+    #superimposed_img = np.minimum(superimposed_img, 255.0).astype(np.uint8)  # scale 0 to 255
+    #superimposed_img_rgb = cv2.cvtColor(superimposed_img, cv2.COLOR_BGR2RGB)
+    plt.savefig(save_path)
+    plt.clf()
+    #return superimposed_img_rgb

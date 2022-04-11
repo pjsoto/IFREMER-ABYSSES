@@ -61,7 +61,7 @@ class Model():
             self.sess=tf.Session()
             self.sess.run(tf.initialize_all_variables())
 
-        elif self.args.phase == 'test':
+        elif self.args.phase == 'test' or self.args.phase == 'gradcam':
             self.dataset = dataset
             self.saver = tf.train.Saver(max_to_keep=5)
             self.sess=tf.Session()
@@ -73,6 +73,9 @@ class Model():
             else:
                 print(" [!] Load failed...")
                 sys.exit()
+            if self.args.phase == 'gradcam':
+                self.gradients = self.grad_cam()
+
     def weighted_cat_cross_entropy(self, y_true, y_pred, class_weights):
         epsilon_ = tf.convert_to_tensor(epsilon(), dtype=y_pred.dtype.base_dtype)
         y_pred_ = tf.clip_by_value(y_pred, epsilon_, 1. - epsilon_)
@@ -134,6 +137,12 @@ class Model():
         features_tsne_proj = (features_tsne_proj - features_tsne_proj_min) / (features_tsne_proj_max - features_tsne_proj_min)
 
         return features_tsne_proj
+    def grad_cam(self):
+        index = tf.argmax(self.prediction_c, axis = 1)
+        loss = self.prediction_c[:, index[0]]
+        gradients = tf.gradients(loss, self.features)
+        return gradients
+
     def Train(self):
         best_val_fs = 0
         pat = 0
@@ -390,3 +399,60 @@ class Model():
         if self.args.feature_representation:
             features_projected = self.tsne_features(features)
             plottsne_features(features_projected, labels, save_path = self.args.save_results_dir , epoch = 0, USE_LABELS = True)
+
+    def GradCAM(self):
+        self.args.save_results_dir = self.args.save_results_dir + 'gradcam/'
+        if not os.path.exists(self.args.save_results_dir):
+            os.makedirs(self.args.save_results_dir)
+        eps=1e-8
+        #Computing the number of batches
+        if self.args.batch_size > 1:
+            print('In this stage, the batch size must be equal to 1!')
+            self.args.batch_size = 1
+
+        num_batches_ts = len(self.dataset.Test_Paths)//self.args.batch_size
+        batchs = trange(num_batches_ts)
+
+        for b in batchs:
+            paths_batch = self.dataset.Test_Paths[b * self.args.batch_size : (b + 1) * self.args.batch_size]
+            labels_batch = self.dataset.Test_Labels[b * self.args.batch_size : (b + 1) * self.args.batch_size]
+
+            if self.args.split_patch:
+                print('Comming soon...')
+            else:
+                self.coordinates = []
+                for s in range(len(self.dataset.Test_Paths)):
+                    self.coordinates.append([])
+                self.pad_tuple = []
+
+            data_batch, labels_batch = self.dataset.read_samples(paths_batch, labels_batch, self.coordinates, self.pad_tuple)
+            # Computing the prediction
+            batch_prediction = self.sess.run(self.prediction_c, feed_dict={self.data: data_batch})
+            if self.args.labels_type == 'onehot_labels':
+                y_pred = np.argmax(batch_prediction, axis = 1)
+                y_true = np.argmax(labels_batch, axis = 1)
+            # Computing the gradient regarding the current prediction
+            gradients, features = self.sess.run([self.gradients, self.features], feed_dict={self.data: data_batch})
+            gradients = gradients[0]
+            # Compute the guided gradients
+            castfeatures = tf.cast(features > 0, "float32")
+            castgradients = tf.cast(gradients > 0, "float32")
+            guidedgrads = castfeatures * castgradients * gradients
+            #Discard the batch size dimension
+            features = features[0]
+            guidedgrads = guidedgrads[0]
+            # compute the average of the gradient values, and using them
+		    # as weights, compute the ponderation of the filters with
+		    # respect to the weights
+            weights = tf.reduce_mean(guidedgrads, axis=(0, 1))
+            cam = tf.reduce_sum(tf.multiply(weights, features), axis=-1)
+
+            (w, h) = (data_batch.shape[2], data_batch.shape[1])
+            heatmap = self.sess.run(cam)
+            heatmap = np.resize(heatmap, (h , w))
+
+            numer = heatmap - np.min(heatmap)
+            denom = (heatmap.max() - heatmap.min()) + eps
+            heatmap = numer / denom
+
+            superimpose(data_batch[0, :, :, :], heatmap, 0.5, self.args.save_results_dir + 'sample_' + str(b) + '_' + 'TL_' + str(y_true) + '_PL_' + str(y_pred) + '.png', emphasize=True)
