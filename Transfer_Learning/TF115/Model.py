@@ -415,7 +415,8 @@ class Model():
         for b in batchs:
             paths_batch = self.dataset.Test_Paths[b * self.args.batch_size : (b + 1) * self.args.batch_size]
             labels_batch = self.dataset.Test_Labels[b * self.args.batch_size : (b + 1) * self.args.batch_size]
-
+            # Taking the file name
+            file_name = paths_batch[0].split('/')[-1][:-4]
             if self.args.split_patch:
                 print('Comming soon...')
             else:
@@ -454,4 +455,4 @@ class Model():
             denom = (heatmap.max() - heatmap.min()) + eps
             heatmap = numer / denom
 
-            superimpose(data_batch[0, :, :, :], heatmap, 0.5, self.args.save_results_dir + 'sample_' + str(b) + '_' + 'TL_' + str(y_true) + '_PL_' + str(y_pred) + '.png', emphasize=True)
+            superimpose(data_batch[0, :, :, :], heatmap, 0.5, self.args.save_results_dir + file_name + '_' + 'TL_' + str(y_true) + '_PL_' + str(y_pred) + '.png', emphasize=True)

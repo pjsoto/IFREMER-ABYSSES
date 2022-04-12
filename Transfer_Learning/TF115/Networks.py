@@ -46,6 +46,8 @@ class CNN(Model):
                 self.obj = ResNetV2(self.args)
             if 'Vgg' in self.args.backbone_name:
                 self.obj = Vgg(self.args)
+            if 'Xception' in self.args.backbone_name:
+                self.obj = Xception(self.args)
 
     def build_Model(self, input_data, reuse = False, name="CNN"):
         Layers = []
