@@ -75,7 +75,6 @@ class Model():
                 sys.exit()
             if self.args.phase == 'gradcam':
                 self.gradients = self.grad_cam()
-
     def weighted_cat_cross_entropy(self, y_true, y_pred, class_weights):
         epsilon_ = tf.convert_to_tensor(epsilon(), dtype=y_pred.dtype.base_dtype)
         y_pred_ = tf.clip_by_value(y_pred, epsilon_, 1. - epsilon_)

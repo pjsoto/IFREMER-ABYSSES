@@ -19,10 +19,8 @@ from tensorflow.contrib.layers.python.layers import layers
 from tensorflow.contrib.framework.python.ops import arg_scope
 
 class MobileNet():
-    def __init__(self, args, OS = 8):
+    def __init__(self, args):
         self.args = args
-        self.output_stride = OS
-        self.alpha = 1
         self.bn_decay = 0.99
         self.bn_eps = 1e-3
 
@@ -31,98 +29,38 @@ class MobileNet():
         Layers = []
         Layers.append(X)
         with tf.variable_scope(name):
-            with tf.variable_scope('reduce_input_block'):
-                first_block_filters = self.make_Divisible(32 * self.alpha, 8)
-                Layers.append(tf.layers.conv2d(Layers[-1], first_block_filters, (3 , 3), strides = 2, use_bias = False, padding = 'SAME', activation = None, kernel_initializer=tf.contrib.layers.xavier_initializer() ,name = 'convd_3x3'))
-                Layers.append(tf.layers.batch_normalization(Layers[-1], axis = chan_dim, epsilon = self.bn_eps, momentum = self.bn_decay, name = 'bn_1'))
-                Layers.append(tf.nn.relu(Layers[-1], name = 'relu6_1'))
+            Layers.append(tf.layers.conv2d(Layers[-1], 32, (3 , 3), strides = 2, use_bias = False, padding = 'SAME', activation = None, kernel_initializer=tf.contrib.layers.xavier_initializer() ,name = name + '_convd_3x3_1'))
+            Layers.append(tf.layers.batch_normalization(Layers[-1], axis = chan_dim, epsilon = self.bn_eps, momentum = self.bn_decay, name = name + '_bn_1'))
+            Layers.append(tf.nn.relu(Layers[-1], name = name + '_relu_1'))
 
-            #Residul blocks
-            Layers.append(self.inverted_Res_Block(Layers[-1], filters=16, alpha=self.alpha, stride=1,bn_eps=self.bn_eps, bn_decay=self.bn_decay,
-                                    expansion=1, block_id=0, skip_connection=False))
+            #Mobile net blocks
+            Layers.append(self.mobilenet_block(Layers[-1],  64, 1, name = name + '_block_1'))
+            Layers.append(self.mobilenet_block(Layers[-1], 128, 2, name = name + '_block_2'))
+            Layers.append(self.mobilenet_block(Layers[-1], 128, 1, name = name + '_block_3'))
+            Layers.append(self.mobilenet_block(Layers[-1], 256, 2, name = name + '_block_4'))
+            Layers.append(self.mobilenet_block(Layers[-1], 256, 1, name = name + '_block_5'))
+            Layers.append(self.mobilenet_block(Layers[-1], 512, 2, name = name + '_block_6'))
 
-            Layers.append(self.inverted_Res_Block(Layers[-1], filters=24, alpha=self.alpha, stride=2,bn_eps=self.bn_eps, bn_decay=self.bn_decay,
-                                    expansion=6, block_id=1, skip_connection=False))
+            for i in range(5):
+                Layers.append(self.mobilenet_block(Layers[-1], 512, 1, name = name + '_block_' + str(7 + i)))
 
-            Layers.append(self.inverted_Res_Block(Layers[-1], filters=24, alpha=self.alpha, stride=1,bn_eps=self.bn_eps, bn_decay=self.bn_decay,
-                                    expansion=6, block_id=2, skip_connection=True))
+            Layers.append(self.mobilenet_block(Layers[-1], 1024, 2, name = name + '_block_12'))
+            Layers.append(self.mobilenet_block(Layers[-1], 1024, 1, name = name + '_block_13'))
 
-            Layers.append(self.inverted_Res_Block(Layers[-1], filters=32, alpha=self.alpha, stride=2,bn_eps=self.bn_eps, bn_decay=self.bn_decay,
-                                    expansion=6, block_id=3, skip_connection=False))
-            Layers.append(self.inverted_Res_Block(Layers[-1], filters=32, alpha=self.alpha, stride=1,bn_eps=self.bn_eps, bn_decay=self.bn_decay,
-                                    expansion=6, block_id=4, skip_connection=True))
-            Layers.append(self.inverted_Res_Block(Layers[-1], filters=32, alpha=self.alpha, stride=1,bn_eps=self.bn_eps, bn_decay=self.bn_decay,
-                                    expansion=6, block_id=5, skip_connection=True))
+            return Layers
 
-            # stride in block 6 changed from 2 -> 1, so we need to use rate = 2
-            Layers.append(self.inverted_Res_Block(Layers[-1], filters=64, alpha=self.alpha, stride=1,bn_eps=self.bn_eps, bn_decay=self.bn_decay,  # 1!
-                                    expansion=6, block_id=6, skip_connection=False))
-            Layers.append(self.inverted_Res_Block(Layers[-1], filters=64, alpha=self.alpha, stride=1, rate=2,bn_eps=self.bn_eps, bn_decay=self.bn_decay,
-                                    expansion=6, block_id=7, skip_connection=True))
-            Layers.append(self.inverted_Res_Block(Layers[-1], filters=64, alpha=self.alpha, stride=1, rate=2,bn_eps=self.bn_eps, bn_decay=self.bn_decay,
-                                    expansion=6, block_id=8, skip_connection=True))
-            Layers.append(self.inverted_Res_Block(Layers[-1], filters=64, alpha=self.alpha, stride=1, rate=2,bn_eps=self.bn_eps, bn_decay=self.bn_decay,
-                                    expansion=6, block_id=9, skip_connection=True))
+    def mobilenet_block(self, X, filters, strides, name = 'block'):
+        with tf.variable_scope(name):
+            depthwise_filter = tf.get_variable('filters', (3,3, X.shape[-1],1), tf.float32)
+            x =  tf.nn.depthwise_conv2d(X,filter=depthwise_filter, strides=[1,strides,strides,1], padding='SAME', name= name + 'depthwise_conv2d_3x3')
+            x = tf.layers.batch_normalization(x, axis = -1, epsilon = self.bn_eps, momentum = self.bn_decay, name= name + 'bn_1')
+            x = tf.nn.relu(x, name= name + 'relu_1')
 
-            Layers.append(self.inverted_Res_Block(Layers[-1], filters=96, alpha=self.alpha, stride=1, rate=2,bn_eps=self.bn_eps, bn_decay=self.bn_decay,
-                                    expansion=6, block_id=10, skip_connection=False))
-            Layers.append(self.inverted_Res_Block(Layers[-1], filters=96, alpha=self.alpha, stride=1, rate=2,bn_eps=self.bn_eps, bn_decay=self.bn_decay,
-                                    expansion=6, block_id=11, skip_connection=True))
-            Layers.append(self.inverted_Res_Block(Layers[-1], filters=96, alpha=self.alpha, stride=1, rate=2,bn_eps=self.bn_eps, bn_decay=self.bn_decay,
-                                    expansion=6, block_id=12, skip_connection=True))
-
-            Layers.append(self.inverted_Res_Block(Layers[-1], filters=160, alpha=self.alpha, stride=1, rate=2, bn_eps=self.bn_eps, bn_decay=self.bn_decay,  # 1!
-                                    expansion=6, block_id=13, skip_connection=False))
-            Layers.append(self.inverted_Res_Block(Layers[-1], filters=160, alpha=self.alpha, stride=1, rate=4,bn_eps=self.bn_eps, bn_decay=self.bn_decay,
-                                    expansion=6, block_id=14, skip_connection=True))
-            Layers.append(self.inverted_Res_Block(Layers[-1], filters=160, alpha=self.alpha, stride=1, rate=4,bn_eps=self.bn_eps, bn_decay=self.bn_decay,
-                                    expansion=6, block_id=15, skip_connection=True))
-
-            Layers.append(self.inverted_Res_Block(Layers[-1], filters=320, alpha=self.alpha, stride=1, rate=4,bn_eps=self.bn_eps, bn_decay=self.bn_decay,
-                                    expansion=6, block_id=16, skip_connection=False))
-        return Layers
-
-    def inverted_Res_Block(self, X, expansion, stride, alpha, filters, block_id, skip_connection, rate = 1, bn_eps = 1e-3, bn_decay = 0.999, chan_dim = -1):
-
-        chan_size = X.shape[-1]
-        pointwise_filters = self.make_Divisible(int(filters * alpha), 8)
-        x = X
-        with tf.variable_scope('inverse_Residual_Block' + str(block_id)):
-            if block_id:
-                with tf.variable_scope('expand'):
-                    print('expand')
-                    x = tf.layers.conv2d(x, expansion * chan_size, (1,1), use_bias=False,padding='same', activation=None, kernel_initializer=tf.contrib.layers.xavier_initializer(), name='conv2d_1x1')
-                    x = tf.layers.batch_normalization(x, axis=chan_dim, epsilon=bn_eps, momentum=bn_decay,name='bn')
-                    x = tf.nn.relu(x, name='relu6')
-
-            with tf.variable_scope('depthwise'):
-                print('depthwise')
-                depthwise_filter = tf.get_variable('filters', (3,3, x.shape[-1],1), tf.float32)
-                x = tf.nn.depthwise_conv2d(x,filter=depthwise_filter, strides=[1,stride,stride,1], padding='SAME', name='depthwise_conv2d_3x3')
-                x = tf.layers.batch_normalization(x, axis=chan_dim, epsilon=bn_eps, momentum=bn_decay,name='bn')
-                x = tf.nn.relu(x, name='relu6')
-
-            with tf.variable_scope('pointwise'):
-                print('pointwise')
-                x = tf.layers.conv2d(x, pointwise_filters, (1,1), use_bias=False,padding='same', activation=None, kernel_initializer=tf.contrib.layers.xavier_initializer(), name='conv2d_1x1')
-                x = tf.layers.batch_normalization(x, axis=chan_dim, epsilon=bn_eps, momentum=bn_decay,name='bn')
-                x = tf.nn.relu(x, name='relu6')
-
-            if skip_connection:
-                x = tf.math.add(x, X, name='add_shortcut')
-
+            x = tf.layers.conv2d(x, filters, (1,1), use_bias=False, padding='same', activation=None, kernel_initializer=tf.contrib.layers.xavier_initializer(), name= name + 'conv2d_1x1')
+            x = tf.layers.batch_normalization(x, axis = -1, epsilon = self.bn_eps, momentum = self.bn_decay, name= name + 'bn_2')
+            x = tf.nn.relu(x, name= name + 'relu_2')
 
             return x
-
-    def make_Divisible(self, v, divisor, min_value=None):
-
-        if min_value is None:
-            min_value = divisor
-        new_v = max(min_value, int(v + divisor / 2) // divisor * divisor)
-        # Make sure that round down does not go down by more than 10%.
-        if new_v < 0.9 * v:
-            new_v += divisor
-        return new_v
 
 class ResNetV1():
     def __init__(self, args):

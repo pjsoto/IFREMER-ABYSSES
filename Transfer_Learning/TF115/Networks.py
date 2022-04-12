@@ -28,17 +28,17 @@ class CNN(Model):
         self.args = args
         if self.args.pretrained_backbone:
             IMG_SHAPE = (self.args.new_size_rows, self.args.new_size_cols, self.args.image_channels)
-            if self.args.backbone_name == 'movilenet':
+            if self.args.backbone_name == 'MobileNet':
                 self.base_model = applications.MobileNetV2(input_shape=IMG_SHAPE, include_top=False, weights='imagenet')
                 self.base_model.trainable = True
-            if self.args.backbone_name == 'resnet50':
+            if self.args.backbone_name == 'ResNet50':
                 self.base_model = applications.resnet50(input_shape=IMG_SHAPE, include_top=False, weights='imagenet')
                 self.base_model.trainable = True
-            if self.args.backbone_name == 'vgg16':
+            if self.args.backbone_name == 'Vgg16':
                 self.base_model = applications.VGG16(input_shape=IMG_SHAPE, include_top=False, weights='imagenet')
                 self.base_model.trainable = True
         else:
-            if 'movilenet' in self.args.backbone_name:
+            if 'MobileNet' in self.args.backbone_name:
                 self.obj = MobileNet(self.args)
             if 'ResNetV1' in self.args.backbone_name:
                 self.obj = ResNetV1(self.args)
