@@ -14,7 +14,7 @@ Schedule = []
 
 if args.phase == 'train':
 
-    BACKBONE_NAME  = ['MobileNet']#,'Vgg', 'ResNetV1_18', 'ResNetV1_50', 'ResNetV2_18', 'ResNetV2_50']
+    BACKBONE_NAME  = ['Xception']#,'Vgg', 'ResNetV1_18', 'ResNetV1_50', 'ResNetV2_18', 'ResNetV2_50']
     CSV_FILES_NAMES = ['OTUS_Image_Classification_F1_Shells_White_fragments.csv', 'OTUS_Image_Classification_F2_Shells_White_fragments.csv', 'OTUS_Image_Classification_F3_Shells_White_fragments.csv', 'OTUS_Image_Classification_F1_Lithology.csv', 'OTUS_Image_Classification_F2_Lithology.csv', 'OTUS_Image_Classification_F3_Lithology.csv']
 
     if args.running_in == 'Datarmor_Interactive':
@@ -30,6 +30,8 @@ if args.phase == 'train':
             layer_position = '17'
         if  'Vgg' in backbone_name:
             layer_position = '19'
+        if 'Xception' in backbone_name:
+            layer_position = '55'
         if 'ResNetV1_18' in backbone_name or 'ResNetV2_18' in backbone_name:
             layer_position = '15'
         if 'ResNetV1_50' in backbone_name or 'ResNetV2_50' in backbone_name:

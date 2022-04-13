@@ -12,9 +12,9 @@ parser = argparse.ArgumentParser(description='')
 
 parser.add_argument('--train_task', dest='train_task', type=str, default='Image_Classification', help='Learning Task, user can take among two alternatives Semantic_Segmentation|Image_Classification')
 parser.add_argument('--learning_model', dest='learning_model', type=str, default='CNN', help='Learning model used')
-parser.add_argument('--backbone_name', dest='backbone_name', type=str, default='MobileNet', help='users can chosse between resnet50 and movilenet')
+parser.add_argument('--backbone_name', dest='backbone_name', type=str, default='Xception', help='users can chosse between resnet50 and movilenet')
 parser.add_argument('--pretrained_backbone', dest = 'pretrained_backbone', type=eval, choices=[True, False], default=False, help = 'Decide if the bockbone will be a pretrained one or will be trained from scratch')
-parser.add_argument('--labels_type', dest='labels_type', type=str, default='onehot_labels', help='users can choose between onehot_labels(Image Classification) or multiple_labels(Multilabel Image Classification)')
+parser.add_argument('--labels_type', dest='labels_type', type=str, default='multiple_labels', help='users can choose between onehot_labels(Image Classification) or multiple_labels(Multilabel Image Classification)')
 
 parser.add_argument('--weights_definition', dest='weights_definition', type=str, default = 'automatic', help='users can chosse between automatic|manual for the way the weights will be obtained')
 parser.add_argument('--learning_ratedecay', dest = 'learning_ratedecay', type=eval, choices=[True, False], default=True, help = 'Decide if learning rate decay can be used')
