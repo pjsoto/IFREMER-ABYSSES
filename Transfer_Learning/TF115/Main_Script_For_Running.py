@@ -37,8 +37,8 @@ if args.phase == 'train':
         if 'ResNetV1_50' in backbone_name or 'ResNetV2_50' in backbone_name:
             layer_position = '23'
         for csv_name in CSV_FILES_NAMES:
-            Schedule.append("python " + Train_MAIN_COMMAND + " --train_task Image_Classification --learning_model CNN --backbone_name " + backbone_name + " --pretrained_backbone False --labels_type multiple_labels "
-                            "--weights_definition automatic --learning_ratedecay True --lr 0.0001 --batch_size 5 --epochs 100 --patience 10 --runs 1 --phase train --optimizer Adam --feature_representation False --layer_index " + layer_position + " "
+            Schedule.append("python " + Train_MAIN_COMMAND + " --train_task Image_Classification --learning_model CNN --backbone_name " + backbone_name + " --pretrained_backbone False --labels_type onehot_labels "
+                            "--weights_definition automatic --learning_ratedecay True --lr 0.0001 --batch_size 5 --epochs 100 --patience 10 --runs 1 --phase train --optimizer Adam --feature_representation True --layer_index " + layer_position + " "
                             "--image_rows 2000 --image_cols 3000 --image_channels 3 --new_size_rows 512 --new_size_cols 512 --split_patch True --data_augmentation True --overlap_porcent 0.25 "
                             "--dataset_name OTUSIFREMER_IMAGELABEL --csvfile_name " + csv_name + " --checkpoint_name " + backbone_name + "/Model_CNN_" + backbone_name + "_" + csv_name + "_2000x3000 "
                             "--dataset_csv_main_path /datawork/DATA/CSVs/OTUS_2018/ "
