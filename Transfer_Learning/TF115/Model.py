@@ -137,8 +137,12 @@ class Model():
 
         return features_tsne_proj
     def grad_cam(self):
-        index = tf.argmax(self.prediction_c, axis = 1)
-        loss = self.prediction_c[:, index[0]]
+        if self.args.labels_type == 'onehot_labels':
+            index = tf.argmax(self.prediction_c, axis = 1)
+            loss = self.prediction_c[:, index[0]]
+        if self.args.labels_type == 'multiple_labels':
+            index = tf.math.greater_equal(self.prediction_c, 0.5)
+            loss = tf.math.reduce_sum(self.prediction_c[index])
         gradients = tf.gradients(loss, self.features)
         return gradients
 
@@ -334,6 +338,9 @@ class Model():
         if self.args.feature_representation:
             features = np.zeros((self.args.batch_size * num_batches_ts, np.prod(self.feature_shape)))
             labels = np.zeros((self.args.batch_size * num_batches_ts, 1))
+        if self.args.labels_type == 'multiple_labels':
+            True_Labels = np.zeros((num_batches_ts * self.args.batch_size, self.args.class_number))
+            Predicted_Labels = np.zeros((num_batches_ts * self.args.batch_size, self.args.class_number))
 
         for b in batchs:
             paths_batch = self.dataset.Test_Paths[b * self.args.batch_size : (b + 1) * self.args.batch_size]
@@ -372,32 +379,45 @@ class Model():
                 y_pred = ((batch_prediction > 0.5) * 1.0)
                 y_true = labels_batch
 
+                if self.args.split_patch:
+                    print('Coming soon...')
+                else:
+                    True_Labels[b * self.args.batch_size : (b + 1) * self.args.batch_size, :] = y_true
+                    Predicted_Labels[b * self.args.batch_size : (b + 1) * self.args.batch_size, :] = y_pred
         #Metrics computation
         #In each class
-        f.write('Model performance in each class:\n')
-        for c in range(self.dataset.class_number):
-            y_pred_ = np.array(Predicted_Labels.copy())
-            y_true_ = np.array(True_Labels.copy())
+        if self.args.labels_type == 'onehot_labels':
+            f.write('Model performance in each class:\n')
+            for c in range(self.dataset.class_number):
+                y_pred_ = np.array(Predicted_Labels.copy())
+                y_true_ = np.array(True_Labels.copy())
 
-            y_pred_[y_pred_ != c] = -1
-            y_pred_[y_pred_ == c] = 1
-            y_pred_[y_pred_ == -1] = 0
+                y_pred_[y_pred_ != c] = -1
+                y_pred_[y_pred_ == c] = 1
+                y_pred_[y_pred_ == -1] = 0
 
-            y_true_[y_true_ != c] = -1
-            y_true_[y_true_ == c] = 1
-            y_true_[y_true_ == -1] = 0
+                y_true_[y_true_ != c] = -1
+                y_true_[y_true_ == c] = 1
+                y_true_[y_true_ == -1] = 0
 
-            Ac, F1, P, R = compute_metrics(y_true_, y_pred_, 'binary')
-            f.write("Class %d, accuracy: %.2f%%, precision: %.2f%%, recall: %.2f%%, fscore: %.2f%%]\n" % (c, Ac, P, R, F1))
+                Ac, F1, P, R = compute_metrics(y_true_, y_pred_, 'binary')
+                f.write("Class %d, accuracy: %.2f%%, precision: %.2f%%, recall: %.2f%%, fscore: %.2f%%]\n" % (c, Ac, P, R, F1))
 
-        f.write('General results:\n')
-        Ac, F1, P, R = compute_metrics(True_Labels, Predicted_Labels, 'macro')
-        f.write("Accuracy: %.2f%%, Precision: %.2f%%, Recall: %.2f%%, Fscore: %.2f%%]\n" % (Ac, P, R, F1))
-        f.close()
+            f.write('General results:\n')
+            Ac, F1, P, R = compute_metrics(True_Labels, Predicted_Labels, 'macro')
+            f.write("Accuracy: %.2f%%, Precision: %.2f%%, Recall: %.2f%%, Fscore: %.2f%%]\n" % (Ac, P, R, F1))
+            f.close()
 
-        if self.args.feature_representation:
-            features_projected = self.tsne_features(features)
-            plottsne_features(features_projected, labels, save_path = self.args.save_results_dir , epoch = 0, USE_LABELS = True)
+            if self.args.feature_representation:
+                features_projected = self.tsne_features(features)
+                plottsne_features(features_projected, labels, save_path = self.args.save_results_dir , epoch = 0, USE_LABELS = True)
+        if self.args.labels_type == 'multiple_labels':
+            Ac, F1, P, R = compute_metrics(True_Labels, Predicted_Labels, None)
+            for c in range(self.dataset.class_number):
+                f.write("Class %d, precision: %.2f%%, recall: %.2f%%, fscore: %.2f%%]\n" % (c, P[c], R[c], F1[c]))
+
+            f.write('General results:\n')
+            f.write("Accuracy: %.2f%%, Precision: %.2f%%, Recall: %.2f%%, Fscore: %.2f%%]\n" % (Ac, np.mean(P), np.mean(R), np.mean(F1)))
 
     def GradCAM(self):
         self.args.save_results_dir = self.args.save_results_dir + 'gradcam/'
@@ -431,6 +451,9 @@ class Model():
             if self.args.labels_type == 'onehot_labels':
                 y_pred = np.argmax(batch_prediction, axis = 1)
                 y_true = np.argmax(labels_batch, axis = 1)
+            if self.args.labels_type == 'multiple_labels':
+                y_pred = ((batch_prediction > 0.5) * 1.0)
+                y_true = labels_batch
             # Computing the gradient regarding the current prediction
             gradients, features = self.sess.run([self.gradients, self.features], feed_dict={self.data: data_batch})
             gradients = gradients[0]
