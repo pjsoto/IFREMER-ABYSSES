@@ -13,8 +13,8 @@ args = parser.parse_args()
 Schedule = []
 
 if args.phase == 'train':
-
-    BACKBONE_NAME  = ['Vgg', 'ResNetV1_18', 'ResNetV1_50', 'ResNetV2_18', 'ResNetV2_50', 'MobileNet', 'Exception']
+    BACKBONE_NAME  = ['Xception']
+    #BACKBONE_NAME  = ['Vgg', 'ResNetV1_18', 'ResNetV1_50', 'ResNetV2_18', 'ResNetV2_50', 'MobileNet', 'Xception']
     #CSV_FILES_NAMES = ['OTUS_Image_Classification_F1_Lithology.csv', 'OTUS_Image_Classification_F2_Lithology.csv', 'OTUS_Image_Classification_F3_Lithology.csv', 'OTUS_Image_Classification_F1_Shells_White_fragments.csv', 'OTUS_Image_Classification_F2_Shells_White_fragments.csv', 'OTUS_Image_Classification_F3_Shells_White_fragments.csv']
     CSV_FILES_NAMES = ['OTUS_Image_Classification_F1_Morphology.csv', 'OTUS_Image_Classification_F2_Morphology.csv', 'OTUS_Image_Classification_F3_Morphology.csv']
     #CSV_FILES_NAMES = ['OTUS_Image_Classification_F3_Lithology.csv']
