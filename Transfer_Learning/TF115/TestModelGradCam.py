@@ -47,7 +47,7 @@ def main():
     if not os.path.exists(args.results_main_path):
         os.makedirs(args.results_main_path)
 
-    args.results_dir = args.results_main_path + args.dataset_name + '_results/' + args.checkpoint_name + '/'
+    args.results_dir = args.results_main_path + args.dataset_name + '_results/' + args.checkpoint_name + '_Test_' + args.csvfile_name + '/'
 
     print("Dataset pre-processing...")
     if args.dataset_name == 'SUIM':
@@ -58,7 +58,7 @@ def main():
         dataset = OTUSIFREMER_IMAGELABEL(args)
 
     checkpoint_files = os.listdir(args.checkpoint_dir)
-
+    results_files = os.listdir(args.results_dir)
     for i in range(len(checkpoint_files)):
         model_folder = checkpoint_files[i]
         args.trained_model_path = args.checkpoint_dir + '/' + model_folder + '/'
@@ -68,10 +68,14 @@ def main():
         for f in range(len(model_folder_fields)):
             if f != 0:
                 Trained_Name = Trained_Name + model_folder_fields[f] + '_'
-        now = datetime.now()
-        dt_string = now.strftime("%d_%m_%Y_%H_%M_%S")
 
-        args.save_results_dir = args.results_dir + args.learning_model + '_' + 'Trained_' + Trained_Name + 'Tested_' + dt_string +'/'
+        for result_folder in results_files:
+            if Trained_Name in result_folder:
+                args.save_results_dir = args.results_dir + result_folder +'/'
+            else:
+                now = datetime.now()
+                dt_string = now.strftime("%d_%m_%Y_%H_%M_%S")
+                args.save_results_dir = args.results_dir + args.learning_model + '_' + 'Trained_' + Trained_Name + 'Tested_' + dt_string +'/'
         if not os.path.exists(args.save_results_dir):
             os.makedirs(args.save_results_dir)
 
