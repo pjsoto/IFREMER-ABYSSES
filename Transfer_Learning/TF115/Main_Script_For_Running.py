@@ -55,23 +55,23 @@ if args.phase == 'train':
             #                "--dataset_main_path " + Dataset_main_path_train + " "
             #                "--checkpoints_main_path /datawork/EXPERIMENTS/")
 
-            Schedule.append("python " + Test_MAIN_COMMAND + " --train_task Image_Classification --learning_model CNN --backbone_name " + backbone_name + " --pretrained_backbone False --labels_type onehot_labels "
-                            "--phase test --feature_representation True --layer_index " + layer_position + " "
-                            "--image_rows 1024 --image_cols 1024 --image_channels 3 --new_size_rows 1024 --new_size_cols 1024 --split_patch False --overlap_porcent 0.25 "
-                            "--dataset_name OTUSIFREMER_IMAGELABEL --csvfile_name " + csv_name_test + " --checkpoint_name " + backbone_name + "/Model_CNN_" + backbone_name + "_" + csv_name_train + " "
-                            "--dataset_csv_main_path /datawork/DATA/CSVs/OTUS_2018/ "
-                            "--dataset_main_path " + Dataset_main_path_test + " "
-                            "--checkpoints_main_path /datawork/EXPERIMENTS/ "
-                            "--results_main_path /datawork/EXPERIMENTS/")
-
-            #Schedule.append("python " + GradCAM_MAIN_COMMAND + " --train_task Image_Classification --learning_model CNN --backbone_name " + backbone_name + " --pretrained_backbone False --labels_type onehot_labels "
-            #                "--phase gradcam --layer_index 1 "
+            #Schedule.append("python " + Test_MAIN_COMMAND + " --train_task Image_Classification --learning_model CNN --backbone_name " + backbone_name + " --pretrained_backbone False --labels_type onehot_labels "
+            #                "--phase test --feature_representation True --layer_index " + layer_position + " "
             #                "--image_rows 1024 --image_cols 1024 --image_channels 3 --new_size_rows 1024 --new_size_cols 1024 --split_patch False --overlap_porcent 0.25 "
             #                "--dataset_name OTUSIFREMER_IMAGELABEL --csvfile_name " + csv_name_test + " --checkpoint_name " + backbone_name + "/Model_CNN_" + backbone_name + "_" + csv_name_train + " "
             #                "--dataset_csv_main_path /datawork/DATA/CSVs/OTUS_2018/ "
             #                "--dataset_main_path " + Dataset_main_path_test + " "
             #                "--checkpoints_main_path /datawork/EXPERIMENTS/ "
             #                "--results_main_path /datawork/EXPERIMENTS/")
+
+            Schedule.append("python " + GradCAM_MAIN_COMMAND + " --train_task Image_Classification --learning_model CNN --backbone_name " + backbone_name + " --pretrained_backbone False --labels_type onehot_labels "
+                            "--phase gradcam --layer_index 1 "
+                            "--image_rows 1024 --image_cols 1024 --image_channels 3 --new_size_rows 1024 --new_size_cols 1024 --split_patch False --overlap_porcent 0.25 "
+                            "--dataset_name OTUSIFREMER_IMAGELABEL --csvfile_name " + csv_name_test + " --checkpoint_name " + backbone_name + "/Model_CNN_" + backbone_name + "_" + csv_name_train + " "
+                            "--dataset_csv_main_path /datawork/DATA/CSVs/OTUS_2018/ "
+                            "--dataset_main_path " + Dataset_main_path_test + " "
+                            "--checkpoints_main_path /datawork/EXPERIMENTS/ "
+                            "--results_main_path /datawork/EXPERIMENTS/")
 
 
 for i in range(len(Schedule)):
