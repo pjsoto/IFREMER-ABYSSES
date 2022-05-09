@@ -48,7 +48,7 @@ def main():
     if not os.path.exists(args.results_main_path):
         os.makedirs(args.results_main_path)
 
-    args.results_dir = args.results_main_path + args.dataset_name + '_results/' + args.checkpoint_name + '/'
+    args.results_dir = args.results_main_path + args.dataset_name + '_results/Train_' + args.checkpoint_name + 'Tested_' + args.csvfile_name + '/'
 
     print("Dataset pre-processing...")
     if args.dataset_name == 'SUIM':
