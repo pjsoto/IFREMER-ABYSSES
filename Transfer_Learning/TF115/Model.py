@@ -373,7 +373,8 @@ class Model():
                 else:
                     Predicted_Labels.append(y_pred[0])
                     True_Labels.append(y_true[0])
-                    labels[b * self.args.batch_size : (b + 1) * self.args.batch_size, 0] = int(y_true[0])
+                    if self.args.feature_representation:
+                        labels[b * self.args.batch_size : (b + 1) * self.args.batch_size, 0] = int(y_true[0])
 
             if self.args.labels_type == 'multiple_labels':
                 y_pred = ((batch_prediction > 0.5) * 1.0)
