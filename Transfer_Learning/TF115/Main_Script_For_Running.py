@@ -17,8 +17,10 @@ if args.phase == 'train':
     #BACKBONE_NAME  = ['Vgg', 'ResNetV1_18', 'ResNetV1_50', 'ResNetV2_18', 'ResNetV2_50', 'MobileNet', 'Xception']
     #CSV_FILES_NAMES = ['OTUS_Image_Classification_F1_Lithology.csv', 'OTUS_Image_Classification_F2_Lithology.csv', 'OTUS_Image_Classification_F3_Lithology.csv', 'OTUS_Image_Classification_F1_Shells_White_fragments.csv', 'OTUS_Image_Classification_F2_Shells_White_fragments.csv', 'OTUS_Image_Classification_F3_Shells_White_fragments.csv']
     #CSV_FILES_NAMES = ['OTUS_Image_Classification_F1_Morphology.csv', 'OTUS_Image_Classification_F2_Morphology.csv', 'OTUS_Image_Classification_F3_Morphology.csv']
-    CSV_FILES_NAMES_TRAIN = ['1OTUS_Image_Classification_TRAIN_Lithology_MS.csv','1OTUS_Image_Classification_TRAIN_Shells_White_fragments_MS.csv','1OTUS_Image_Classification_TRAIN_Lithology_WC.csv','1OTUS_Image_Classification_TRAIN_Shells_White_fragments_WC.csv']
-    CSV_FILES_NAMES_TEST = ['1OTUS_Image_Classification_TEST_Lithology_WC.csv','1OTUS_Image_Classification_TEST_Shells_White_fragments_WC.csv','1OTUS_Image_Classification_TEST_Lithology_MS.csv','1OTUS_Image_Classification_TEST_Shells_White_fragments_MS.csv']
+    CSV_FILES_NAMES_TRAIN = ['1OTUS_Image_Classification_TRAIN_Shells_White_fragments_WC.csv']
+    CSV_FILES_NAMES_TEST = ['1OTUS_Image_Classification_TEST_Shells_White_fragments_MS.csv']
+    #CSV_FILES_NAMES_TRAIN = ['1OTUS_Image_Classification_TRAIN_Lithology_MS.csv','1OTUS_Image_Classification_TRAIN_Shells_White_fragments_MS.csv','1OTUS_Image_Classification_TRAIN_Lithology_WC.csv','1OTUS_Image_Classification_TRAIN_Shells_White_fragments_WC.csv']
+    #CSV_FILES_NAMES_TEST = ['1OTUS_Image_Classification_TEST_Lithology_WC.csv','1OTUS_Image_Classification_TEST_Shells_White_fragments_WC.csv','1OTUS_Image_Classification_TEST_Lithology_MS.csv','1OTUS_Image_Classification_TEST_Shells_White_fragments_MS.csv']
     DATASET_MAIN_PATH_TRAIN = ['/datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/', '/datawork/DATA/OTUS_2018_Doneesbrutes_WhiteCastle1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_WhiteCastle1024/']
     DATASET_MAIN_PATH_TEST  = ['/datawork/DATA/OTUS_2018_Doneesbrutes_WhiteCastle1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_WhiteCastle1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/', '/datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/']
     if args.running_in == 'Datarmor_Interactive':
