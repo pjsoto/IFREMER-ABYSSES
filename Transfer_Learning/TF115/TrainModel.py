@@ -58,6 +58,7 @@ def main():
 
     args.checkpoint_dir = args.checkpoints_main_path + args.dataset_name + '_checkpoints/' + args.checkpoint_name
     args.tracking_files = args.checkpoints_main_path + args.dataset_name + '_checkpoints/'
+
     print("Dataset pre-processing...")
     if args.dataset_name == 'SUIM':
         dataset = SUIM(args)
