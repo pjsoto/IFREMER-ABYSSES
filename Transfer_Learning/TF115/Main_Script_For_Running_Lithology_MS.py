@@ -36,6 +36,7 @@ if args.phase == 'train':
         GradCAM_MAIN_COMMAND = "$HOME/CODE/IFREMER-ABYSSES/Transfer_Learning/TF115/TestModelGradCam.py"
     if args.continue_training:
         continue_, b, c = Recover_hyperparameters_GM(args.tracking_files_path + "General_tracking_LTMS.txt", b, c)
+        print(continue_,b,c)
     if args.tracking_training:
         t = open(args.tracking_files_path + "General_tracking_LTMS.txt", "a")
     while b < len(BACKBONE_NAME):
