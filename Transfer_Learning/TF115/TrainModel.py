@@ -25,8 +25,8 @@ parser.add_argument('--patience', dest='patience', type=int, default=10, help='n
 parser.add_argument('--runs', dest='runs', type=int, default=1, help='number of executions of the algorithm')
 
 parser.add_argument('--phase', dest='phase', type = str,default='train', help='train, test, generate_image, create_dataset')
-#parser.add_argument('--tracking_training', dest = 'tracking_training', type = eval, choices = [True, False], default = True, help = 'Set this parameter to True if the training will be tracked')
-#parser.add_argument('--continue_training', dest = 'continue_training', type = eval, choices = [True, False], default = True, help = 'Set this parameter to True if the training must continue from a previously saved model')
+parser.add_argument('--tracking_training', dest = 'tracking_training', type = eval, choices = [True, False], default = True, help = 'Set this parameter to True if the training will be tracked')
+parser.add_argument('--continue_training', dest = 'continue_training', type = eval, choices = [True, False], default = True, help = 'Set this parameter to True if the training must continue from a previously saved model')
 parser.add_argument('--optimizer', dest = 'optimizer', type = str, default = 'MomentumOptimizer', help = 'The optimizer that will update the gradients computed by backprop')
 parser.add_argument('--feature_representation', dest = 'feature_representation', type=eval, choices=[True, False], default=False, help = 'This paraemeter is used to decide if a feature representation will be accomplished')
 parser.add_argument('--layer_index', dest = 'layer_index', type = int, default = 17, help = 'Definition of the layer where the feature will be taken')
@@ -48,9 +48,10 @@ parser.add_argument('--checkpoint_name', dest='checkpoint_name', default='Prove'
 parser.add_argument('--checkpoints_main_path', dest='checkpoints_main_path', type=str, default='/d/DATA/Pedro_Work/IFREMER_Work/CODE/Transfer_Learning/', help='Path where checkpoints will be saved' )
 
 args = parser.parse_args()
-print(args)
-def main():
-    #args.r = 0
+
+def main(args):
+    print(args)
+    args.r = 0
     continue_ = False
     args.checkpoints_main_path = args.checkpoints_main_path + '/CHECKPOINTS/'
     if not os.path.exists(args.checkpoints_main_path):
@@ -58,7 +59,7 @@ def main():
 
     args.checkpoint_dir = args.checkpoints_main_path + args.dataset_name + '_checkpoints/' + args.checkpoint_name
     args.tracking_files = args.checkpoints_main_path + args.dataset_name + '_checkpoints/'
-
+    sys.exit()
     print("Dataset pre-processing...")
     if args.dataset_name == 'SUIM':
         dataset = SUIM(args)
@@ -95,4 +96,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    main(args)
