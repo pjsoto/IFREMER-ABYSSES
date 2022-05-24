@@ -48,7 +48,7 @@ parser.add_argument('--checkpoint_name', dest='checkpoint_name', default='Prove'
 parser.add_argument('--checkpoints_main_path', dest='checkpoints_main_path', type=str, default='/d/DATA/Pedro_Work/IFREMER_Work/CODE/Transfer_Learning/', help='Path where checkpoints will be saved' )
 
 args = parser.parse_args()
-
+print(args)
 def main():
     #args.r = 0
     continue_ = False
