@@ -36,9 +36,6 @@ if args.phase == 'train':
         GradCAM_MAIN_COMMAND = "$HOME/CODE/IFREMER-ABYSSES/Transfer_Learning/TF115/TestModelGradCam.py"
     if args.continue_training:
         continue_, b, c = Recover_hyperparameters_GM(args.tracking_files_path + "General_tracking_LTMS.txt", b, c)
-        print(continue_,b,c)
-    if args.tracking_training:
-        t = open(args.tracking_files_path + "General_tracking_LTMS.txt", "a")
     while b < len(BACKBONE_NAME):
         backbone_name = BACKBONE_NAME[b]
         if 'MobileNet' in backbone_name:
@@ -59,15 +56,12 @@ if args.phase == 'train':
             Dataset_main_path_test = DATASET_MAIN_PATH_TEST[c]
 
             if args.tracking_training:
+                t = open(args.tracking_files_path + "General_tracking_LTMS.txt", "a")
                 t.write(str(b) + "/" + str(c) + "\n")
+                t.close()
             if continue_:
                 continue_training = True
                 continue_ = False
-            print(backbone_name)
-            print(csv_name_train)
-            print(csv_name_test)
-            print(continue_)
-            print(continue_training)
             #Schedule.append("python " + Train_MAIN_COMMAND + " --train_task Image_Classification --learning_model CNN --backbone_name " + backbone_name + " --pretrained_backbone False --labels_type onehot_labels "
             #                "--weights_definition automatic --learning_ratedecay True --lr 0.0001 --batch_size 5 --epochs 100 --patience 10 --runs 1 --phase train --tracking_training " + args.tracking_training + " --continue_training "+ continue_training +" --optimizer Adam --feature_representation True --layer_index " + layer_position + " "
             #                "--image_rows 1024 --image_cols 1024 --image_channels 3 --new_size_rows 224 --new_size_cols 224 --split_patch True --data_augmentation True --overlap_porcent 0.25 "
@@ -93,9 +87,11 @@ if args.phase == 'train':
             #                "--dataset_main_path " + Dataset_main_path_test + " "
             #                "--checkpoints_main_path /datawork/EXPERIMENTS/ "
             #                "--results_main_path /datawork/EXPERIMENTS/")
-
             c += 1
         b += 1
-    t.close()
+    if args.tracking_training:
+        t = open(args.tracking_files_path + "General_tracking_LTMS.txt", "a")
+        t.write("Completed\n")
+        t.close()
 for i in range(len(Schedule)):
     os.system(Schedule[i])
