@@ -158,7 +158,7 @@ class Model():
         return gradients
 
     def Train(self):
-        best_val_fs = 0
+        best_val_fs = self.args.best_val_fs
         pat = 0
 
         #Computing the number of batches
@@ -330,7 +330,7 @@ class Model():
                 self.save(self.args.save_checkpoint_path, e)
                 if self.args.tracking_training:
                     print('[!]Updating the tracking file...')
-                    t.write(self.args.save_checkpoint_path + "/_" + str(self.args.r) + "/_" + str(e) + "\n")
+                    t.write(self.args.save_checkpoint_path + "/_" + str(self.args.r) + "/_" + str(e) + "/_" + str(best_val_fs) +"\n")
             else:
                 pat += 1
                 if pat > self.args.patience:
