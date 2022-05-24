@@ -36,9 +36,9 @@ if args.phase == 'train':
         GradCAM_MAIN_COMMAND = "$HOME/CODE/IFREMER-ABYSSES/Transfer_Learning/TF115/TestModelGradCam.py"
     if args.continue_training:
         continue_, b, c = Recover_hyperparameters_GM(args.tracking_files_path + "General_tracking_LTMS.txt", b, c)
-        print(continue_)
     while b < len(BACKBONE_NAME):
         backbone_name = BACKBONE_NAME[b]
+        print(backbone_name)
         if 'MobileNet' in backbone_name:
             layer_position = '17'
         if  'Vgg' in backbone_name:
@@ -94,5 +94,6 @@ if args.phase == 'train':
         t = open(args.tracking_files_path + "General_tracking_LTMS.txt", "a")
         t.write("Completed\n")
         t.close()
+
 for i in range(len(Schedule)):
     os.system(Schedule[i])
