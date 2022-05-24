@@ -50,7 +50,7 @@ parser.add_argument('--checkpoints_main_path', dest='checkpoints_main_path', typ
 args = parser.parse_args()
 
 def main(args):
-    print(args)
+
     args.r = 0
     continue_ = False
     args.checkpoints_main_path = args.checkpoints_main_path + '/CHECKPOINTS/'
@@ -59,7 +59,7 @@ def main(args):
 
     args.checkpoint_dir = args.checkpoints_main_path + args.dataset_name + '_checkpoints/' + args.checkpoint_name
     args.tracking_files = args.checkpoints_main_path + args.dataset_name + '_checkpoints/'
-    sys.exit()
+
     print("Dataset pre-processing...")
     if args.dataset_name == 'SUIM':
         dataset = SUIM(args)
@@ -71,6 +71,7 @@ def main(args):
         ##Loading the hyperparameters for the last trained model
         continue_, args = Recover_hyperparameters_MS(args)
         print(continue_)
+        print(args)
 
     sys.exit()
     #Running several times
