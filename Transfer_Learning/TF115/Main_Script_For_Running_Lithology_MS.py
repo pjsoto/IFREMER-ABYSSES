@@ -100,5 +100,5 @@ if args.phase == 'train':
         t.close()
 
 print(len(Schedule))
-#for i in range(len(Schedule)):
-#    os.system(Schedule[i])
+for i in range(len(Schedule)):
+    os.system(Schedule[i])
