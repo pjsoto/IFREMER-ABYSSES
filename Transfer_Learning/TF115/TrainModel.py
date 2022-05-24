@@ -89,7 +89,7 @@ def main(args):
 
         print("[*] Initializing the model...")
         model = Model(args, dataset)
-        #model.Train()
+        model.Train()
         args.r += 1
 
 
