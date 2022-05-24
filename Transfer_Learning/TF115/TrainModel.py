@@ -79,6 +79,7 @@ def main(args):
             continue_ = False
             args.save_checkpoint_path = args.save_checkpoint_path + '/'
         else:
+            args.initial_epoch = 0
             args.save_checkpoint_path = args.checkpoint_dir + '/' + args.learning_model + '_' + dt_string + '/'
 
         if not os.path.exists(args.save_checkpoint_path):

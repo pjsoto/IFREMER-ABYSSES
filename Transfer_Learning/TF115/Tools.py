@@ -122,5 +122,5 @@ def Recover_hyperparameters_MS(args):
         fields = l.split('/_')
         args.save_checkpoint_path = fields[0]
         args.r = int(fields[1])
-        args.e = int(fields[2])
+        args.initial_epoch = int(fields[2])
     return continue_, args
