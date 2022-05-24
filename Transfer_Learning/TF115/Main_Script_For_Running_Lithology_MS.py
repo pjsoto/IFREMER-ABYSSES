@@ -37,7 +37,7 @@ if args.phase == 'train':
     if args.continue_training:
         continue_, b, c = Recover_hyperparameters_GM(args.tracking_files_path + "General_tracking_LTMS.txt", b, c)
     if args.tracking_training:
-        t = open(self.args.tracking_files_path + "General_tracking_LTMS.txt", "a")
+        t = open(args.tracking_files_path + "General_tracking_LTMS.txt", "a")
     while b < len(BACKBONE_NAME):
         backbone_name = BACKBONE_NAME[b]
         if 'MobileNet' in backbone_name:
