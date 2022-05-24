@@ -17,6 +17,7 @@ Schedule = []
 
 if args.phase == 'train':
     b = 0
+    c = 0
     continue_ = False
 
     BACKBONE_NAME  = ['Vgg', 'ResNetV1_18', 'ResNetV1_50', 'ResNetV2_18', 'ResNetV2_50', 'MobileNet', 'Xception']
