@@ -90,7 +90,7 @@ def main(args):
         print("[*] Initializing the model...")
         model = Model(args, dataset)
         #model.Train()
-        #args.r += 1
+        args.r += 1
 
 
 if __name__ == '__main__':
