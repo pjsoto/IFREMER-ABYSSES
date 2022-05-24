@@ -7,12 +7,18 @@ parser = argparse.ArgumentParser(description='')
 
 parser.add_argument('--running_in', dest='running_in', type=str, default='Datarmor_Interactive', help='Decide wether the script will be running')
 parser.add_argument('--phase', dest = 'phase', type = str, default = 'train', help = 'Decide wether the phase: Train|Test will be running')
+parser.add_argument('--tracking_training', dest = 'tracking_training', type = eval, choices = [True, False], default = True, help = 'Set this parameter to True if the training will be tracked')
+parser.add_argument('--continue_training', dest = 'continue_training', type = eval, choices = [True, False], default = True, help = 'Set this parameter to True if the training musy continue from a previously saved model')
+parser.add_argument('--tracking_files_path', dest = 'tracking_files_path', type = str, default = '/datawork/EXPERIMENTS/CHECKPOINTS/OTUSIFREMER_IMAGELABEL_checkpoints/')
 args = parser.parse_args()
 
 
 Schedule = []
 
 if args.phase == 'train':
+    b = 0
+    c = 0
+    continue_ = False
 
     BACKBONE_NAME  = ['Vgg', 'ResNetV1_18', 'ResNetV1_50', 'ResNetV2_18', 'ResNetV2_50', 'MobileNet', 'Xception']
     CSV_FILES_NAMES_TRAIN = ['OTUS_Image_Classification_F1_Lithology_MS.csv', 'OTUS_Image_Classification_F2_Lithology_MS.csv','OTUS_Image_Classification_F3_Lithology_MS.csv']
@@ -28,7 +34,12 @@ if args.phase == 'train':
         Train_MAIN_COMMAND = "$HOME/CODE/IFREMER-ABYSSES/Transfer_Learning/TF115/TrainModel.py"
         Test_MAIN_COMMAND = "$HOME/CODE/IFREMER-ABYSSES/Transfer_Learning/TF115/TestModel.py"
         GradCAM_MAIN_COMMAND = "$HOME/CODE/IFREMER-ABYSSES/Transfer_Learning/TF115/TestModelGradCam.py"
-    for backbone_name in BACKBONE_NAME:
+    if args.continue_training:
+        continue_, b, c = Recover_hyperparameters_GM(args.tracking_files_path + "General_tracking_LTMS.txt", b, c)
+    if args.tracking_training:
+        t = open(self.args.tracking_files_path + "General_tracking_LTMS.txt", "a")
+    while b < len(BACKBONE_NAME):
+        backbone_name = BACKBONE_NAME[b]
         if 'MobileNet' in backbone_name:
             layer_position = '17'
         if  'Vgg' in backbone_name:
@@ -40,28 +51,38 @@ if args.phase == 'train':
         if 'ResNetV1_50' in backbone_name or 'ResNetV2_50' in backbone_name:
             layer_position = '23'
 
-        for c in range(len(CSV_FILES_NAMES_TRAIN)):
+        while c in len(CSV_FILES_NAMES_TRAIN):
             csv_name_train = CSV_FILES_NAMES_TRAIN[c]
             csv_name_test = CSV_FILES_NAMES_TEST[c]
             Dataset_main_path_train = DATASET_MAIN_PATH_TRAIN[c]
             Dataset_main_path_test = DATASET_MAIN_PATH_TEST[c]
 
-            Schedule.append("python " + Train_MAIN_COMMAND + " --train_task Image_Classification --learning_model CNN --backbone_name " + backbone_name + " --pretrained_backbone False --labels_type onehot_labels "
-                            "--weights_definition automatic --learning_ratedecay True --lr 0.0001 --batch_size 5 --epochs 100 --patience 10 --runs 1 --phase train --optimizer Adam --feature_representation True --layer_index " + layer_position + " "
-                            "--image_rows 1024 --image_cols 1024 --image_channels 3 --new_size_rows 224 --new_size_cols 224 --split_patch True --data_augmentation True --overlap_porcent 0.25 "
-                            "--dataset_name OTUSIFREMER_IMAGELABEL --csvfile_name " + csv_name_train + " --checkpoint_name " + backbone_name + "/Model_CNN_" + backbone_name + "_" + csv_name_train + " "
-                            "--dataset_csv_main_path /datawork/DATA/CSVs/OTUS_2018/ "
-                            "--dataset_main_path " + Dataset_main_path_train + " "
-                            "--checkpoints_main_path /datawork/EXPERIMENTS/")
-
-            Schedule.append("python " + Test_MAIN_COMMAND + " --train_task Image_Classification --learning_model CNN --backbone_name " + backbone_name + " --pretrained_backbone False --labels_type onehot_labels "
-                            "--phase test --feature_representation True --layer_index " + layer_position + " "
-                            "--image_rows 1024 --image_cols 1024 --image_channels 3 --new_size_rows 1024 --new_size_cols 1024 --split_patch False --overlap_porcent 0.25 "
-                            "--dataset_name OTUSIFREMER_IMAGELABEL --csvfile_name " + csv_name_test + " --checkpoint_name " + backbone_name + "/Model_CNN_" + backbone_name + "_" + csv_name_train + " "
-                            "--dataset_csv_main_path /datawork/DATA/CSVs/OTUS_2018/ "
-                            "--dataset_main_path " + Dataset_main_path_test + " "
-                            "--checkpoints_main_path /datawork/EXPERIMENTS/ "
-                            "--results_main_path /datawork/EXPERIMENTS/")
+            if args.tracking_training:
+                t.write(str(b) + "/" + str(c) + "\n")
+            if continue_:
+                continue_training = True
+                continue_ = False
+            print(backbone_name)
+            print(csv_name_train)
+            print(csv_name_test)
+            print(continue_)
+            print(contiue_training)
+            #Schedule.append("python " + Train_MAIN_COMMAND + " --train_task Image_Classification --learning_model CNN --backbone_name " + backbone_name + " --pretrained_backbone False --labels_type onehot_labels "
+            #                "--weights_definition automatic --learning_ratedecay True --lr 0.0001 --batch_size 5 --epochs 100 --patience 10 --runs 1 --phase train --tracking_training " + args.tracking_training + " --continue_training "+ continue_training +" --optimizer Adam --feature_representation True --layer_index " + layer_position + " "
+            #                "--image_rows 1024 --image_cols 1024 --image_channels 3 --new_size_rows 224 --new_size_cols 224 --split_patch True --data_augmentation True --overlap_porcent 0.25 "
+            #                "--dataset_name OTUSIFREMER_IMAGELABEL --csvfile_name " + csv_name_train + " --checkpoint_name " + backbone_name + "/Model_CNN_" + backbone_name + "_" + csv_name_train + " "
+            #                "--dataset_csv_main_path /datawork/DATA/CSVs/OTUS_2018/ "
+            #                "--dataset_main_path " + Dataset_main_path_train + " "
+            #                "--checkpoints_main_path /datawork/EXPERIMENTS/")
+            continue_training = False
+            #Schedule.append("python " + Test_MAIN_COMMAND + " --train_task Image_Classification --learning_model CNN --backbone_name " + backbone_name + " --pretrained_backbone False --labels_type onehot_labels "
+            #                "--phase test --feature_representation True --layer_index " + layer_position + " "
+            #                "--image_rows 1024 --image_cols 1024 --image_channels 3 --new_size_rows 1024 --new_size_cols 1024 --split_patch False --overlap_porcent 0.25 "
+            #                "--dataset_name OTUSIFREMER_IMAGELABEL --csvfile_name " + csv_name_test + " --checkpoint_name " + backbone_name + "/Model_CNN_" + backbone_name + "_" + csv_name_train + " "
+            #                "--dataset_csv_main_path /datawork/DATA/CSVs/OTUS_2018/ "
+            #                "--dataset_main_path " + Dataset_main_path_test + " "
+            #                "--checkpoints_main_path /datawork/EXPERIMENTS/ "
+            #                "--results_main_path /datawork/EXPERIMENTS/")
 
             #Schedule.append("python " + GradCAM_MAIN_COMMAND + " --train_task Image_Classification --learning_model CNN --backbone_name " + backbone_name + " --pretrained_backbone False --labels_type onehot_labels "
             #                "--phase gradcam --layer_index 1 "

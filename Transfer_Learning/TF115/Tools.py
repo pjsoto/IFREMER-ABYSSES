@@ -94,3 +94,17 @@ def superimpose(img_bgr, heatmap, thresh, save_path, emphasize=False):
     plt.savefig(save_path)
     plt.clf()
     #return superimposed_img_rgb
+
+def Recover_hyperparameters_GM(file_path, b, c):
+
+    continue_ = False
+
+    if os.path.exists(file_path):
+        continue_ = True
+        t = open(file_path, "r")
+        lines = f.readlines()
+        l = lines[-1]
+        fields = l.split('/')
+        b = int(fields[0])
+        c = int(fields[1])
+    return continue_, b, c

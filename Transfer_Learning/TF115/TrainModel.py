@@ -25,6 +25,8 @@ parser.add_argument('--patience', dest='patience', type=int, default=10, help='n
 parser.add_argument('--runs', dest='runs', type=int, default=1, help='number of executions of the algorithm')
 
 parser.add_argument('--phase', dest='phase', type = str,default='train', help='train, test, generate_image, create_dataset')
+parser.add_argument('--tracking_training', dest = 'tracking_training', type = eval, choices = [True, False], default = True, help = 'Set this parameter to True if the training will be tracked')
+parser.add_argument('--continue_training', dest = 'continue_training', type = eval, choices = [True, False], default = True, help = 'Set this parameter to True if the training musy continue from a previously saved model')
 parser.add_argument('--optimizer', dest = 'optimizer', type = str, default = 'MomentumOptimizer', help = 'The optimizer that will update the gradients computed by backprop')
 parser.add_argument('--feature_representation', dest = 'feature_representation', type=eval, choices=[True, False], default=False, help = 'This paraemeter is used to decide if a feature representation will be accomplished')
 parser.add_argument('--layer_index', dest = 'layer_index', type = int, default = 17, help = 'Definition of the layer where the feature will be taken')
@@ -48,20 +50,14 @@ parser.add_argument('--checkpoints_main_path', dest='checkpoints_main_path', typ
 args = parser.parse_args()
 
 def main():
-
-#    run = neptune.init(
-#        project="pjsotove/UnderWater-image-Segmentation",
-#        api_token="eyJhcGlfYWRkcmVzcyI6Imh0dHBzOi8vYXBwLm5lcHR1bmUuYWkiLCJhcGlfdXJsIjoiaHR0cHM6Ly9hcHAubmVwdHVuZS5haSIsImFwaV9rZXkiOiJhMjI4NTlkMS0zNzE4LTRjYTEtYWMwMi02MzQzMTY3ZWI5NzUifQ==",
-#    )  # your credentials
-
-#    run["sys/tags"].add([args.train_task, args.learning_model, args.backbone_name, args.classweight_type])
-
+    args.r = 0
+    continue_ = False
     args.checkpoints_main_path = args.checkpoints_main_path + '/CHECKPOINTS/'
     if not os.path.exists(args.checkpoints_main_path):
         os.makedirs(args.checkpoints_main_path)
 
     args.checkpoint_dir = args.checkpoints_main_path + args.dataset_name + '_checkpoints/' + args.checkpoint_name
-
+    args.tracking_files = args.checkpoints_main_path + args.dataset_name + '_checkpoints/'
     print("Dataset pre-processing...")
     if args.dataset_name == 'SUIM':
         dataset = SUIM(args)
@@ -69,12 +65,18 @@ def main():
         dataset = IFREMER(args)
     if args.dataset_name == 'OTUSIFREMER_IMAGELABEL':
         dataset = OTUSIFREMER_IMAGELABEL(args)
+    if args.continue_training:
+        ##Loading the hyperparameters for the last trained model
+        continue_, args = Recover_hyperparameters_MS(args)
     #Running several times
-    for r in range(args.runs):
+    while args.r < args.runs:
         now = datetime.now()
         dt_string = now.strftime("%d_%m_%Y_%H_%M_%S")
         # Creating the dir for saving the model
-        args.save_checkpoint_path = args.checkpoint_dir + '/' + args.learning_model + '_' + dt_string + '/'
+        if continue_:
+            continue_ = False
+        else:
+            args.save_checkpoint_path = args.checkpoint_dir + '/' + args.learning_model + '_' + dt_string + '/'
 
         if not os.path.exists(args.save_checkpoint_path):
             os.makedirs(args.save_checkpoint_path)
@@ -85,6 +87,7 @@ def main():
         print("[*] Initializing the model...")
         model = Model(args, dataset)
         model.Train()
+        args.r += 1
 
 
 if __name__ == '__main__':

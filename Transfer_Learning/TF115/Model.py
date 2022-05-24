@@ -61,6 +61,16 @@ class Model():
             self.sess=tf.Session()
             self.sess.run(tf.initialize_all_variables())
 
+            if self.args.continue_training:
+                print('[*]Loading the feature extractor and classifier trained models...')
+                mod = self.load(self.args.save_checkpoint_path)
+                if mod:
+                    print(" [*] Load with SUCCESS")
+                else:
+                    print(" [!] Load failed...")
+                    sys.exit()
+
+
         elif self.args.phase == 'test' or self.args.phase == 'gradcam':
             self.dataset = dataset
             self.saver = tf.train.Saver(max_to_keep=5)
@@ -75,6 +85,7 @@ class Model():
                 sys.exit()
             if self.args.phase == 'gradcam':
                 self.gradients = self.grad_cam()
+
     def weighted_cat_cross_entropy(self, y_true, y_pred, class_weights):
         epsilon_ = tf.convert_to_tensor(epsilon(), dtype=y_pred.dtype.base_dtype)
         y_pred_ = tf.clip_by_value(y_pred, epsilon_, 1. - epsilon_)
@@ -154,7 +165,7 @@ class Model():
         num_batches_tr = len(self.dataset.Train_Paths)//self.args.batch_size
         num_batches_vl = len(self.dataset.Valid_Paths)//self.args.batch_size
 
-        e = 0
+        e = self.args.initial_epoch
         while (e < self.args.epochs):
             #Shuffling the data and the labels
             num_samples = len(self.dataset.Train_Paths)
@@ -173,6 +184,8 @@ class Model():
             self.dataset.Valid_Coordinates = np.array(self.dataset.Valid_Coordinates)[index]
 
             f = open(self.args.save_checkpoint_path + "Log.txt","a")
+            if self.args.tracking_training:
+                t = open(self.args.tracking_files + "model_tracking.txt", "a")
             #Initializing loss metrics
             loss_cl_tr = np.zeros((1 , 2))
             loss_cl_vl = np.zeros((1 , 2))
@@ -315,6 +328,9 @@ class Model():
                 pat = 0
                 print('[!]Saving best model ...')
                 self.save(self.args.save_checkpoint_path, e)
+                if self.args.tracking_training:
+                    print('[!]Updating the tracking file...')
+                    t.write(self.args.save_checkpoint_path + "/" + str(self.args.r) + "/" + str(e) + "/" + str(self.lr) + "\n")
             else:
                 pat += 1
                 if pat > self.args.patience:
@@ -325,6 +341,8 @@ class Model():
                 plottsne_features(features_projected, true_labels, save_path = self.args.save_checkpoint_path , epoch = e, USE_LABELS = True)
             e += 1
             f.close()
+            if self.args.tracking_training:
+                t.close()
 
     def Test(self):
         #Computing the number of batches
