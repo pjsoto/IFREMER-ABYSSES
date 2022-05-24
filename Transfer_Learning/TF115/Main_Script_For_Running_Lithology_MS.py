@@ -39,7 +39,6 @@ if args.phase == 'train':
     while b < len(BACKBONE_NAME):
         c = 0
         backbone_name = BACKBONE_NAME[b]
-        print(backbone_name)
         if 'MobileNet' in backbone_name:
             layer_position = '17'
         if  'Vgg' in backbone_name:
@@ -64,13 +63,13 @@ if args.phase == 'train':
             if continue_:
                 continue_training = True
                 continue_ = False
-            #Schedule.append("python " + Train_MAIN_COMMAND + " --train_task Image_Classification --learning_model CNN --backbone_name " + backbone_name + " --pretrained_backbone False --labels_type onehot_labels "
-            #                "--weights_definition automatic --learning_ratedecay True --lr 0.0001 --batch_size 5 --epochs 100 --patience 10 --runs 1 --phase train --tracking_training " + args.tracking_training + " --continue_training "+ continue_training +" --optimizer Adam --feature_representation True --layer_index " + layer_position + " "
-            #                "--image_rows 1024 --image_cols 1024 --image_channels 3 --new_size_rows 224 --new_size_cols 224 --split_patch True --data_augmentation True --overlap_porcent 0.25 "
-            #                "--dataset_name OTUSIFREMER_IMAGELABEL --csvfile_name " + csv_name_train + " --checkpoint_name " + backbone_name + "/Model_CNN_" + backbone_name + "_" + csv_name_train + " "
-            #                "--dataset_csv_main_path /datawork/DATA/CSVs/OTUS_2018/ "
-            #                "--dataset_main_path " + Dataset_main_path_train + " "
-            #                "--checkpoints_main_path /datawork/EXPERIMENTS/")
+            Schedule.append("python " + Train_MAIN_COMMAND + " --train_task Image_Classification --learning_model CNN --backbone_name " + backbone_name + " --pretrained_backbone False --labels_type onehot_labels "
+                            "--weights_definition automatic --learning_ratedecay True --lr 0.0001 --batch_size 5 --epochs 100 --patience 10 --runs 1 --phase train --tracking_training " + args.tracking_training + " --continue_training "+ continue_training +" --optimizer Adam --feature_representation True --layer_index " + layer_position + " "
+                            "--image_rows 1024 --image_cols 1024 --image_channels 3 --new_size_rows 224 --new_size_cols 224 --split_patch True --data_augmentation True --overlap_porcent 0.25 "
+                            "--dataset_name OTUSIFREMER_IMAGELABEL --csvfile_name " + csv_name_train + " --checkpoint_name " + backbone_name + "/Model_CNN_" + backbone_name + "_" + csv_name_train + " "
+                            "--dataset_csv_main_path /datawork/DATA/CSVs/OTUS_2018/ "
+                            "--dataset_main_path " + Dataset_main_path_train + " "
+                            "--checkpoints_main_path /datawork/EXPERIMENTS/")
             continue_training = False
             #Schedule.append("python " + Test_MAIN_COMMAND + " --train_task Image_Classification --learning_model CNN --backbone_name " + backbone_name + " --pretrained_backbone False --labels_type onehot_labels "
             #                "--phase test --feature_representation True --layer_index " + layer_position + " "

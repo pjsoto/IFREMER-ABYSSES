@@ -68,6 +68,7 @@ def main():
     if args.continue_training:
         ##Loading the hyperparameters for the last trained model
         continue_, args = Recover_hyperparameters_MS(args)
+    sys.exit()
     #Running several times
     while args.r < args.runs:
         now = datetime.now()

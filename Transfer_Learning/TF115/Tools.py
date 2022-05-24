@@ -110,3 +110,14 @@ def Recover_hyperparameters_GM(file_path, b, c):
             c = int(fields[1])
         t.close()
     return continue_, b, c
+
+def Recover_hyperparameters_MS(args):
+    continue_ = False
+
+    if os.path.exists(args.tracking_files + "Model_tracking.txt"):
+        t = open(args.tracking_files + "Model_tracking.txt")
+        lines = t.readlines()
+        l = lines[-1]
+        fields.split('/_')
+        print(fields)
+    return continue_, args

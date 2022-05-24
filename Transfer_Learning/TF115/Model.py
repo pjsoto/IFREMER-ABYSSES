@@ -185,7 +185,7 @@ class Model():
 
             f = open(self.args.save_checkpoint_path + "Log.txt","a")
             if self.args.tracking_training:
-                t = open(self.args.tracking_files + "model_tracking.txt", "a")
+                t = open(self.args.tracking_files + "Model_tracking.txt", "a")
             #Initializing loss metrics
             loss_cl_tr = np.zeros((1 , 2))
             loss_cl_vl = np.zeros((1 , 2))
@@ -330,7 +330,7 @@ class Model():
                 self.save(self.args.save_checkpoint_path, e)
                 if self.args.tracking_training:
                     print('[!]Updating the tracking file...')
-                    t.write(self.args.save_checkpoint_path + "/" + str(self.args.r) + "/" + str(e) + "/" + str(self.lr) + "\n")
+                    t.write(self.args.save_checkpoint_path + "/_" + str(self.args.r) + "/_" + str(e) + \n")
             else:
                 pat += 1
                 if pat > self.args.patience:
