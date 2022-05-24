@@ -118,6 +118,6 @@ def Recover_hyperparameters_MS(args):
         t = open(args.tracking_files + "Model_tracking.txt")
         lines = t.readlines()
         l = lines[-1]
-        fields.split('/_')
+        fields = l.split('/_')
         print(fields)
     return continue_, args
