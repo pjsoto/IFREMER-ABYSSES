@@ -123,5 +123,5 @@ def Recover_hyperparameters_MS(args):
         args.save_checkpoint_path = fields[0]
         args.r = int(fields[1])
         args.initial_epoch = int(fields[2]) + 1
-        args.best_val_fs = float32(fields[3])
+        args.best_val_fs = float(fields[3])
     return continue_, args
