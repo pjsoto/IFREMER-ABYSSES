@@ -185,7 +185,7 @@ class Model():
 
             f = open(self.args.save_checkpoint_path + "Log.txt","a")
             if self.args.tracking_training:
-                t = open(self.args.tracking_files + "Model_tracking.txt", "a")
+                t = open(self.args.tracking_files + "Model_tracking_" + self.args.identifier + ".txt", "a")
             #Initializing loss metrics
             loss_cl_tr = np.zeros((1 , 2))
             loss_cl_vl = np.zeros((1 , 2))
