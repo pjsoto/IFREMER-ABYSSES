@@ -55,7 +55,7 @@ if args.phase == 'train':
             csv_name_test = CSV_FILES_NAMES_TEST[c]
             Dataset_main_path_train = DATASET_MAIN_PATH_TRAIN[c]
             Dataset_main_path_test = DATASET_MAIN_PATH_TEST[c]
-
+            print(Dataset_main_path_train)
             if args.tracking_training:
                 t = open(args.tracking_files_path + "General_tracking_LTMS.txt", "a")
                 t.write(str(b) + "/" + str(c) + "\n")
