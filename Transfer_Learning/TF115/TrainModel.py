@@ -70,10 +70,6 @@ def main(args):
     if args.continue_training:
         ##Loading the hyperparameters for the last trained model
         continue_, args = Recover_hyperparameters_MS(args)
-        print(continue_)
-        print(args)
-
-    sys.exit()
     #Running several times
     while args.r < args.runs:
         now = datetime.now()
@@ -92,8 +88,8 @@ def main(args):
 
         print("[*] Initializing the model...")
         model = Model(args, dataset)
-        model.Train()
-        args.r += 1
+        #model.Train()
+        #args.r += 1
 
 
 if __name__ == '__main__':
