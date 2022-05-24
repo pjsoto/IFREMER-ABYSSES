@@ -26,7 +26,7 @@ parser.add_argument('--runs', dest='runs', type=int, default=1, help='number of 
 
 parser.add_argument('--phase', dest='phase', type = str,default='train', help='train, test, generate_image, create_dataset')
 parser.add_argument('--tracking_training', dest = 'tracking_training', type = eval, choices = [True, False], default = True, help = 'Set this parameter to True if the training will be tracked')
-parser.add_argument('--continue_training', dest = 'continue_training', type = eval, choices = [True, False], default = True, help = 'Set this parameter to True if the training musy continue from a previously saved model')
+parser.add_argument('--continue_training', dest = 'continue_training', type = eval, choices = [True, False], default = True, help = 'Set this parameter to True if the training must continue from a previously saved model')
 parser.add_argument('--optimizer', dest = 'optimizer', type = str, default = 'MomentumOptimizer', help = 'The optimizer that will update the gradients computed by backprop')
 parser.add_argument('--feature_representation', dest = 'feature_representation', type=eval, choices=[True, False], default=False, help = 'This paraemeter is used to decide if a feature representation will be accomplished')
 parser.add_argument('--layer_index', dest = 'layer_index', type = int, default = 17, help = 'Definition of the layer where the feature will be taken')
@@ -50,7 +50,7 @@ parser.add_argument('--checkpoints_main_path', dest='checkpoints_main_path', typ
 args = parser.parse_args()
 
 def main():
-    args.r = 0
+    #args.r = 0
     continue_ = False
     args.checkpoints_main_path = args.checkpoints_main_path + '/CHECKPOINTS/'
     if not os.path.exists(args.checkpoints_main_path):
