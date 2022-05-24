@@ -17,7 +17,6 @@ Schedule = []
 
 if args.phase == 'train':
     b = 0
-    c = 0
     continue_ = False
 
     BACKBONE_NAME  = ['Vgg', 'ResNetV1_18', 'ResNetV1_50', 'ResNetV2_18', 'ResNetV2_50', 'MobileNet', 'Xception']
@@ -37,6 +36,7 @@ if args.phase == 'train':
     if args.continue_training:
         continue_, b, c = Recover_hyperparameters_GM(args.tracking_files_path + "General_tracking_LTMS.txt", b, c)
     while b < len(BACKBONE_NAME):
+        c = 0
         backbone_name = BACKBONE_NAME[b]
         print(backbone_name)
         if 'MobileNet' in backbone_name:
