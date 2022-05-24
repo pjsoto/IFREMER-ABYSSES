@@ -73,8 +73,8 @@ if args.phase == 'train':
                             "--dataset_main_path " + Dataset_main_path_train + " "
                             "--checkpoints_main_path /datawork/EXPERIMENTS/")
 
-            continue_training = False
-            sys.exit()
+            #continue_training = False
+            #sys.exit()
             #Schedule.append("python " + Test_MAIN_COMMAND + " --train_task Image_Classification --learning_model CNN --backbone_name " + backbone_name + " --pretrained_backbone False --labels_type onehot_labels "
             #                "--phase test --feature_representation True --layer_index " + layer_position + " "
             #                "--image_rows 1024 --image_cols 1024 --image_channels 3 --new_size_rows 1024 --new_size_cols 1024 --split_patch False --overlap_porcent 0.25 "
