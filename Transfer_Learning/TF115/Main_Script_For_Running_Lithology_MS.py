@@ -101,6 +101,6 @@ if args.phase == 'train':
 
 print(len(Schedule))
 print(Schedule)
-sys.exit()
+
 for i in range(len(Schedule)):
     os.system(Schedule[i])
