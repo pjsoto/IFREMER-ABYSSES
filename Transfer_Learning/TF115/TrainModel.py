@@ -77,6 +77,7 @@ def main(args):
         # Creating the dir for saving the model
         if continue_:
             continue_ = False
+            args.save_checkpoint_path = args.save_checkpoint_path + '/'
         else:
             args.save_checkpoint_path = args.checkpoint_dir + '/' + args.learning_model + '_' + dt_string + '/'
 
