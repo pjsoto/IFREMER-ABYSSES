@@ -99,5 +99,6 @@ if args.phase == 'train':
         t.write("Completed\n")
         t.close()
 
-for i in range(len(Schedule)):
-    os.system(Schedule[i])
+print(len(Schedule))
+#for i in range(len(Schedule)):
+#    os.system(Schedule[i])
