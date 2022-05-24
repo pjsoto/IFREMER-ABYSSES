@@ -102,9 +102,10 @@ def Recover_hyperparameters_GM(file_path, b, c):
     if os.path.exists(file_path):
         continue_ = True
         t = open(file_path, "r")
-        lines = f.readlines()
+        lines = t.readlines()
         l = lines[-1]
         fields = l.split('/')
         b = int(fields[0])
         c = int(fields[1])
+        t.close()
     return continue_, b, c
