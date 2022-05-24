@@ -330,7 +330,7 @@ class Model():
                 self.save(self.args.save_checkpoint_path, e)
                 if self.args.tracking_training:
                     print('[!]Updating the tracking file...')
-                    t.write(self.args.save_checkpoint_path + "/_" + str(self.args.r) + "/_" + str(e) + \n")
+                    t.write(self.args.save_checkpoint_path + "/_" + str(self.args.r) + "/_" + str(e) + "\n")
             else:
                 pat += 1
                 if pat > self.args.patience:
