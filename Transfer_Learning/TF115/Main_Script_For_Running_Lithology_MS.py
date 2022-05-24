@@ -39,6 +39,7 @@ if args.phase == 'train':
     while b < len(BACKBONE_NAME):
         if not continue_:
             c = 0
+            continue_training = False
         backbone_name = BACKBONE_NAME[b]
         if 'MobileNet' in backbone_name:
             layer_position = '17'
