@@ -104,9 +104,7 @@ def Recover_hyperparameters_GM(file_path, b, c):
         t = open(file_path, "r")
         lines = t.readlines()
         l = lines[-1]
-        print(l)
         fields = l.split('/')
-        print(fields)
         b = int(fields[0])
         c = int(fields[1])
         t.close()
