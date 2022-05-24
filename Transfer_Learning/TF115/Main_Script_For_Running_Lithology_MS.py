@@ -94,6 +94,8 @@ if args.phase == 'train':
             #                "--checkpoints_main_path /datawork/EXPERIMENTS/ "
             #                "--results_main_path /datawork/EXPERIMENTS/")
 
-
+            c += 1
+        b += 1
+    t.close()
 for i in range(len(Schedule)):
     os.system(Schedule[i])
