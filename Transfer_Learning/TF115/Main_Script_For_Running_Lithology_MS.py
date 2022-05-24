@@ -19,7 +19,7 @@ if args.phase == 'train':
     b = 0
     c = 0
     continue_ = False
-
+    tracking_list = []
     BACKBONE_NAME  = ['Vgg', 'ResNetV1_18', 'ResNetV1_50', 'ResNetV2_18', 'ResNetV2_50', 'MobileNet', 'Xception']
     CSV_FILES_NAMES_TRAIN = ['OTUS_Image_Classification_F1_Lithology_MS.csv', 'OTUS_Image_Classification_F2_Lithology_MS.csv','OTUS_Image_Classification_F3_Lithology_MS.csv']
     CSV_FILES_NAMES_TEST  = ['OTUS_Image_Classification_F1_Lithology_MS.csv', 'OTUS_Image_Classification_F2_Lithology_MS.csv','OTUS_Image_Classification_F3_Lithology_MS.csv']
@@ -59,9 +59,8 @@ if args.phase == 'train':
             Dataset_main_path_test = DATASET_MAIN_PATH_TEST[c]
             print(Dataset_main_path_train)
             if args.tracking_training:
-                t = open(args.tracking_files_path + "General_tracking_LTMS.txt", "a")
-                t.write(str(b) + "/" + str(c) + "\n")
-                t.close()
+                tracking_list.append(str(b) + "/" + str(c))
+
             if continue_:
                 continue_training = True
                 continue_ = False
@@ -94,10 +93,14 @@ if args.phase == 'train':
             c += 1
             continue_training = False
         b += 1
-    if args.tracking_training:
-        t = open(args.tracking_files_path + "General_tracking_LTMS.txt", "a")
-        t.write("Completed\n")
-        t.close()
 
 for i in range(len(Schedule)):
+    t = open(args.tracking_files_path + "General_tracking_LTMS.txt", "a")
+    t.write(tracking_list[i] + "\n")
+    t.close()
     os.system(Schedule[i])
+
+if args.tracking_training:
+    t = open(args.tracking_files_path + "General_tracking_LTMS.txt", "a")
+    t.write("Completed\n")
+    t.close()
