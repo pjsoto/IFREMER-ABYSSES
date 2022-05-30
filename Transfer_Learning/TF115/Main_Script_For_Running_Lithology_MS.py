@@ -59,7 +59,7 @@ if args.phase == 'train':
             Dataset_main_path_test = DATASET_MAIN_PATH_TEST[c]
             print(Dataset_main_path_train)
             if args.tracking_training:
-                tracking_list.append(str(b) + "/" + str(c))
+                tracking_list.append(str(b) + "/" + str(c) + "/Train")
 
             if continue_:
                 continue_training = True
@@ -72,6 +72,8 @@ if args.phase == 'train':
                             "--dataset_csv_main_path /datawork/DATA/CSVs/OTUS_2018/ "
                             "--dataset_main_path " + Dataset_main_path_train + " "
                             "--checkpoints_main_path /datawork/EXPERIMENTS/")
+            if args.tracking_training:
+                tracking_list.append(str(b) + "/" + str(c) + "/Test")
 
             Schedule.append("python " + Test_MAIN_COMMAND + " --train_task Image_Classification --learning_model CNN --backbone_name " + backbone_name + " --pretrained_backbone False --labels_type onehot_labels "
                             "--phase test --feature_representation True --layer_index " + layer_position + " "
@@ -81,6 +83,8 @@ if args.phase == 'train':
                             "--dataset_main_path " + Dataset_main_path_test + " "
                             "--checkpoints_main_path /datawork/EXPERIMENTS/ "
                             "--results_main_path /datawork/EXPERIMENTS/")
+            #if args.tracking_training:
+            #    tracking_list.append(str(b) + "/" + str(c) + "/GradCam")
 
             #Schedule.append("python " + GradCAM_MAIN_COMMAND + " --train_task Image_Classification --learning_model CNN --backbone_name " + backbone_name + " --pretrained_backbone False --labels_type onehot_labels "
             #                "--phase gradcam --layer_index 1 "
