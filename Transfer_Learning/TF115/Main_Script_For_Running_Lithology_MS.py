@@ -99,15 +99,13 @@ if args.phase == 'train':
         b += 1
 
 for i in range(len(Schedule)):
-    #t = open(args.tracking_files_path + "General_tracking_LTMS.txt", "a")
-    #t.write(tracking_list[i] + "\n")
-    print(tracking_list[i])
-    #t.close()
-    print(Schedule[i])
-    #os.system(Schedule[i])
+    t = open(args.tracking_files_path + "General_tracking_LTMS.txt", "a")
+    t.write(tracking_list[i] + "\n")
+    t.close()
+    os.system(Schedule[i])
 
 if args.tracking_training:
-    #t = open(args.tracking_files_path + "General_tracking_LTMS.txt", "a")
-    #t.write("Completed\n")
-    #t.close()
-    print("Completed")
+    t = open(args.tracking_files_path + "General_tracking_LTMS.txt", "a")
+    t.write("Completed\n")
+    t.close()
+    
