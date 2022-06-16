@@ -2,7 +2,7 @@ import os
 import sys
 import argparse
 
-
+from Tools import *
 parser = argparse.ArgumentParser(description='')
 
 parser.add_argument('--running_in', dest='running_in', type=str, default='Datarmor_Interactive', help='Decide wether the script will be running')
