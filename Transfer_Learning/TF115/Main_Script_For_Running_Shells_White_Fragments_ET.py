@@ -8,7 +8,7 @@ parser = argparse.ArgumentParser(description='')
 parser.add_argument('--running_in', dest='running_in', type=str, default='Datarmor_Interactive', help='Decide wether the script will be running')
 parser.add_argument('--phase', dest = 'phase', type = str, default = 'train', help = 'Decide wether the phase: Train|Test will be running')
 parser.add_argument('--tracking_training', dest = 'tracking_training', type = eval, choices = [True, False], default = True, help = 'Set this parameter to True if the training will be tracked')
-parser.add_argument('--continue_training', dest = 'continue_training', type = eval, choices = [True, False], default = False, help = 'Set this parameter to True if the training musy continue from a previously saved model')
+parser.add_argument('--continue_training', dest = 'continue_training', type = eval, choices = [True, False], default = True, help = 'Set this parameter to True if the training musy continue from a previously saved model')
 parser.add_argument('--tracking_files_path', dest = 'tracking_files_path', type = str, default = '/datawork/EXPERIMENTS/CHECKPOINTS/OTUSIFREMER_IMAGELABEL_checkpoints/')
 args = parser.parse_args()
 
