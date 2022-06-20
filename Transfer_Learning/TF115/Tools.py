@@ -114,9 +114,9 @@ def Recover_hyperparameters_GM(file_path, b, c):
 def Recover_hyperparameters_MS(args):
     continue_ = False
 
-    if os.path.exists(args.tracking_files + "Model_tracking_" + self.args.identifier + ".txt"):
+    if os.path.exists(args.tracking_files + "Model_tracking_" + args.identifier + ".txt"):
         continue_ = True
-        t = open(args.tracking_files + "Model_tracking_" + self.args.identifier + ".txt")
+        t = open(args.tracking_files + "Model_tracking_" + args.identifier + ".txt")
         lines = t.readlines()
         l = lines[-1]
         fields = l.split('/_')
