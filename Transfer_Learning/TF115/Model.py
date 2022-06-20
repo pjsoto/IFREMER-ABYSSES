@@ -68,7 +68,7 @@ class Model():
                     print(" [*] Load with SUCCESS")
                 else:
                     print(" [!] Load failed...")
-                    sys.exit()
+                    print(" [!] The checkpoint referenced is missing!!!!")
 
 
         elif self.args.phase == 'test' or self.args.phase == 'gradcam':
