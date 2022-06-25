@@ -51,7 +51,7 @@ if args.phase == 'train':
             layer_position = '15'
         if 'ResNetV1_50' in backbone_name or 'ResNetV2_50' in backbone_name:
             layer_position = '23'
-        continue_ = False
+        
         while c < len(CSV_FILES_NAMES_TRAIN):
 
             csv_name_train = CSV_FILES_NAMES_TRAIN[c]
@@ -63,7 +63,7 @@ if args.phase == 'train':
                 tracking_list.append(str(b) + "/" + str(c) + "/Train")
 
             if continue_:
-                continue_training = True
+                continue_training = False
                 continue_ = False
 
             Schedule.append("python " + Train_MAIN_COMMAND + " --train_task Image_Classification --learning_model CNN --backbone_name " + backbone_name + " --pretrained_backbone False --labels_type onehot_labels "
