@@ -51,8 +51,9 @@ if args.phase == 'train':
             layer_position = '15'
         if 'ResNetV1_50' in backbone_name or 'ResNetV2_50' in backbone_name:
             layer_position = '23'
-
+        continue_ = False
         while c < len(CSV_FILES_NAMES_TRAIN):
+
             csv_name_train = CSV_FILES_NAMES_TRAIN[c]
             csv_name_test = CSV_FILES_NAMES_TEST[c]
             Dataset_main_path_train = DATASET_MAIN_PATH_TRAIN[c]
