@@ -7,7 +7,7 @@ parser = argparse.ArgumentParser(description='')
 
 parser.add_argument('--running_in', dest='running_in', type=str, default='Datarmor_Interactive', help='Decide wether the script will be running')
 parser.add_argument('--phase', dest = 'phase', type = str, default = 'train', help = 'Decide wether the phase: Train|Test will be running')
-parser.add_argument('--tracking_training', dest = 'tracking_training', type = eval, choices = [True, False], default = True, help = 'Set this parameter to True if the training will be tracked')
+parser.add_argument('--tracking_training', dest = 'tracking_training', type = eval, choices = [True, False], default = False, help = 'Set this parameter to True if the training will be tracked')
 parser.add_argument('--continue_training', dest = 'continue_training', type = eval, choices = [True, False], default = False, help = 'Set this parameter to True if the training musy continue from a previously saved model')
 parser.add_argument('--tracking_files_path', dest = 'tracking_files_path', type = str, default = '/datawork/EXPERIMENTS/CHECKPOINTS/OTUSIFREMER_IMAGELABEL_checkpoints/')
 args = parser.parse_args()
@@ -20,11 +20,11 @@ if args.phase == 'train':
     c = 0
     continue_ = False
     tracking_list = []
-    BACKBONE_NAME  = ['Vgg', 'ResNetV1_18', 'ResNetV1_50', 'ResNetV2_18', 'ResNetV2_50', 'MobileNet', 'Xception']
-    CSV_FILES_NAMES_TRAIN = ['OTUS_Image_Classification_F1_Shells_White_fragments_MS_Ltd.csv', 'OTUS_Image_Classification_F2_Shells_White_fragments_MS_Ltd.csv','OTUS_Image_Classification_F3_Shells_White_fragments_MS_Ltd.csv']
-    CSV_FILES_NAMES_TEST  = ['OTUS_Image_Classification_F1_Shells_White_fragments_MS_Ltd.csv', 'OTUS_Image_Classification_F2_Shells_White_fragments_MS_Ltd.csv','OTUS_Image_Classification_F3_Shells_White_fragments_MS_Ltd.csv']
-    DATASET_MAIN_PATH_TRAIN = ['/datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/']
-    DATASET_MAIN_PATH_TEST  = ['/datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/']
+    BACKBONE_NAME  = ['Vgg', 'ResNetV1_18', 'ResNetV1_50', 'ResNetV2_18', 'ResNetV2_50', 'Xception']
+    CSV_FILES_NAMES_TRAIN = ['OTUS_Image_Classification_F1_Shells_White_fragments_MS_Ltd.csv', 'OTUS_Image_Classification_F2_Shells_White_fragments_MS_Ltd.csv','OTUS_Image_Classification_F3_Shells_White_fragments_MS_Ltd.csv','OTUS_Image_Classification_F1_Shells_White_fragments_MS_Ltd.csv', 'OTUS_Image_Classification_F2_Shells_White_fragments_MS_Ltd.csv','OTUS_Image_Classification_F3_Shells_White_fragments_MS_Ltd.csv']
+    CSV_FILES_NAMES_TEST  = ['OTUS_Image_Classification_F1_Shells_White_fragments_WC_Ltd.csv', 'OTUS_Image_Classification_F2_Shells_White_fragments_WC_Ltd.csv','OTUS_Image_Classification_F3_Shells_White_fragments_WC_Ltd.csv','OTUS_Image_Classification_F1_Shells_White_fragments_ET_Ltd.csv', 'OTUS_Image_Classification_F2_Shells_White_fragments_ET_Ltd.csv','OTUS_Image_Classification_F3_Shells_White_fragments_ET_Ltd.csv']
+    DATASET_MAIN_PATH_TRAIN = ['/datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/']
+    DATASET_MAIN_PATH_TEST  = ['/datawork/DATA/OTUS_2018_Doneesbrutes_WhiteCastle1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_WhiteCastle1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_WhiteCastle1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_EiffelTower1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_EiffelTower1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_EiffelTower1024/']
 
     if args.running_in == 'Datarmor_Interactive':
         Train_MAIN_COMMAND = "TrainModel.py"
@@ -65,13 +65,13 @@ if args.phase == 'train':
                 continue_training = True
                 continue_ = False
 
-            Schedule.append("python " + Train_MAIN_COMMAND + " --train_task Image_Classification --learning_model CNN --backbone_name " + backbone_name + " --pretrained_backbone False --labels_type onehot_labels "
-                            "--weights_definition automatic --learning_ratedecay True --lr 0.0001 --batch_size 5 --epochs 100 --patience 10 --runs 1 --phase train --tracking_training " + str(args.tracking_training) + " --continue_training " + str(continue_training) + " --identifier ShellsWhiteFragments_MS --optimizer Adam --feature_representation True --layer_index " + layer_position + " "
-                            "--image_rows 1024 --image_cols 1024 --image_channels 3 --new_size_rows 224 --new_size_cols 224 --split_patch True --data_augmentation True --overlap_porcent 0.25 "
-                            "--dataset_name OTUSIFREMER_IMAGELABEL --csvfile_name " + csv_name_train + " --checkpoint_name " + backbone_name + "/Model_CNN_" + backbone_name + "_" + csv_name_train + " "
-                            "--dataset_csv_main_path /datawork/DATA/CSVs/OTUS_2018/ "
-                            "--dataset_main_path " + Dataset_main_path_train + " "
-                            "--checkpoints_main_path /datawork/EXPERIMENTS/")
+            #Schedule.append("python " + Train_MAIN_COMMAND + " --train_task Image_Classification --learning_model CNN --backbone_name " + backbone_name + " --pretrained_backbone False --labels_type onehot_labels "
+            #                "--weights_definition automatic --learning_ratedecay True --lr 0.0001 --batch_size 5 --epochs 100 --patience 10 --runs 1 --phase train --tracking_training " + str(args.tracking_training) + " --continue_training " + str(continue_training) + " --identifier ShellsWhiteFragments_MS --optimizer Adam --feature_representation True --layer_index " + layer_position + " "
+            #                "--image_rows 1024 --image_cols 1024 --image_channels 3 --new_size_rows 224 --new_size_cols 224 --split_patch True --data_augmentation True --overlap_porcent 0.25 "
+            #                "--dataset_name OTUSIFREMER_IMAGELABEL --csvfile_name " + csv_name_train + " --checkpoint_name " + backbone_name + "/Model_CNN_" + backbone_name + "_" + csv_name_train + " "
+            #                "--dataset_csv_main_path /datawork/DATA/CSVs/OTUS_2018/ "
+            #                "--dataset_main_path " + Dataset_main_path_train + " "
+            #                "--checkpoints_main_path /datawork/EXPERIMENTS/")
 
             if args.tracking_training:
                 tracking_list.append(str(b) + "/" + str(c) + "/Test")
@@ -99,9 +99,10 @@ if args.phase == 'train':
         b += 1
 
 for i in range(len(Schedule)):
-    t = open(args.tracking_files_path + "General_tracking_SWMS.txt", "a")
-    t.write(tracking_list[i] + "\n")
-    t.close()
+    if args.tracking_training:
+        t = open(args.tracking_files_path + "General_tracking_SWMS.txt", "a")
+        t.write(tracking_list[i] + "\n")
+        t.close()
     os.system(Schedule[i])
 
 if args.tracking_training:
