@@ -532,6 +532,7 @@ class Model():
             #
             if len(self.args.backbone_names) > 0:
                 voting_array = np.zeros((1 , self.dataset.class_number))
+                print(voting_array)
                 for backbone in self.args.backbone_names:
                     args.backbone_name = backbone
                     args.checkpoint_name =  backbone + "/Model_CNN_" + backbone + "_" + self.args.csvfile_name_train
@@ -544,6 +545,8 @@ class Model():
                         batch_prediction_ = self.sess.run(self.prediction_c, feed_dict={self.data: data_batch})
                         if self.args.labels_type == 'onehot_labels':
                             voting_array[0, np.argmax(batch_prediction_, axis = 1)[0]] += 1
+                            print(np.argmax(batch_prediction_, axis = 1)[0])
+                            print(voting_array)
                         if self.args.labels_type == 'multiple_labels':
                             y_pred = ((batch_prediction_ > 0.5) * 1.0)
                             voting_array += y_pred
