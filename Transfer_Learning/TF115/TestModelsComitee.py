@@ -41,7 +41,7 @@ parser.add_argument('--results_main_path', dest = 'results_main_path', default =
 args = parser.parse_args()
 
 def main():
-
+    args.layer_index
     args.backbone_name = args.backbone_names[0]
     args.checkpoint_name =  args.backbone_names[0] + "/Model_CNN_" + args.backbone_names[0] + "_" + args.csvfile_name_train
     args.checkpoints_main_path = args.checkpoints_main_path + '/CHECKPOINTS/'
