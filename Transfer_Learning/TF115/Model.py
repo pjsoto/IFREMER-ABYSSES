@@ -534,12 +534,16 @@ class Model():
             if len(self.args.backbone_names) > 0:
                 for backbone in self.args.backbone_names:
                     args.backbone_name = backbone
-                    print(args.backbone_name)
                     args.checkpoint_name =  backbone + "/Model_CNN_" + backbone + "_" + self.args.csvfile_name_train
                     args.checkpoint_dir = args.checkpoints_main_path + args.dataset_name + '_checkpoints/' + args.checkpoint_name
-                    print(args.checkpoint_dir)
-                    #self.__init__(args, dataset):
-
+                    checkpoint_files = os.listdir(args.checkpoint_dir)
+                    if len(checkpoint_files) > 0:
+                        model_folder = checkpoint_files[0]
+                        args.trained_model_path = args.checkpoint_dir + '/' + model_folder + '/'
+                        print(args.trained_model_path)
+                        self.__init__(args, dataset):
+                    else:
+                        print("The model folder not found")
             else:
                 #Fed-forward the data through the network
                 batch_prediction, batch_features = self.sess.run([self.prediction_c, self.features], feed_dict={self.data: data_batch})
