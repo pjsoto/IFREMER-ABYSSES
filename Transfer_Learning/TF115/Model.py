@@ -541,7 +541,7 @@ class Model():
                         model_folder = checkpoint_files[0]
                         args.trained_model_path = args.checkpoint_dir + '/' + model_folder + '/'
                         print(args.trained_model_path)
-                        self.__init__(args, dataset):
+                        self.__init__(args, dataset)
                     else:
                         print("The model folder not found")
             else:
