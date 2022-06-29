@@ -41,7 +41,7 @@ args = parser.parse_args()
 
 def main():
 
-    args.checkpoint_name =  args.backbone_name[0] + "/Model_CNN_" + args.backbone_name[0] + "_" + args.csvfile_name + " "
+    args.checkpoint_name =  args.backbone_names[0] + "/Model_CNN_" + args.backbone_names[0] + "_" + args.csvfile_name + " "
     print(args.checkpoint_name)
     sys.exit()
     args.checkpoints_main_path = args.checkpoints_main_path + '/CHECKPOINTS/'
