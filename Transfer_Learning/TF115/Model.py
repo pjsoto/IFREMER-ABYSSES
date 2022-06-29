@@ -535,6 +535,9 @@ class Model():
                 for backbone in self.args.backbone_names:
                     args.backbone_name = backbone
                     print(args.backbone_name)
+                    args.checkpoint_name =  backbone + "/Model_CNN_" + backbone + "_" + self.args.csvfile_name_train
+                    args.checkpoint_dir = args.checkpoints_main_path + args.dataset_name + '_checkpoints/' + args.checkpoint_name
+                    print(args.checkpoint_dir)
                     #self.__init__(args, dataset):
 
             else:
