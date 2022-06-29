@@ -72,7 +72,6 @@ class Model():
 
 
         elif self.args.phase == 'test' or self.args.phase == 'gradcam':
-            self.dataset = dataset
             self.saver = tf.train.Saver(max_to_keep=5)
             self.sess=tf.Session()
             self.sess.run(tf.initialize_all_variables())
@@ -498,3 +497,107 @@ class Model():
             heatmap = numer / denom
 
             superimpose(data_batch[0, :, :, :], heatmap, 0.5, self.args.save_results_dir + file_name + '_' + 'TL_' + str(y_true) + '_PL_' + str(y_pred) + '.png', emphasize=True)
+
+    def TestCommitee(self):
+        args = self.args
+        dataset = self.dataset
+        #Computing the number of batches
+        num_batches_ts = len(self.dataset.Test_Paths)//self.args.batch_size
+        batchs = trange(num_batches_ts)
+
+        Predicted_Labels = []
+        True_Labels = []
+
+        f = open(self.args.save_results_dir + "Metrics_Performance.txt","a")
+        if self.args.feature_representation:
+            features = np.zeros((self.args.batch_size * num_batches_ts, np.prod(self.feature_shape)))
+            labels = np.zeros((self.args.batch_size * num_batches_ts, 1))
+        if self.args.labels_type == 'multiple_labels':
+            True_Labels = np.zeros((num_batches_ts * self.args.batch_size, self.args.class_number))
+            Predicted_Labels = np.zeros((num_batches_ts * self.args.batch_size, self.args.class_number))
+
+        for b in batchs:
+            paths_batch = self.dataset.Test_Paths[b * self.args.batch_size : (b + 1) * self.args.batch_size]
+            labels_batch = self.dataset.Test_Labels[b * self.args.batch_size : (b + 1) * self.args.batch_size]
+
+            if self.args.split_patch:
+                print('Comming soon...')
+            else:
+                self.coordinates = []
+                for s in range(len(self.dataset.Test_Paths)):
+                    self.coordinates.append([])
+                self.pad_tuple = []
+
+            data_batch, labels_batch = self.dataset.read_samples(paths_batch, labels_batch, self.coordinates, self.pad_tuple)
+
+            #
+            if len(self.args.backbone_names) > 0:
+                for backbone in self.args.backbone_names:
+                    args.backbone_name = backbone
+                    print(args.backbone_name)
+                    #self.__init__(args, dataset):
+
+            else:
+                #Fed-forward the data through the network
+                batch_prediction, batch_features = self.sess.run([self.prediction_c, self.features], feed_dict={self.data: data_batch})
+            if self.args.feature_representation:
+                if len(self.feature_shape) > 2:
+                    features[b * self.args.batch_size : (b + 1) * self.args.batch_size, :] = batch_features.reshape((batch_features.shape[0], batch_features.shape[1] * batch_features.shape[2] * batch_features.shape[3]))
+                else:
+                    features[b * self.args.batch_size : (b + 1) * self.args.batch_size, :] = batch_features
+
+            if self.args.labels_type == 'onehot_labels':
+                y_pred = np.argmax(batch_prediction, axis = 1)
+                y_true = np.argmax(labels_batch, axis = 1)
+
+                if self.args.split_patch:
+                    print('Coming soon...')
+                else:
+                    Predicted_Labels.append(y_pred[0])
+                    True_Labels.append(y_true[0])
+                    if self.args.feature_representation:
+                        labels[b * self.args.batch_size : (b + 1) * self.args.batch_size, 0] = int(y_true[0])
+
+            if self.args.labels_type == 'multiple_labels':
+                y_pred = ((batch_prediction > 0.5) * 1.0)
+                y_true = labels_batch
+
+                if self.args.split_patch:
+                    print('Coming soon...')
+                else:
+                    True_Labels[b * self.args.batch_size : (b + 1) * self.args.batch_size, :] = y_true
+                    Predicted_Labels[b * self.args.batch_size : (b + 1) * self.args.batch_size, :] = y_pred
+        #Metrics computation
+        #In each class
+        if self.args.labels_type == 'onehot_labels':
+            f.write('Model performance in each class:\n')
+            for c in range(self.dataset.class_number):
+                y_pred_ = np.array(Predicted_Labels.copy())
+                y_true_ = np.array(True_Labels.copy())
+
+                y_pred_[y_pred_ != c] = -1
+                y_pred_[y_pred_ == c] = 1
+                y_pred_[y_pred_ == -1] = 0
+
+                y_true_[y_true_ != c] = -1
+                y_true_[y_true_ == c] = 1
+                y_true_[y_true_ == -1] = 0
+
+                Ac, F1, P, R = compute_metrics(y_true_, y_pred_, 'binary')
+                f.write("Class %d, accuracy: %.2f%%, precision: %.2f%%, recall: %.2f%%, fscore: %.2f%%]\n" % (c, Ac, P, R, F1))
+
+            f.write('General results:\n')
+            Ac, F1, P, R = compute_metrics(True_Labels, Predicted_Labels, 'macro')
+            f.write("Accuracy: %.2f%%, Precision: %.2f%%, Recall: %.2f%%, Fscore: %.2f%%]\n" % (Ac, P, R, F1))
+            f.close()
+
+            if self.args.feature_representation:
+                features_projected = self.tsne_features(features)
+                plottsne_features(features_projected, labels, save_path = self.args.save_results_dir , epoch = 0, USE_LABELS = True)
+        if self.args.labels_type == 'multiple_labels':
+            Ac, F1, P, R = compute_metrics(True_Labels, Predicted_Labels, None)
+            for c in range(self.dataset.class_number):
+                f.write("Class %d, precision: %.2f%%, recall: %.2f%%, fscore: %.2f%%]\n" % (c, P[c], R[c], F1[c]))
+
+            f.write('General results:\n')
+            f.write("Accuracy: %.2f%%, Precision: %.2f%%, Recall: %.2f%%, Fscore: %.2f%%]\n" % (Ac, np.mean(P), np.mean(R), np.mean(F1)))

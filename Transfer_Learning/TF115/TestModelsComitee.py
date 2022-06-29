@@ -35,8 +35,8 @@ parser.add_argument('--csvfile_name_train', dest = 'csvfile_name_train', type = 
 parser.add_argument('--csvfile_name_test', dest = 'csvfile_name_test', type = str, default = 'OTUS_Image_Classification_F1_Lithology_MS_Ltd.csv', help = 'CSV file name')
 parser.add_argument('--dataset_main_path', dest='dataset_main_path', type=str, default='/datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/', help='Main path of the dataset images')
 #parser.add_argument('--checkpoint_name', dest='checkpoint_name', default='ResNetV2_50/Model_CNN_ResNetV2_50_OTUS_Image_Classification_F1_Morphology.csv', help='Checkpoints folder name')
-parser.add_argument('--checkpoints_main_path', dest='checkpoints_main_path', type=str, default='/datawork/EXPERIMENTS/', help='Path where checkpoints have been saved' )
-parser.add_argument('--results_main_path', dest = 'results_main_path', default = '/datawork/EXPERIMENTS/', help = 'Path where the results files will be saved')
+parser.add_argument('--checkpoints_main_path', dest='checkpoints_main_path', type=str, default='/datawork/EXPERIMENTS', help='Path where checkpoints have been saved' )
+parser.add_argument('--results_main_path', dest = 'results_main_path', default = '/datawork/EXPERIMENTS', help = 'Path where the results files will be saved')
 
 args = parser.parse_args()
 
@@ -51,8 +51,6 @@ def main():
         os.makedirs(args.results_main_path)
 
     args.results_dir = args.results_main_path + args.dataset_name + '_results/Comitee_' + str(len(args.backbone_names)) + '_Train_' + args.csvfile_name_train + '_Test_' + args.csvfile_name_test + '/'
-    print(args.results_dir)
-    sys.exit()
     print("Dataset pre-processing...")
     if args.dataset_name == 'SUIM':
         dataset = SUIM(args)
@@ -63,26 +61,22 @@ def main():
 
     checkpoint_files = os.listdir(args.checkpoint_dir)
 
-    for i in range(len(checkpoint_files)):
-        model_folder = checkpoint_files[i]
+    if len(checkpoint_files) > 0:
+        model_folder = checkpoint_files[0]
         args.trained_model_path = args.checkpoint_dir + '/' + model_folder + '/'
-
-        model_folder_fields = model_folder.split('_')
-        Trained_Name = ''
-        for f in range(len(model_folder_fields)):
-            if f != 0:
-                Trained_Name = Trained_Name + model_folder_fields[f] + '_'
         now = datetime.now()
         dt_string = now.strftime("%d_%m_%Y_%H_%M_%S")
-
-        args.save_results_dir = args.results_dir + args.learning_model + '_' + 'Trained_' + Trained_Name + 'Tested_' + dt_string +'/'
+        args.save_results_dir = args.results_dir + args.learning_model + '_' + 'Comitee_Tested_' + dt_string +'/'
         if not os.path.exists(args.save_results_dir):
             os.makedirs(args.save_results_dir)
 
         print('[*]Initializing the model...')
         model = Model(args, dataset)
-        print('[*]Model evaluation running...')
-        model.Test()
+        print('[*]Model Comitee evaluation running...')
+        #model.Test()
+    else:
+        print("The specified folder doesn't contain any valid checkpoint. Please check the folder path")
+
 
 if __name__ == '__main__':
     main()
