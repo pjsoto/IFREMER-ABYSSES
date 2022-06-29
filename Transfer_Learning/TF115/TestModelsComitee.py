@@ -14,7 +14,7 @@ parser.add_argument('--train_task', dest='train_task', type=str, default='Image_
 parser.add_argument('--learning_model', dest='learning_model', type=str, default='CNN', help='Learning model used')
 parser.add_argument('--backbone_names', dest='backbone_names', type=str, default=['Vgg','ResNetV1_18','ResNetV2_18','ResNetV1_50','ResNetV2_50'], help='users can chosse between resnet50 and movilenet')
 parser.add_argument('--pretrained_backbone', dest = 'pretrained_backbone', type=eval, choices=[True, False], default=False, help = 'Decide if the bockbone will be a pretrained one or will be trained from scratch')
-parser.add_argument('--labels_type', dest='labels_type', type=str, default='multiple_labels', help='users can choose between onehot_labels(Image Classification) or multiple_labels(Multilabel Image Classification)')
+parser.add_argument('--labels_type', dest='labels_type', type=str, default='onehot_labels', help='users can choose between onehot_labels(Image Classification) or multiple_labels(Multilabel Image Classification)')
 
 parser.add_argument('--phase', dest='phase', type = str,default='test', help='train, test, generate_image, create_dataset')
 #parser.add_argument('--feature_representation', dest = 'feature_representation', type=eval, choices=[True, False], default=False, help = 'This paraemeter is used to decide if a feature representation will be accomplished')

@@ -543,6 +543,7 @@ class Model():
                         args.trained_model_path = args.checkpoint_dir + '/' + model_folder + '/'
                         self.__init__(args, dataset)
                         batch_prediction_ = self.sess.run(self.prediction_c, feed_dict={self.data: data_batch})
+                        print(batch_prediction_)
                         if self.args.labels_type == 'onehot_labels':
                             voting_array[0, np.argmax(batch_prediction_, axis = 1)[0]] += 1
                             print(np.argmax(batch_prediction_, axis = 1)[0])
