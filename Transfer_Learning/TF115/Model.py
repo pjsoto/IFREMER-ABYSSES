@@ -540,7 +540,6 @@ class Model():
                     if len(checkpoint_files) > 0:
                         model_folder = checkpoint_files[0]
                         args.trained_model_path = args.checkpoint_dir + '/' + model_folder + '/'
-                        print(args.trained_model_path)
                         self.__init__(args, dataset)
                         batch_prediction_ = self.sess.run(self.prediction_c, feed_dict={self.data: data_batch})
                         if self.args.labels_type == 'onehot_labels':
