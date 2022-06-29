@@ -548,7 +548,7 @@ class Model():
             else:
                 #Fed-forward the data through the network
                 batch_prediction = self.sess.run(self.prediction_c, feed_dict={self.data: data_batch})
-
+            sys.exit()
             if self.args.feature_representation:
                 if len(self.feature_shape) > 2:
                     features[b * self.args.batch_size : (b + 1) * self.args.batch_size, :] = batch_features.reshape((batch_features.shape[0], batch_features.shape[1] * batch_features.shape[2] * batch_features.shape[3]))
