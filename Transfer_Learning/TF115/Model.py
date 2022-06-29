@@ -84,7 +84,6 @@ class Model():
                 sys.exit()
             if self.args.phase == 'gradcam':
                 self.gradients = self.grad_cam()
-
     def weighted_cat_cross_entropy(self, y_true, y_pred, class_weights):
         epsilon_ = tf.convert_to_tensor(epsilon(), dtype=y_pred.dtype.base_dtype)
         y_pred_ = tf.clip_by_value(y_pred, epsilon_, 1. - epsilon_)
@@ -542,12 +541,14 @@ class Model():
                         args.trained_model_path = args.checkpoint_dir + '/' + model_folder + '/'
                         print(args.trained_model_path)
                         self.__init__(args, dataset)
+                        batch_prediction = self.sess.run(self.prediction_c, feed_dict={self.data: data_batch})
+                        print(batch_prediction)
                     else:
                         print("The model folder not found")
             else:
                 #Fed-forward the data through the network
-                batch_prediction, batch_features = self.sess.run([self.prediction_c, self.features], feed_dict={self.data: data_batch})
-            sys.exit()
+                batch_prediction = self.sess.run(self.prediction_c, feed_dict={self.data: data_batch})
+
             if self.args.feature_representation:
                 if len(self.feature_shape) > 2:
                     features[b * self.args.batch_size : (b + 1) * self.args.batch_size, :] = batch_features.reshape((batch_features.shape[0], batch_features.shape[1] * batch_features.shape[2] * batch_features.shape[3]))
