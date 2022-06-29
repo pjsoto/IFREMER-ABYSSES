@@ -509,9 +509,9 @@ class Model():
         True_Labels = []
 
         f = open(self.args.save_results_dir + "Metrics_Performance.txt","a")
-        if self.args.feature_representation:
-            features = np.zeros((self.args.batch_size * num_batches_ts, np.prod(self.feature_shape)))
-            labels = np.zeros((self.args.batch_size * num_batches_ts, 1))
+        #if self.args.feature_representation:
+        #    features = np.zeros((self.args.batch_size * num_batches_ts, np.prod(self.feature_shape)))
+        #    labels = np.zeros((self.args.batch_size * num_batches_ts, 1))
         if self.args.labels_type == 'multiple_labels':
             True_Labels = np.zeros((num_batches_ts * self.args.batch_size, self.args.class_number))
             Predicted_Labels = np.zeros((num_batches_ts * self.args.batch_size, self.args.class_number))
@@ -540,6 +540,7 @@ class Model():
             else:
                 #Fed-forward the data through the network
                 batch_prediction, batch_features = self.sess.run([self.prediction_c, self.features], feed_dict={self.data: data_batch})
+            sys.exit()
             if self.args.feature_representation:
                 if len(self.feature_shape) > 2:
                     features[b * self.args.batch_size : (b + 1) * self.args.batch_size, :] = batch_features.reshape((batch_features.shape[0], batch_features.shape[1] * batch_features.shape[2] * batch_features.shape[3]))

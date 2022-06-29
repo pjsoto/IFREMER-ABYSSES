@@ -17,8 +17,8 @@ parser.add_argument('--pretrained_backbone', dest = 'pretrained_backbone', type=
 parser.add_argument('--labels_type', dest='labels_type', type=str, default='multiple_labels', help='users can choose between onehot_labels(Image Classification) or multiple_labels(Multilabel Image Classification)')
 
 parser.add_argument('--phase', dest='phase', type = str,default='test', help='train, test, generate_image, create_dataset')
-parser.add_argument('--feature_representation', dest = 'feature_representation', type=eval, choices=[True, False], default=False, help = 'This paraemeter is used to decide if a feature representation will be accomplished')
-parser.add_argument('--layer_index', dest = 'layer_index', type = int, default = 19, help = 'Definition of the layer where the feature will be taken')
+#parser.add_argument('--feature_representation', dest = 'feature_representation', type=eval, choices=[True, False], default=False, help = 'This paraemeter is used to decide if a feature representation will be accomplished')
+#parser.add_argument('--layer_index', dest = 'layer_index', type = int, default = 19, help = 'Definition of the layer where the feature will be taken')
 parser.add_argument('--batch_size', dest='batch_size', type=int, default=1, help='number images in batch')
 # Images pre-processing hyper-parameters
 parser.add_argument('--image_rows', dest='image_rows', type=int, default=1024, help='Image dimensions in rows')
@@ -75,7 +75,7 @@ def main():
         print('[*]Initializing the model...')
         model = Model(args, dataset)
         print('[*]Model Comitee evaluation running...')
-        #model.Test()
+        model.TestCommitee()
     else:
         print("The specified folder doesn't contain any valid checkpoint. Please check the folder path")
 
