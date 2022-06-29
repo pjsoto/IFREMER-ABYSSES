@@ -532,7 +532,6 @@ class Model():
             #
             if len(self.args.backbone_names) > 0:
                 voting_array = np.zeros((1 , self.dataset.class_number))
-                print(voting_array)
                 for backbone in self.args.backbone_names:
                     args.backbone_name = backbone
                     args.checkpoint_name =  backbone + "/Model_CNN_" + backbone + "_" + self.args.csvfile_name_train
@@ -543,23 +542,17 @@ class Model():
                         args.trained_model_path = args.checkpoint_dir + '/' + model_folder + '/'
                         self.__init__(args, dataset)
                         batch_prediction_ = self.sess.run(self.prediction_c, feed_dict={self.data: data_batch})
-                        print(batch_prediction_)
                         if self.args.labels_type == 'onehot_labels':
                             voting_array[0, np.argmax(batch_prediction_, axis = 1)[0]] += 1
-                            print(np.argmax(batch_prediction_, axis = 1)[0])
-                            print(voting_array)
                         if self.args.labels_type == 'multiple_labels':
                             y_pred = ((batch_prediction_ > 0.5) * 1.0)
                             voting_array += y_pred
-
                     else:
                         print("The model folder not found")
             else:
                 #Fed-forward the data through the network
                 batch_prediction = self.sess.run(self.prediction_c, feed_dict={self.data: data_batch})
 
-            print(voting_array)
-            sys.exit()
             if self.args.labels_type == 'onehot_labels':
                 y_pred = np.argmax(batch_prediction, axis = 1)
                 y_true = np.argmax(labels_batch, axis = 1)
