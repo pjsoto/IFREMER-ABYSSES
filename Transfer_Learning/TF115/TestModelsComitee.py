@@ -57,6 +57,7 @@ def main():
     if args.dataset_name == 'IFREMERData':
         dataset = IFREMER(args)
     if args.dataset_name == 'OTUSIFREMER_IMAGELABEL':
+        args.csvfile_name = args.csvfile_name_test
         dataset = OTUSIFREMER_IMAGELABEL(args)
 
     checkpoint_files = os.listdir(args.checkpoint_dir)
