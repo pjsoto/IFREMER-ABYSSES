@@ -30,13 +30,13 @@ parser.add_argument('--split_patch',dest='split_patch' ,type=eval, choices=[True
 parser.add_argument('--overlap_porcent', dest = 'overlap_porcent', type = float, default = 0, help = 'Specifies the overlap between the pateches extracted from the images')
 # Images dir and names
 parser.add_argument('--dataset_name', dest='dataset_name', type = str, default='OTUSIFREMER_IMAGELABEL', help = 'Dataset Name: SUIM')
-parser.add_argument('--dataset_csv_main_path', dest='dataset_csv_main_path', type=str, default='D:/DATARMOR/DATA/CSVs/OTUS_2018/', help='Dataset CSV main path')
-parser.add_argument('--csvfile_name_train', dest = 'csvfile_name_train', type = str, default = 'OTUS_Image_Classification_F1_Lithology_ET_Ltd.csv', help = 'CSV file name')
-parser.add_argument('--csvfile_name_test', dest = 'csvfile_name_test', type = str, default = 'OTUS_Image_Classification_F1_Lithology_ET_Ltd.csv', help = 'CSV file name')
-parser.add_argument('--dataset_main_path', dest='dataset_main_path', type=str, default='/d/DATA/Pedro_Work/IFREMER_Work/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/', help='Main path of the dataset images')
+parser.add_argument('--dataset_csv_main_path', dest='dataset_csv_main_path', type=str, default='/datawork/DATA/CSVs/OTUS_2018/', help='Dataset CSV main path')
+parser.add_argument('--csvfile_name_train', dest = 'csvfile_name_train', type = str, default = 'OTUS_Image_Classification_F1_Lithology_MS_Ltd.csv', help = 'CSV file name')
+parser.add_argument('--csvfile_name_test', dest = 'csvfile_name_test', type = str, default = 'OTUS_Image_Classification_F1_Lithology_MS_Ltd.csv', help = 'CSV file name')
+parser.add_argument('--dataset_main_path', dest='dataset_main_path', type=str, default='/datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/', help='Main path of the dataset images')
 #parser.add_argument('--checkpoint_name', dest='checkpoint_name', default='ResNetV2_50/Model_CNN_ResNetV2_50_OTUS_Image_Classification_F1_Morphology.csv', help='Checkpoints folder name')
-parser.add_argument('--checkpoints_main_path', dest='checkpoints_main_path', type=str, default='D:/DATARMOR/EXPERIMENTS/', help='Path where checkpoints have been saved' )
-parser.add_argument('--results_main_path', dest = 'results_main_path', default = 'D:/DATARMOR/EXPERIMENTS/RESULTS/', help = 'Path where the results files will be saved')
+parser.add_argument('--checkpoints_main_path', dest='checkpoints_main_path', type=str, default='/datawork/EXPERIMENTS/', help='Path where checkpoints have been saved' )
+parser.add_argument('--results_main_path', dest = 'results_main_path', default = '/datawork/EXPERIMENTS/', help = 'Path where the results files will be saved')
 
 args = parser.parse_args()
 
