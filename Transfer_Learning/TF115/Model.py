@@ -435,6 +435,7 @@ class Model():
 
             f.write('General results:\n')
             f.write("Accuracy: %.2f%%, Precision: %.2f%%, Recall: %.2f%%, Fscore: %.2f%%]\n" % (Ac, np.mean(P), np.mean(R), np.mean(F1)))
+            f.close()
 
     def GradCAM(self):
         self.args.save_results_dir = self.args.save_results_dir + 'gradcam/'
@@ -606,3 +607,4 @@ class Model():
 
             f.write('General results:\n')
             f.write("Accuracy: %.2f%%, Precision: %.2f%%, Recall: %.2f%%, Fscore: %.2f%%]\n" % (Ac, np.mean(P), np.mean(R), np.mean(F1)))
+            f.close()

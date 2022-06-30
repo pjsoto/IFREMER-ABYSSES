@@ -17,8 +17,6 @@ parser.add_argument('--pretrained_backbone', dest = 'pretrained_backbone', type=
 parser.add_argument('--labels_type', dest='labels_type', type=str, default='onehot_labels', help='users can choose between onehot_labels(Image Classification) or multiple_labels(Multilabel Image Classification)')
 
 parser.add_argument('--phase', dest='phase', type = str,default='test', help='train, test, generate_image, create_dataset')
-#parser.add_argument('--feature_representation', dest = 'feature_representation', type=eval, choices=[True, False], default=False, help = 'This paraemeter is used to decide if a feature representation will be accomplished')
-#parser.add_argument('--layer_index', dest = 'layer_index', type = int, default = 19, help = 'Definition of the layer where the feature will be taken')
 parser.add_argument('--batch_size', dest='batch_size', type=int, default=1, help='number images in batch')
 # Images pre-processing hyper-parameters
 parser.add_argument('--image_rows', dest='image_rows', type=int, default=1024, help='Image dimensions in rows')
@@ -34,7 +32,6 @@ parser.add_argument('--dataset_csv_main_path', dest='dataset_csv_main_path', typ
 parser.add_argument('--csvfile_name_train', dest = 'csvfile_name_train', type = str, default = 'OTUS_Image_Classification_F1_Lithology_MS_Ltd.csv', help = 'CSV file name')
 parser.add_argument('--csvfile_name_test', dest = 'csvfile_name_test', type = str, default = 'OTUS_Image_Classification_F1_Lithology_MS_Ltd.csv', help = 'CSV file name')
 parser.add_argument('--dataset_main_path', dest='dataset_main_path', type=str, default='/datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/', help='Main path of the dataset images')
-#parser.add_argument('--checkpoint_name', dest='checkpoint_name', default='ResNetV2_50/Model_CNN_ResNetV2_50_OTUS_Image_Classification_F1_Morphology.csv', help='Checkpoints folder name')
 parser.add_argument('--checkpoints_main_path', dest='checkpoints_main_path', type=str, default='/datawork/EXPERIMENTS', help='Path where checkpoints have been saved' )
 parser.add_argument('--results_main_path', dest = 'results_main_path', default = '/datawork/EXPERIMENTS', help = 'Path where the results files will be saved')
 
