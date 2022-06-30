@@ -28,7 +28,7 @@ if args.running_in == 'Datarmor_PBS':
 
 while c < len(CSV_FILES_NAMES_TRAIN):
     csvfile_name_train = CSV_FILES_NAMES_TRAIN[c]
-    csv_name_test = CSV_FILES_NAMES_TEST[c]
+    csvfile_name_test = CSV_FILES_NAMES_TEST[c]
     Dataset_main_path_train = DATASET_MAIN_PATH_TRAIN[c]
     Dataset_main_path_test = DATASET_MAIN_PATH_TEST[c]
     print(Dataset_main_path_train)
@@ -36,7 +36,7 @@ while c < len(CSV_FILES_NAMES_TRAIN):
     Schedule.append("python " + TestComitee_MAIN_COMMAND + " --train_task Image_Classification --learning_model CNN --backbone_names " + BACKBONE_NAMES + " --pretrained_backbone False --labels_type onehot_labels "
                     "--phase test "
                     "--image_rows 1024 --image_cols 1024 --image_channels 3 --new_size_rows 1024 --new_size_cols 1024 --split_patch False --overlap_porcent 0.25 "
-                    "--dataset_name OTUSIFREMER_IMAGELABEL --csvfile_name_train " + csvfile_name_train + " --csvfile_name_test " + csv_name_test + " "
+                    "--dataset_name OTUSIFREMER_IMAGELABEL --csvfile_name_train " + csvfile_name_train + " --csvfile_name_test " + csvfile_name_test + " "
                     "--dataset_csv_main_path /datawork/DATA/CSVs/OTUS_2018/ "
                     "--dataset_main_path " + Dataset_main_path_test + " "
                     "--checkpoints_main_path /datawork/EXPERIMENTS "
