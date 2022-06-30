@@ -31,7 +31,7 @@ while c < len(CSV_FILES_NAMES_TRAIN):
     csvfile_name_test = CSV_FILES_NAMES_TEST[c]
     Dataset_main_path_train = DATASET_MAIN_PATH_TRAIN[c]
     Dataset_main_path_test = DATASET_MAIN_PATH_TEST[c]
-    print(Dataset_main_path_train)
+    print(Dataset_main_path_test)
 
     Schedule.append("python " + TestComitee_MAIN_COMMAND + " --train_task Image_Classification --learning_model CNN --backbone_names " + BACKBONE_NAMES + " --pretrained_backbone False --labels_type onehot_labels "
                     "--phase test "
