@@ -15,7 +15,6 @@ Schedule = []
 c = 0
 
 tracking_list = []
-BACKBONE_NAMES  = ['Vgg', 'ResNetV1_18', 'ResNetV1_50', 'ResNetV2_18', 'ResNetV2_50', 'Xception']
 CSV_FILES_NAMES_TRAIN = ['OTUS_Image_Classification_F2_Lithology_MS_Ltd.csv','OTUS_Image_Classification_F3_Lithology_MS_Ltd.csv']
 CSV_FILES_NAMES_TEST  = ['OTUS_Image_Classification_F2_Lithology_MS_Ltd.csv','OTUS_Image_Classification_F3_Lithology_MS_Ltd.csv']
 DATASET_MAIN_PATH_TRAIN = ['/datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/']
@@ -33,7 +32,7 @@ while c < len(CSV_FILES_NAMES_TRAIN):
     Dataset_main_path_test = DATASET_MAIN_PATH_TEST[c]
     print(Dataset_main_path_test)
 
-    Schedule.append("python " + TestComitee_MAIN_COMMAND + " --train_task Image_Classification --learning_model CNN --backbone_names " + str(BACKBONE_NAMES) + " --pretrained_backbone False --labels_type onehot_labels "
+    Schedule.append("python " + TestComitee_MAIN_COMMAND + " --train_task Image_Classification --learning_model CNN --pretrained_backbone False --labels_type onehot_labels "
                     "--phase test "
                     "--image_rows 1024 --image_cols 1024 --image_channels 3 --new_size_rows 1024 --new_size_cols 1024 --split_patch False --overlap_porcent 0.25 "
                     "--dataset_name OTUSIFREMER_IMAGELABEL --csvfile_name_train " + csv_name_train + " --csvfile_name_test " + csv_name_test + " "
