@@ -547,16 +547,19 @@ class Model():
                         if self.args.labels_type == 'multiple_labels':
                             y_pred = ((batch_prediction_ > 0.5) * 1.0)
                             voting_array += y_pred
+                        batch_prediction = voting_array.copy()
                     else:
                         print("The model folder not found")
+
             else:
                 #Fed-forward the data through the network
                 batch_prediction = self.sess.run(self.prediction_c, feed_dict={self.data: data_batch})
 
+            print(batch_prediction)
             if self.args.labels_type == 'onehot_labels':
                 y_pred = np.argmax(batch_prediction, axis = 1)
                 y_true = np.argmax(labels_batch, axis = 1)
-
+                print(y_pred)
                 if self.args.split_patch:
                     print('Coming soon...')
                 else:
@@ -574,6 +577,7 @@ class Model():
                 else:
                     True_Labels[b * self.args.batch_size : (b + 1) * self.args.batch_size, :] = y_true
                     Predicted_Labels[b * self.args.batch_size : (b + 1) * self.args.batch_size, :] = y_pred
+
         #Metrics computation
         #In each class
         if self.args.labels_type == 'onehot_labels':
@@ -597,10 +601,6 @@ class Model():
             Ac, F1, P, R = compute_metrics(True_Labels, Predicted_Labels, 'macro')
             f.write("Accuracy: %.2f%%, Precision: %.2f%%, Recall: %.2f%%, Fscore: %.2f%%]\n" % (Ac, P, R, F1))
             f.close()
-
-            if self.args.feature_representation:
-                features_projected = self.tsne_features(features)
-                plottsne_features(features_projected, labels, save_path = self.args.save_results_dir , epoch = 0, USE_LABELS = True)
         if self.args.labels_type == 'multiple_labels':
             Ac, F1, P, R = compute_metrics(True_Labels, Predicted_Labels, None)
             for c in range(self.dataset.class_number):
