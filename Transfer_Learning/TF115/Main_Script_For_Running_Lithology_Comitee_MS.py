@@ -33,7 +33,7 @@ while c < len(CSV_FILES_NAMES_TRAIN):
     Dataset_main_path_test = DATASET_MAIN_PATH_TEST[c]
     print(Dataset_main_path_test)
 
-    Schedule.append("python " + TestComitee_MAIN_COMMAND + " --train_task Image_Classification --learning_model CNN --backbone_names " + BACKBONE_NAMES + " --pretrained_backbone False --labels_type onehot_labels "
+    Schedule.append("python " + TestComitee_MAIN_COMMAND + " --train_task Image_Classification --learning_model CNN --backbone_names " + str(BACKBONE_NAMES) + " --pretrained_backbone False --labels_type onehot_labels "
                     "--phase test "
                     "--image_rows 1024 --image_cols 1024 --image_channels 3 --new_size_rows 1024 --new_size_cols 1024 --split_patch False --overlap_porcent 0.25 "
                     "--dataset_name OTUSIFREMER_IMAGELABEL --csvfile_name_train " + csv_name_train + " --csvfile_name_test " + csv_name_test + " "
