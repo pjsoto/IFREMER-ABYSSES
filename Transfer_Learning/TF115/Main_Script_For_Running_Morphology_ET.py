@@ -20,7 +20,7 @@ if args.phase == 'train':
     c = 0
     continue_ = False
     tracking_list = []
-    BACKBONE_NAME  = ['Vgg', 'ResNetV1_18', 'ResNetV1_50', 'ResNetV2_18', 'ResNetV2_50', 'MobileNet', 'Xception']
+    BACKBONE_NAME  = ['Vgg', 'ResNetV1_18', 'ResNetV1_50', 'ResNetV2_18', 'ResNetV2_50', 'Xception']
     CSV_FILES_NAMES_TRAIN = ['OTUS_Image_Classification_F1_Morphology_ET_Ltd.csv', 'OTUS_Image_Classification_F2_Morphology_ET_Ltd.csv','OTUS_Image_Classification_F3_Morphology_ET_Ltd.csv']
     CSV_FILES_NAMES_TEST  = ['OTUS_Image_Classification_F1_Morphology_ET_Ltd.csv', 'OTUS_Image_Classification_F2_Morphology_ET_Ltd.csv','OTUS_Image_Classification_F3_Morphology_ET_Ltd.csv']
     DATASET_MAIN_PATH_TRAIN = ['/datawork/DATA/OTUS_2018_Doneesbrutes_EiffelTower1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_EiffelTower1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_EiffelTower1024/']
@@ -99,9 +99,10 @@ if args.phase == 'train':
         b += 1
 
 for i in range(len(Schedule)):
-    t = open(args.tracking_files_path + "General_tracking_MPET.txt", "a")
-    t.write(tracking_list[i] + "\n")
-    t.close()
+    if args.tracking_training:
+        t = open(args.tracking_files_path + "General_tracking_MPET.txt", "a")
+        t.write(tracking_list[i] + "\n")
+        t.close()
     os.system(Schedule[i])
 
 if args.tracking_training:
