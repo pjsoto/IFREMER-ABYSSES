@@ -21,6 +21,13 @@ if args.phase == 'train':
     continue_ = False
     tracking_list = []
     BACKBONE_NAME  = ['Vgg', 'ResNetV1_18', 'ResNetV1_50', 'ResNetV2_18', 'ResNetV2_50', 'Xception']
+
+
+    #CSV_FILES_NAMES_TRAIN = ['OTUS_Image_Classification_F1_Shells_White_fragments_WC_Ltd.csv','OTUS_Image_Classification_F2_Shells_White_fragments_WC_Ltd.csv','OTUS_Image_Classification_F3_Shells_White_fragments_WC_Ltd.csv']
+    #CSV_FILES_NAMES_TEST  = ['OTUS_Image_Classification_F1_Shells_White_fragments_WC_Ltd.csv','OTUS_Image_Classification_F2_Shells_White_fragments_WC_Ltd.csv','OTUS_Image_Classification_F3_Shells_White_fragments_WC_Ltd.csv']
+    #DATASET_MAIN_PATH_TRAIN = ['/datawork/DATA/OTUS_2018_Doneesbrutes_WhiteCastle1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_WhiteCastle1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_WhiteCastle1024/']
+    #DATASET_MAIN_PATH_TEST  = ['/datawork/DATA/OTUS_2018_Doneesbrutes_WhiteCastle1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_WhiteCastle1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_WhiteCastle1024/']
+
     CSV_FILES_NAMES_TRAIN = ['OTUS_Image_Classification_F1_Shells_White_fragments_WC_Ltd.csv', 'OTUS_Image_Classification_F2_Shells_White_fragments_WC_Ltd.csv','OTUS_Image_Classification_F3_Shells_White_fragments_WC_Ltd.csv','OTUS_Image_Classification_F1_Shells_White_fragments_WC_Ltd.csv', 'OTUS_Image_Classification_F2_Shells_White_fragments_WC_Ltd.csv','OTUS_Image_Classification_F3_Shells_White_fragments_WC_Ltd.csv']
     CSV_FILES_NAMES_TEST  = ['OTUS_Image_Classification_F1_Shells_White_fragments_MS_Ltd.csv', 'OTUS_Image_Classification_F2_Shells_White_fragments_MS_Ltd.csv','OTUS_Image_Classification_F3_Shells_White_fragments_MS_Ltd.csv','OTUS_Image_Classification_F1_Shells_White_fragments_ET_Ltd.csv', 'OTUS_Image_Classification_F2_Shells_White_fragments_ET_Ltd.csv','OTUS_Image_Classification_F3_Shells_White_fragments_ET_Ltd.csv']
     DATASET_MAIN_PATH_TRAIN = ['/datawork/DATA/OTUS_2018_Doneesbrutes_WhiteCastle1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_WhiteCastle1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_WhiteCastle1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_WhiteCastle1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_WhiteCastle1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_WhiteCastle1024/']
