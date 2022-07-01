@@ -15,10 +15,10 @@ Schedule = []
 c = 0
 
 tracking_list = []
-CSV_FILES_NAMES_TRAIN = ['OTUS_Image_Classification_F1_Lithology_WC_Ltd.csv','OTUS_Image_Classification_F2_Lithology_WC_Ltd.csv','OTUS_Image_Classification_F3_Lithology_WC_Ltd.csv']
-CSV_FILES_NAMES_TEST  = ['OTUS_Image_Classification_F1_Lithology_WC_Ltd.csv','OTUS_Image_Classification_F2_Lithology_WC_Ltd.csv','OTUS_Image_Classification_F3_Lithology_WC_Ltd.csv']
-DATASET_MAIN_PATH_TRAIN = ['/datawork/DATA/OTUS_2018_Doneesbrutes_WhiteCastle1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_WhiteCastle1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_WhiteCastle1024/']
-DATASET_MAIN_PATH_TEST  = ['/datawork/DATA/OTUS_2018_Doneesbrutes_WhiteCastle1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_WhiteCastle1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_WhiteCastle1024/']
+CSV_FILES_NAMES_TRAIN = ['OTUS_Image_Classification_F1_Lithology_WC_Ltd.csv','OTUS_Image_Classification_F2_Lithology_WC_Ltd.csv','OTUS_Image_Classification_F3_Lithology_WC_Ltd.csv','OTUS_Image_Classification_F1_Lithology_WC_Ltd.csv','OTUS_Image_Classification_F2_Lithology_WC_Ltd.csv','OTUS_Image_Classification_F3_Lithology_WC_Ltd.csv']
+CSV_FILES_NAMES_TEST  = ['OTUS_Image_Classification_F1_Lithology_MS_Ltd.csv','OTUS_Image_Classification_F2_Lithology_MS_Ltd.csv','OTUS_Image_Classification_F3_Lithology_MS_Ltd.csv','OTUS_Image_Classification_F1_Lithology_ET_Ltd.csv','OTUS_Image_Classification_F2_Lithology_ET_Ltd.csv','OTUS_Image_Classification_F3_Lithology_ET_Ltd.csv']
+DATASET_MAIN_PATH_TRAIN = ['/datawork/DATA/OTUS_2018_Doneesbrutes_WhiteCastle1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_WhiteCastle1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_WhiteCastle1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_WhiteCastle1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_WhiteCastle1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_WhiteCastle1024/']
+DATASET_MAIN_PATH_TEST  = ['/datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_EiffelTower1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_EiffelTower1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_EiffelTower1024/']
 
 if args.running_in == 'Datarmor_Interactive':
     TestComitee_MAIN_COMMAND = "TestModelsComitee.py"
