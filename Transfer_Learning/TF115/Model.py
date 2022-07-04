@@ -585,13 +585,13 @@ class Model():
                     Predicted_Labels[b * self.args.batch_size : (b + 1) * self.args.batch_size, :] = y_pred
 
             if self.args.save_images_and_predictions:
-                true_names = '_'
-                predicted_names = '_'
+                true_names = []
+                predicted_names = []
                 for i in range(len(y_true)):
                     if y_true[i] == 1:
-                        true_names += self.dataset.class_names[i] + '_'
+                        true_names.append(self.dataset.class_names[i])
                     if y_pred[i] == 1:
-                        predicted_names += self.dataset.class_names[i] + '_'
+                        predicted_names.append(self.dataset.class_names[i])
 
                 save_path = self.args.save_results_dir_ip + file_name + '_' + 'TL_' + str(true_names) + 'PL_' + str(predicted_names) + '.png'
 
