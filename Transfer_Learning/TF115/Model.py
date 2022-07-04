@@ -592,7 +592,8 @@ class Model():
                         true_names += self.dataset.class_names[i] + '_'
                     if y_pred[i] == 1:
                         predicted_names += self.dataset.class_names[i] + '_'
-                save_path = self.args.save_results_dir_ip + file_name + '_' + 'TL_' + true_names + 'PL_' + predicted_names + '.png'
+
+                save_path = self.args.save_results_dir_ip + file_name + '_' + 'TL_' + str(true_names) + 'PL_' + str(predicted_names) + '.png'
 
                 plt.figure(figsize=(20,20))
                 ax = plt.subplot(111)
