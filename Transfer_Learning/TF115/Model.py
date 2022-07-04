@@ -588,9 +588,9 @@ class Model():
                 true_names = []
                 predicted_names = []
                 for i in range(len(y_true)):
-                    if y_true[0, i] == 1:
+                    if y_true[i] == 1:
                         true_names += self.dataset.class_names[i] + '_'
-                    if y_pred[0, i] == 1:
+                    if y_pred[i] == 1:
                         predicted_names += self.dataset.class_names[i] + '_'
                 save_path = self.args.save_results_dir_ip + file_name + '_' + 'TL_' + true_names + 'PL_' + predicted_names + '.png'
 
