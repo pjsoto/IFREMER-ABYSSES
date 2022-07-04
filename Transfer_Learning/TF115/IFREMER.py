@@ -16,6 +16,14 @@ class OTUSIFREMER_IMAGELABEL():
         self.args = args
         CSV_FILE_PATH = self.args.dataset_csv_main_path + self.args.csvfile_name
 
+        if 'Shells_White_fragments' in self.args.csvfile_name:
+            self.class_names = ['0-10%','10-50%','50-100%']
+        if 'Lithology' in self.args.csvfile_name:
+            self.class_names = ['Slab','Sulfurs','Vocanoclastic']
+        if 'Morphology' in self.args.csvfile_name:
+            self.class_names = ['Fractured','Marbled','Scree/rubbles', 'Sedimented']
+
+
         datadf=pd.read_csv(CSV_FILE_PATH)
         datadf = datadf.sample(frac=1)
         #Computing the number of classes
