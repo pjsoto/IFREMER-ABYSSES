@@ -585,8 +585,8 @@ class Model():
                     Predicted_Labels[b * self.args.batch_size : (b + 1) * self.args.batch_size, :] = y_pred
 
             if self.args.save_images_and_predictions:
-                true_names = []
-                predicted_names = []
+                true_names = '_'
+                predicted_names = '_'
                 for i in range(len(y_true)):
                     if y_true[i] == 1:
                         true_names += self.dataset.class_names[i] + '_'
