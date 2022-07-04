@@ -18,6 +18,8 @@ parser.add_argument('--labels_type', dest='labels_type', type=str, default='oneh
 
 parser.add_argument('--phase', dest='phase', type = str,default='test', help='train, test, generate_image, create_dataset')
 parser.add_argument('--batch_size', dest='batch_size', type=int, default=1, help='number images in batch')
+parser.add_argument('--save_images_and_predictions', dest = 'save_images_and_predictions', type=eval, choices=[True, False], default=False, help = 'Decide if will be saved images and their predictions')
+parser.add_argument('--save_text_results', dest = 'save_text_results', type=eval, choices=[True, False], default=False, help = 'Decide if will be saved results in text file')
 # Images pre-processing hyper-parameters
 parser.add_argument('--image_rows', dest='image_rows', type=int, default=1024, help='Image dimensions in rows')
 parser.add_argument('--image_cols', dest='image_cols', type=int, default=1024, help='Image dimensions in columns')

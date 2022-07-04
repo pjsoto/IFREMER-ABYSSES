@@ -508,7 +508,12 @@ class Model():
         Predicted_Labels = []
         True_Labels = []
 
-        f = open(self.args.save_results_dir + "Metrics_Performance.txt","a")
+        if self.args.save_text_results:
+            f = open(self.args.save_results_dir + "Metrics_Performance.txt","a")
+        if self.args.save_images_and_predictions:
+            self.args.save_results_dir_ip = self.args.save_results_dir + 'images_and_predictions/'
+            if not os.path.exists(self.args.save_results_dir_ip):
+                os.makedirs(self.args.save_results_dir_ip)
         #if self.args.feature_representation:
         #    features = np.zeros((self.args.batch_size * num_batches_ts, np.prod(self.feature_shape)))
         #    labels = np.zeros((self.args.batch_size * num_batches_ts, 1))
@@ -519,6 +524,8 @@ class Model():
         for b in batchs:
             paths_batch = self.dataset.Test_Paths[b * self.args.batch_size : (b + 1) * self.args.batch_size]
             labels_batch = self.dataset.Test_Labels[b * self.args.batch_size : (b + 1) * self.args.batch_size]
+
+            file_name = paths_batch[0].split('/')[-1][:-4]
 
             if self.args.split_patch:
                 print('Comming soon...')
@@ -577,34 +584,51 @@ class Model():
                     True_Labels[b * self.args.batch_size : (b + 1) * self.args.batch_size, :] = y_true
                     Predicted_Labels[b * self.args.batch_size : (b + 1) * self.args.batch_size, :] = y_pred
 
+            if self.args.save_images_and_predictions:
+                true_names = []
+                predicted_names = []
+                for i in range(len(y_true[0])):
+                    if y_true[0, i] == 1:
+                        true_names += self.dataset.class_names[i] + '_'
+                    if y_pred[0, i] == 1:
+                        predicted_names += self.dataset.class_names[i] + '_'
+                save_path = self.args.save_results_dir + file_name + '_' + 'TL_' + true_names + 'PL_' + predicted_names + '.png'
+
+                plt.figure(figsize=(20,20))
+                ax = plt.subplot(111)
+                plt.imshow(data_batch[0, :, :, :])
+                plt.savefig(save_path)
+                plt.clf()
+
         #Metrics computation
         #In each class
-        if self.args.labels_type == 'onehot_labels':
-            f.write('Model performance in each class:\n')
-            for c in range(self.dataset.class_number):
-                y_pred_ = np.array(Predicted_Labels.copy())
-                y_true_ = np.array(True_Labels.copy())
+        if self.args.save_text_results:
+            if self.args.labels_type == 'onehot_labels':
+                f.write('Model performance in each class:\n')
+                for c in range(self.dataset.class_number):
+                    y_pred_ = np.array(Predicted_Labels.copy())
+                    y_true_ = np.array(True_Labels.copy())
 
-                y_pred_[y_pred_ != c] = -1
-                y_pred_[y_pred_ == c] = 1
-                y_pred_[y_pred_ == -1] = 0
+                    y_pred_[y_pred_ != c] = -1
+                    y_pred_[y_pred_ == c] = 1
+                    y_pred_[y_pred_ == -1] = 0
 
-                y_true_[y_true_ != c] = -1
-                y_true_[y_true_ == c] = 1
-                y_true_[y_true_ == -1] = 0
+                    y_true_[y_true_ != c] = -1
+                    y_true_[y_true_ == c] = 1
+                    y_true_[y_true_ == -1] = 0
 
-                Ac, F1, P, R = compute_metrics(y_true_, y_pred_, 'binary')
-                f.write("Class %d, accuracy: %.2f%%, precision: %.2f%%, recall: %.2f%%, fscore: %.2f%%]\n" % (c, Ac, P, R, F1))
+                    Ac, F1, P, R = compute_metrics(y_true_, y_pred_, 'binary')
+                    f.write("Class %d, accuracy: %.2f%%, precision: %.2f%%, recall: %.2f%%, fscore: %.2f%%]\n" % (c, Ac, P, R, F1))
 
-            f.write('General results:\n')
-            Ac, F1, P, R = compute_metrics(True_Labels, Predicted_Labels, 'macro')
-            f.write("Accuracy: %.2f%%, Precision: %.2f%%, Recall: %.2f%%, Fscore: %.2f%%]\n" % (Ac, P, R, F1))
-            f.close()
-        if self.args.labels_type == 'multiple_labels':
-            Ac, F1, P, R = compute_metrics(True_Labels, Predicted_Labels, None)
-            for c in range(self.dataset.class_number):
-                f.write("Class %d, precision: %.2f%%, recall: %.2f%%, fscore: %.2f%%]\n" % (c, P[c], R[c], F1[c]))
+                f.write('General results:\n')
+                Ac, F1, P, R = compute_metrics(True_Labels, Predicted_Labels, 'macro')
+                f.write("Accuracy: %.2f%%, Precision: %.2f%%, Recall: %.2f%%, Fscore: %.2f%%]\n" % (Ac, P, R, F1))
+                f.close()
+            if self.args.labels_type == 'multiple_labels':
+                Ac, F1, P, R = compute_metrics(True_Labels, Predicted_Labels, None)
+                for c in range(self.dataset.class_number):
+                    f.write("Class %d, precision: %.2f%%, recall: %.2f%%, fscore: %.2f%%]\n" % (c, P[c], R[c], F1[c]))
 
-            f.write('General results:\n')
-            f.write("Accuracy: %.2f%%, Precision: %.2f%%, Recall: %.2f%%, Fscore: %.2f%%]\n" % (Ac, np.mean(P), np.mean(R), np.mean(F1)))
-            f.close()
+                f.write('General results:\n')
+                f.write("Accuracy: %.2f%%, Precision: %.2f%%, Recall: %.2f%%, Fscore: %.2f%%]\n" % (Ac, np.mean(P), np.mean(R), np.mean(F1)))
+                f.close()
