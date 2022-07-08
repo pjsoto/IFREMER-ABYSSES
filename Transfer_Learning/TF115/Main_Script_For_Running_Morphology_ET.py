@@ -22,15 +22,17 @@ if args.phase == 'train':
     tracking_list = []
     BACKBONE_NAME  = ['Vgg', 'ResNetV1_18', 'ResNetV1_50', 'ResNetV2_18', 'ResNetV2_50', 'Xception']
 
-    #CSV_FILES_NAMES_TRAIN = ['OTUS_Image_Classification_F1_Morphology_ET_Ltd.csv', 'OTUS_Image_Classification_F2_Morphology_ET_Ltd.csv','OTUS_Image_Classification_F3_Morphology_ET_Ltd.csv']
-    #CSV_FILES_NAMES_TEST  = ['OTUS_Image_Classification_F1_Morphology_ET_Ltd.csv', 'OTUS_Image_Classification_F2_Morphology_ET_Ltd.csv','OTUS_Image_Classification_F3_Morphology_ET_Ltd.csv']
-    #DATASET_MAIN_PATH_TRAIN = ['/datawork/DATA/OTUS_2018_Doneesbrutes_EiffelTower1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_EiffelTower1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_EiffelTower1024/']
-    #DATASET_MAIN_PATH_TEST  = ['/datawork/DATA/OTUS_2018_Doneesbrutes_EiffelTower1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_EiffelTower1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_EiffelTower1024/']
+    BACKBONE_NAME  = ['Xception']
 
-    CSV_FILES_NAMES_TRAIN = ['OTUS_Image_Classification_F1_Morphology_ET_Ltd.csv', 'OTUS_Image_Classification_F2_Morphology_ET_Ltd.csv','OTUS_Image_Classification_F3_Morphology_ET_Ltd.csv', 'OTUS_Image_Classification_F1_Morphology_ET_Ltd.csv', 'OTUS_Image_Classification_F2_Morphology_ET_Ltd.csv','OTUS_Image_Classification_F3_Morphology_ET_Ltd.csv']
-    CSV_FILES_NAMES_TEST  = ['OTUS_Image_Classification_F1_Morphology_MS_Ltd.csv', 'OTUS_Image_Classification_F2_Morphology_MS_Ltd.csv','OTUS_Image_Classification_F3_Morphology_MS_Ltd.csv', 'OTUS_Image_Classification_F1_Morphology_WC_Ltd.csv', 'OTUS_Image_Classification_F2_Morphology_WC_Ltd.csv','OTUS_Image_Classification_F3_Morphology_WC_Ltd.csv']
-    DATASET_MAIN_PATH_TRAIN = ['/datawork/DATA/OTUS_2018_Doneesbrutes_EiffelTower1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_EiffelTower1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_EiffelTower1024/', '/datawork/DATA/OTUS_2018_Doneesbrutes_EiffelTower1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_EiffelTower1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_EiffelTower1024/']
-    DATASET_MAIN_PATH_TEST  = ['/datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/', '/datawork/DATA/OTUS_2018_Doneesbrutes_WhiteCastle1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_WhiteCastle1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_WhiteCastle1024/']
+    CSV_FILES_NAMES_TRAIN = ['OTUS_Image_Classification_F1_Morphology_ET_Ltd.csv', 'OTUS_Image_Classification_F2_Morphology_ET_Ltd.csv','OTUS_Image_Classification_F3_Morphology_ET_Ltd.csv']
+    CSV_FILES_NAMES_TEST  = ['OTUS_Image_Classification_F1_Morphology_ET_Ltd.csv', 'OTUS_Image_Classification_F2_Morphology_ET_Ltd.csv','OTUS_Image_Classification_F3_Morphology_ET_Ltd.csv']
+    DATASET_MAIN_PATH_TRAIN = ['/datawork/DATA/OTUS_2018_Doneesbrutes_EiffelTower1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_EiffelTower1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_EiffelTower1024/']
+    DATASET_MAIN_PATH_TEST  = ['/datawork/DATA/OTUS_2018_Doneesbrutes_EiffelTower1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_EiffelTower1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_EiffelTower1024/']
+
+    #CSV_FILES_NAMES_TRAIN = ['OTUS_Image_Classification_F1_Morphology_ET_Ltd.csv', 'OTUS_Image_Classification_F2_Morphology_ET_Ltd.csv','OTUS_Image_Classification_F3_Morphology_ET_Ltd.csv', 'OTUS_Image_Classification_F1_Morphology_ET_Ltd.csv', 'OTUS_Image_Classification_F2_Morphology_ET_Ltd.csv','OTUS_Image_Classification_F3_Morphology_ET_Ltd.csv']
+    #CSV_FILES_NAMES_TEST  = ['OTUS_Image_Classification_F1_Morphology_MS_Ltd.csv', 'OTUS_Image_Classification_F2_Morphology_MS_Ltd.csv','OTUS_Image_Classification_F3_Morphology_MS_Ltd.csv', 'OTUS_Image_Classification_F1_Morphology_WC_Ltd.csv', 'OTUS_Image_Classification_F2_Morphology_WC_Ltd.csv','OTUS_Image_Classification_F3_Morphology_WC_Ltd.csv']
+    #DATASET_MAIN_PATH_TRAIN = ['/datawork/DATA/OTUS_2018_Doneesbrutes_EiffelTower1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_EiffelTower1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_EiffelTower1024/', '/datawork/DATA/OTUS_2018_Doneesbrutes_EiffelTower1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_EiffelTower1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_EiffelTower1024/']
+    #DATASET_MAIN_PATH_TEST  = ['/datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/', '/datawork/DATA/OTUS_2018_Doneesbrutes_WhiteCastle1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_WhiteCastle1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_WhiteCastle1024/']
 
     if args.running_in == 'Datarmor_Interactive':
         Train_MAIN_COMMAND = "TrainModel.py"
@@ -71,13 +73,13 @@ if args.phase == 'train':
                 continue_training = True
                 continue_ = False
 
-            #Schedule.append("python " + Train_MAIN_COMMAND + " --train_task Image_Classification --learning_model CNN --backbone_name " + backbone_name + " --pretrained_backbone False --labels_type multiple_labels "
-            #                "--weights_definition automatic --learning_ratedecay True --lr 0.0001 --batch_size 5 --epochs 100 --patience 10 --runs 1 --phase train --tracking_training " + str(args.tracking_training) + " --continue_training " + str(continue_training) + " --identifier Morphology_ET --optimizer Adam --feature_representation False --layer_index " + layer_position + " "
-            #                "--image_rows 1024 --image_cols 1024 --image_channels 3 --new_size_rows 224 --new_size_cols 224 --split_patch True --data_augmentation True --overlap_porcent 0.25 "
-            #                "--dataset_name OTUSIFREMER_IMAGELABEL --csvfile_name " + csv_name_train + " --checkpoint_name " + backbone_name + "/Model_CNN_" + backbone_name + "_" + csv_name_train + " "
-            #                "--dataset_csv_main_path /datawork/DATA/CSVs/OTUS_2018/ "
-            #                "--dataset_main_path " + Dataset_main_path_train + " "
-            #                "--checkpoints_main_path /datawork/EXPERIMENTS/")
+            Schedule.append("python " + Train_MAIN_COMMAND + " --train_task Image_Classification --learning_model CNN --backbone_name " + backbone_name + " --pretrained_backbone False --labels_type multiple_labels "
+                            "--weights_definition automatic --learning_ratedecay True --lr 0.0001 --batch_size 5 --epochs 100 --patience 10 --runs 1 --phase train --tracking_training " + str(args.tracking_training) + " --continue_training " + str(continue_training) + " --identifier Morphology_ET --optimizer Adam --feature_representation False --layer_index " + layer_position + " "
+                            "--image_rows 1024 --image_cols 1024 --image_channels 3 --new_size_rows 224 --new_size_cols 224 --split_patch True --data_augmentation True --overlap_porcent 0.25 "
+                            "--dataset_name OTUSIFREMER_IMAGELABEL --csvfile_name " + csv_name_train + " --checkpoint_name " + backbone_name + "/Model_CNN_" + backbone_name + "_" + csv_name_train + " "
+                            "--dataset_csv_main_path /datawork/DATA/CSVs/OTUS_2018/ "
+                            "--dataset_main_path " + Dataset_main_path_train + " "
+                            "--checkpoints_main_path /datawork/EXPERIMENTS/")
 
             if args.tracking_training:
                 tracking_list.append(str(b) + "/" + str(c) + "/Test")
