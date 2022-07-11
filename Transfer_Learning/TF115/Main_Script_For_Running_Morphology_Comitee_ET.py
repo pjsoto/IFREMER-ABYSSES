@@ -48,7 +48,7 @@ while c < len(CSV_FILES_NAMES_TRAIN):
                     "--results_main_path /datawork/EXPERIMENTS")
 
     c += 1
-
+    sys.exit()
 
 for i in range(len(Schedule)):
     os.system(Schedule[i])
