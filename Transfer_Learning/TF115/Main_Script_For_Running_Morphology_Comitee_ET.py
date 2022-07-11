@@ -52,4 +52,4 @@ while c < len(CSV_FILES_NAMES_TRAIN):
 
 for i in range(len(Schedule)):
     os.system(Schedule[i])
-    sys.exit()
+    
