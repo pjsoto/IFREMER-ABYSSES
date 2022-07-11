@@ -20,7 +20,7 @@ if args.phase == 'train':
     c = 0
     continue_ = False
     tracking_list = []
-    BACKBONE_NAME  = ['Vgg', 'ResNetV1_18', 'ResNetV1_50', 'ResNetV2_18', 'ResNetV2_50', 'MobileNet', 'Xception']
+    BACKBONE_NAME  = ['Vgg', 'ResNetV1_18', 'ResNetV1_50', 'ResNetV2_18', 'ResNetV2_50', 'Xception']
     CSV_FILES_NAMES_TRAIN = ['OTUS_Image_Classification_F1_Shells_White_fragments_AllSets.csv', 'OTUS_Image_Classification_F2_Shells_White_fragments_AllSets.csv','OTUS_Image_Classification_F3_Shells_White_fragments_AllSets.csv']
     CSV_FILES_NAMES_TEST  = ['OTUS_Image_Classification_F1_Shells_White_fragments_AllSets.csv', 'OTUS_Image_Classification_F2_Shells_White_fragments_AllSets.csv','OTUS_Image_Classification_F3_Shells_White_fragments_AllSets.csv']
     DATASET_MAIN_PATH_TRAIN = ['/datawork/DATA/','/datawork/DATA/','/datawork/DATA/']
@@ -76,7 +76,7 @@ if args.phase == 'train':
             if args.tracking_training:
                 tracking_list.append(str(b) + "/" + str(c) + "/Test")
             Schedule.append("python " + Test_MAIN_COMMAND + " --train_task Image_Classification --learning_model CNN --backbone_name " + backbone_name + " --pretrained_backbone False --labels_type onehot_labels "
-                            "--phase test --feature_representation True --layer_index " + layer_position + " "
+                            "--phase test --feature_representation False --layer_index " + layer_position + " "
                             "--image_rows 1024 --image_cols 1024 --image_channels 3 --new_size_rows 1024 --new_size_cols 1024 --split_patch False --overlap_porcent 0.25 "
                             "--dataset_name OTUSIFREMER_IMAGELABEL --csvfile_name " + csv_name_test + " --checkpoint_name " + backbone_name + "/Model_CNN_" + backbone_name + "_" + csv_name_train + " "
                             "--dataset_csv_main_path /datawork/DATA/CSVs/OTUS_2018/ "
@@ -99,9 +99,10 @@ if args.phase == 'train':
         b += 1
 
 for i in range(len(Schedule)):
-    t = open(args.tracking_files_path + "General_tracking_SW_AllSets.txt", "a")
-    t.write(tracking_list[i] + "\n")
-    t.close()
+    if args.tracking_training:
+        t = open(args.tracking_files_path + "General_tracking_SW_AllSets.txt", "a")
+        t.write(tracking_list[i] + "\n")
+        t.close()
     os.system(Schedule[i])
 
 if args.tracking_training:
