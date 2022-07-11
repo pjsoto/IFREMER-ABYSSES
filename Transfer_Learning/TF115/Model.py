@@ -591,12 +591,15 @@ class Model():
                     true_names.append(self.dataset.class_names[y_true[0]])
                     predicted_names.append(self.dataset.class_names[y_pred[0]])
                 if self.args.labels_type == 'multiple_labels':
-                    
+                    true_names = '_'
+                    predicted_names = '_'
                     for i in range(len(y_true[0,:])):
                         if y_true[0,i] == 1:
-                            true_names.append(self.dataset.class_names[i])
+                            #true_names.append(self.dataset.class_names[i])
+                            true_names = true_names + self.dataset.class_names[i] + '_'
                         if y_pred[0,i] == 1:
-                            predicted_names.append(self.dataset.class_names[i])
+                            #predicted_names.append(self.dataset.class_names[i])
+                            predicted_names = predicted_names + self.dataset.class_names[i] + '_'
 
                 print(true_names)
                 print(predicted_names)
