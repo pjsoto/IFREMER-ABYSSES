@@ -21,7 +21,7 @@ class OTUSIFREMER_IMAGELABEL():
         if 'Lithology' in self.args.csvfile_name:
             self.class_names = ['Slab','Sulfurs','Vocanoclastic']
         if 'Morphology' in self.args.csvfile_name:
-            self.class_names = ['Fractured','Marbled','Scree/rubbles', 'Sedimented']
+            self.class_names = ['Fractured','Marbled','ScreeRubbles', 'Sedimented']
 
 
         datadf=pd.read_csv(CSV_FILE_PATH)

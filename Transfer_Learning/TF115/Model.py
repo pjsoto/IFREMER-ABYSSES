@@ -575,7 +575,7 @@ class Model():
                     True_Labels.append(y_true[0])
 
             if self.args.labels_type == 'multiple_labels':
-                y_pred = ((batch_prediction > 0.5) * 1.0)
+                y_pred = ((batch_prediction > 2) * 1.0)
                 y_true = labels_batch
 
                 if self.args.split_patch:
