@@ -20,9 +20,9 @@ if args.phase == 'train':
     c = 0
     continue_ = False
     tracking_list = []
-    BACKBONE_NAME  = ['Vgg', 'ResNetV1_18', 'ResNetV1_50', 'ResNetV2_18', 'ResNetV2_50', 'Xception']
+    BACKBONE_NAME  = ['Vgg', 'ResNetV1_18', 'ResNetV1_50', 'ResNetV2_18', 'ResNetV2_50']
 
-    BACKBONE_NAME  = ['Xception']
+    #BACKBONE_NAME  = ['Xception']
 
     #CSV_FILES_NAMES_TRAIN = ['OTUS_Image_Classification_F1_Morphology_ET_Ltd.csv', 'OTUS_Image_Classification_F2_Morphology_ET_Ltd.csv','OTUS_Image_Classification_F3_Morphology_ET_Ltd.csv']
     #CSV_FILES_NAMES_TEST  = ['OTUS_Image_Classification_F1_Morphology_ET_Ltd.csv', 'OTUS_Image_Classification_F2_Morphology_ET_Ltd.csv','OTUS_Image_Classification_F3_Morphology_ET_Ltd.csv']
