@@ -115,13 +115,15 @@ def Recover_hyperparameters_MS(args):
     continue_ = False
 
     if os.path.exists(args.tracking_files + "Model_tracking_" + args.identifier + ".txt"):
-        continue_ = True
+
         t = open(args.tracking_files + "Model_tracking_" + args.identifier + ".txt")
         lines = t.readlines()
         l = lines[-1]
         fields = l.split('/_')
-        args.save_checkpoint_path = fields[0]
-        args.r = int(fields[1])
-        args.initial_epoch = int(fields[2]) + 1
-        args.best_val_fs = float(fields[3])
+        if args.csvfile_name in fields[0]:
+            continue_ = True
+            args.save_checkpoint_path = fields[0]
+            args.r = int(fields[1])
+            args.initial_epoch = int(fields[2]) + 1
+            args.best_val_fs = float(fields[3])
     return continue_, args
