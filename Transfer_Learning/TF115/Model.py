@@ -63,7 +63,7 @@ class Model():
 
             if self.args.continue_training:
                 print('[*]Loading the feature extractor and classifier trained models...')
-                if os.path.exists(self.args.save_checkpoint_path):
+                if os.path.exists(self.args.save_checkpoint_path) and self.args.csvfile_name in self.args.save_checkpoint_path:
                     mod = self.load(self.args.save_checkpoint_path)
                     if mod:
                         print(" [*] Load with SUCCESS")
