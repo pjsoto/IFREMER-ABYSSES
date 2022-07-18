@@ -63,12 +63,15 @@ class Model():
 
             if self.args.continue_training:
                 print('[*]Loading the feature extractor and classifier trained models...')
-                mod = self.load(self.args.save_checkpoint_path)
-                if mod:
-                    print(" [*] Load with SUCCESS")
+                if os.path.exists(args.self.args.save_checkpoint_path):
+                    mod = self.load(self.args.save_checkpoint_path)
+                    if mod:
+                        print(" [*] Load with SUCCESS")
+                    else:
+                        print(" [!] Load failed...")
+                        print(" [!] The checkpoint referenced is missing!!!!")
                 else:
-                    print(" [!] Load failed...")
-                    print(" [!] The checkpoint referenced is missing!!!!")
+                    print("[!] Checkpoint path doesn't exists. Continuing training from scratch...")
 
 
         elif self.args.phase == 'test' or self.args.phase == 'gradcam':
