@@ -92,6 +92,7 @@ def main(args):
 
         print("[*] Initializing the model...")
         model = Model(args, dataset)
+        sys.exit()
         model.Train()
         args.r += 1
 
