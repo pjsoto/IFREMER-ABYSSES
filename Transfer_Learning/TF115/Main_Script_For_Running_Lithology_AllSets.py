@@ -104,7 +104,6 @@ for i in range(len(Schedule)):
         t.write(tracking_list[i] + "\n")
         t.close()
     os.system(Schedule[i])
-    sys.exit()
 
 if args.tracking_training:
     t = open(args.tracking_files_path + "General_tracking_LT_AllSets.txt", "a")
