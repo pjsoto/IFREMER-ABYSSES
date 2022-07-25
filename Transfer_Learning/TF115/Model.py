@@ -7,6 +7,7 @@ import tensorflow as tf
 from tqdm import trange
 from sklearn.manifold import TSNE
 from tensorflow.keras.backend import epsilon
+from sklearn.metrics import confusion_matrix
 
 from IFREMER import *
 from Networks import *
@@ -646,3 +647,7 @@ class Model():
                 f.write('General results:\n')
                 f.write("Accuracy: %.2f%%, Precision: %.2f%%, Recall: %.2f%%, Fscore: %.2f%%]\n" % (Ac, np.mean(P), np.mean(R), np.mean(F1)))
                 f.close()
+
+            if self.args.confusion_matrix:
+                conf_mat = confusion_matrix(True_Labels, Predicted_Labels)
+                np.save(self.args.save_results_dir + 'confusion_matrix', conf_mat)
