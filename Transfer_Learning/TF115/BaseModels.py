@@ -101,17 +101,19 @@ class ResNetV1():
                     else:
                         strides = (1 , 1)
                     if ('18' in self.args.backbone_name) or ('34' in self.args.backbone_name):
-                        if j == 0 and i == 0:
-                            Layers.append(self.Residual_Block_1(Layers[-1], self.filters[i], strides, chan_dim, shorcut = False, bn_eps=self.bn_eps, bn_decay = self.bn_decay, name = "block_" + str(i)+"_unit_" + str(j)))
-                        elif j == 0 and i != 0:
-                            Layers.append(self.Residual_Block_1(Layers[-1], self.filters[i], strides, chan_dim, shorcut = True, bn_eps=self.bn_eps, bn_decay = self.bn_decay, name = "block_" + str(i)+"_unit_" + str(j)))
-                        else:
-                            Layers.append(self.Residual_Block_1(Layers[-1], self.filters[i], strides, chan_dim, shorcut = False, bn_eps=self.bn_eps, bn_decay = self.bn_decay, name = "block_" + str(i)+"_unit_" + str(j)))
+                        Layers.append(self.Residual_Block_1(Layers[-1], self.filters[i], strides, chan_dim, shorcut = True, bn_eps=self.bn_eps, bn_decay = self.bn_decay, name = "block_" + str(i)+"_unit_" + str(j)))
+                        #if j == 0 and i == 0:
+                        #    Layers.append(self.Residual_Block_1(Layers[-1], self.filters[i], strides, chan_dim, shorcut = False, bn_eps=self.bn_eps, bn_decay = self.bn_decay, name = "block_" + str(i)+"_unit_" + str(j)))
+                        #elif j == 0 and i != 0:
+                        #    Layers.append(self.Residual_Block_1(Layers[-1], self.filters[i], strides, chan_dim, shorcut = True, bn_eps=self.bn_eps, bn_decay = self.bn_decay, name = "block_" + str(i)+"_unit_" + str(j)))
+                        #else:
+                        #    Layers.append(self.Residual_Block_1(Layers[-1], self.filters[i], strides, chan_dim, shorcut = False, bn_eps=self.bn_eps, bn_decay = self.bn_decay, name = "block_" + str(i)+"_unit_" + str(j)))
                     else:
-                        if j == 0:
-                            Layers.append(self.Residual_Block_2(Layers[-1], self.filters[i], strides, chan_dim, shorcut = True, bn_eps=self.bn_eps, bn_decay = self.bn_decay, name = "block_" + str(i)+"_unit_" + str(j)))
-                        else:
-                            Layers.append(self.Residual_Block_2(Layers[-1], self.filters[i], strides, chan_dim, shorcut = False, bn_eps=self.bn_eps, bn_decay = self.bn_decay, name = "block_" + str(i)+"_unit_" + str(j)))
+                        Layers.append(self.Residual_Block_2(Layers[-1], self.filters[i], strides, chan_dim, shorcut = True, bn_eps=self.bn_eps, bn_decay = self.bn_decay, name = "block_" + str(i)+"_unit_" + str(j)))
+                        #if j == 0:
+                        #    Layers.append(self.Residual_Block_2(Layers[-1], self.filters[i], strides, chan_dim, shorcut = True, bn_eps=self.bn_eps, bn_decay = self.bn_decay, name = "block_" + str(i)+"_unit_" + str(j)))
+                        #else:
+                        #    Layers.append(self.Residual_Block_2(Layers[-1], self.filters[i], strides, chan_dim, shorcut = False, bn_eps=self.bn_eps, bn_decay = self.bn_decay, name = "block_" + str(i)+"_unit_" + str(j)))
             return Layers
 
     def Residual_Block_1(self, X, filters = 64, stride = 2, chan_dim = -1, shorcut = False, bn_eps = 2e-5, bn_decay = 0.9, name = "block1"):
@@ -220,17 +222,19 @@ class ResNetV2():
                     else:
                         strides = (1 , 1)
                     if ('18' in self.args.backbone_name) or ('34' in self.args.backbone_name):
-                        if j == 0 and i == 0:
-                            Layers.append(self.Residual_Block_1(Layers[-1], self.filters[i], strides, chan_dim, shorcut = False, bn_eps=self.bn_eps, bn_decay = self.bn_decay, name = "block_" + str(i)+"_unit_" + str(j)))
-                        elif j == 0 and i != 0:
-                            Layers.append(self.Residual_Block_1(Layers[-1], self.filters[i], strides, chan_dim, shorcut = True, bn_eps=self.bn_eps, bn_decay = self.bn_decay, name = "block_" + str(i)+"_unit_" + str(j)))
-                        else:
-                            Layers.append(self.Residual_Block_1(Layers[-1], self.filters[i], strides, chan_dim, shorcut = False, bn_eps=self.bn_eps, bn_decay = self.bn_decay, name = "block_" + str(i)+"_unit_" + str(j)))
+                        Layers.append(self.Residual_Block_1(Layers[-1], self.filters[i], strides, chan_dim, shorcut = True, bn_eps=self.bn_eps, bn_decay = self.bn_decay, name = "block_" + str(i)+"_unit_" + str(j)))
+                        #if j == 0 and i == 0:
+                        #    Layers.append(self.Residual_Block_1(Layers[-1], self.filters[i], strides, chan_dim, shorcut = False, bn_eps=self.bn_eps, bn_decay = self.bn_decay, name = "block_" + str(i)+"_unit_" + str(j)))
+                        #elif j == 0 and i != 0:
+                        #    Layers.append(self.Residual_Block_1(Layers[-1], self.filters[i], strides, chan_dim, shorcut = True, bn_eps=self.bn_eps, bn_decay = self.bn_decay, name = "block_" + str(i)+"_unit_" + str(j)))
+                        #else:
+                        #    Layers.append(self.Residual_Block_1(Layers[-1], self.filters[i], strides, chan_dim, shorcut = False, bn_eps=self.bn_eps, bn_decay = self.bn_decay, name = "block_" + str(i)+"_unit_" + str(j)))
                     else:
-                        if j == 0:
-                            Layers.append(self.Residual_Block_2(Layers[-1], self.filters[i], strides, chan_dim, shorcut = True, bn_eps=self.bn_eps, bn_decay = self.bn_decay, name = "block_" + str(i)+"_unit_" + str(j)))
-                        else:
-                            Layers.append(self.Residual_Block_2(Layers[-1], self.filters[i], strides, chan_dim, shorcut = False, bn_eps=self.bn_eps, bn_decay = self.bn_decay, name = "block_" + str(i)+"_unit_" + str(j)))
+                        Layers.append(self.Residual_Block_2(Layers[-1], self.filters[i], strides, chan_dim, shorcut = True, bn_eps=self.bn_eps, bn_decay = self.bn_decay, name = "block_" + str(i)+"_unit_" + str(j)))
+                        #if j == 0:
+                        #    Layers.append(self.Residual_Block_2(Layers[-1], self.filters[i], strides, chan_dim, shorcut = True, bn_eps=self.bn_eps, bn_decay = self.bn_decay, name = "block_" + str(i)+"_unit_" + str(j)))
+                        #else:
+                        #    Layers.append(self.Residual_Block_2(Layers[-1], self.filters[i], strides, chan_dim, shorcut = False, bn_eps=self.bn_eps, bn_decay = self.bn_decay, name = "block_" + str(i)+"_unit_" + str(j)))
             return Layers
 
     def Residual_Block_1(self, X, filters = 64, stride = 2, chan_dim = -1, shorcut = False, bn_eps = 2e-5, bn_decay = 0.9, name = "block1"):

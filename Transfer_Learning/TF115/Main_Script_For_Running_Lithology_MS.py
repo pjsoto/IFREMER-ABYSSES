@@ -7,7 +7,8 @@ parser = argparse.ArgumentParser(description='')
 
 parser.add_argument('--running_in', dest='running_in', type=str, default='Datarmor_Interactive', help='Decide wether the script will be running')
 parser.add_argument('--phase', dest = 'phase', type = str, default = 'train', help = 'Decide wether the phase: Train|Test will be running')
-parser.add_argument('--tracking_training', dest = 'tracking_training', type = eval, choices = [True, False], default = False, help = 'Set this parameter to True if the training will be tracked')
+parser.add_argument('--tracking_training', dest = 'tracking_training', type = eval, choices = [True, False], default = True, help = 'Set this parameter to True if the training will be tracked')
+parser.add_argument('--cross_domain', dest = 'cross_domain', type = eval, choices = [True, False], default = False, help = 'Set this parameter to True if the training will be tracked')
 parser.add_argument('--continue_training', dest = 'continue_training', type = eval, choices = [True, False], default = False, help = 'Set this parameter to True if the training musy continue from a previously saved model')
 parser.add_argument('--tracking_files_path', dest = 'tracking_files_path', type = str, default = '/datawork/EXPERIMENTS/CHECKPOINTS/OTUSIFREMER_IMAGELABEL_checkpoints/')
 args = parser.parse_args()
@@ -20,11 +21,21 @@ if args.phase == 'train':
     c = 0
     continue_ = False
     tracking_list = []
-    BACKBONE_NAME  = ['Vgg', 'ResNetV1_18', 'ResNetV1_50', 'ResNetV2_18', 'ResNetV2_50', 'Xception']
-    CSV_FILES_NAMES_TRAIN = ['OTUS_Image_Classification_F1_Lithology_MS_Ltd.csv', 'OTUS_Image_Classification_F2_Lithology_MS_Ltd.csv','OTUS_Image_Classification_F3_Lithology_MS_Ltd.csv', 'OTUS_Image_Classification_F1_Lithology_MS_Ltd.csv', 'OTUS_Image_Classification_F2_Lithology_MS_Ltd.csv','OTUS_Image_Classification_F3_Lithology_MS_Ltd.csv']
-    CSV_FILES_NAMES_TEST  = ['OTUS_Image_Classification_F1_Lithology_WC_Ltd.csv', 'OTUS_Image_Classification_F2_Lithology_WC_Ltd.csv','OTUS_Image_Classification_F3_Lithology_WC_Ltd.csv', 'OTUS_Image_Classification_F1_Lithology_ET_Ltd.csv', 'OTUS_Image_Classification_F2_Lithology_ET_Ltd.csv','OTUS_Image_Classification_F3_Lithology_ET_Ltd.csv']
-    DATASET_MAIN_PATH_TRAIN = ['/datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/']
-    DATASET_MAIN_PATH_TEST  = ['/datawork/DATA/OTUS_2018_Doneesbrutes_WhiteCastle1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_WhiteCastle1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_WhiteCastle1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_EiffelTower1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_EiffelTower1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_EiffelTower1024/']
+    #BACKBONE_NAME  = ['Vgg', 'ResNetV1_18', 'ResNetV1_50', 'ResNetV2_18', 'ResNetV2_50', 'Xception']
+    BACKBONE_NAME  = ['ResNetV1_18', 'ResNetV1_50', 'ResNetV2_18', 'ResNetV2_50']
+
+    if not args.cross_domain:
+        CSV_FILES_NAMES_TRAIN = ['OTUS_Image_Classification_F1_Lithology_MS_Ltd.csv', 'OTUS_Image_Classification_F2_Lithology_MS_Ltd.csv','OTUS_Image_Classification_F3_Lithology_MS_Ltd.csv']
+        CSV_FILES_NAMES_TEST  = ['OTUS_Image_Classification_F1_Lithology_MS_Ltd.csv', 'OTUS_Image_Classification_F2_Lithology_MS_Ltd.csv','OTUS_Image_Classification_F3_Lithology_MS_Ltd.csv']
+
+        DATASET_MAIN_PATH_TRAIN = ['/datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/']
+        DATASET_MAIN_PATH_TEST  = ['/datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/']
+    else:
+        CSV_FILES_NAMES_TRAIN = ['OTUS_Image_Classification_F1_Lithology_MS_Ltd.csv', 'OTUS_Image_Classification_F2_Lithology_MS_Ltd.csv','OTUS_Image_Classification_F3_Lithology_MS_Ltd.csv', 'OTUS_Image_Classification_F1_Lithology_MS_Ltd.csv', 'OTUS_Image_Classification_F2_Lithology_MS_Ltd.csv','OTUS_Image_Classification_F3_Lithology_MS_Ltd.csv']
+        CSV_FILES_NAMES_TEST  = ['OTUS_Image_Classification_F1_Lithology_WC_Ltd.csv', 'OTUS_Image_Classification_F2_Lithology_WC_Ltd.csv','OTUS_Image_Classification_F3_Lithology_WC_Ltd.csv', 'OTUS_Image_Classification_F1_Lithology_ET_Ltd.csv', 'OTUS_Image_Classification_F2_Lithology_ET_Ltd.csv','OTUS_Image_Classification_F3_Lithology_ET_Ltd.csv']
+
+        DATASET_MAIN_PATH_TRAIN = ['/datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/']
+        DATASET_MAIN_PATH_TEST  = ['/datawork/DATA/OTUS_2018_Doneesbrutes_WhiteCastle1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_WhiteCastle1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_WhiteCastle1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_EiffelTower1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_EiffelTower1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_EiffelTower1024/']
 
     if args.running_in == 'Datarmor_Interactive':
         Train_MAIN_COMMAND = "TrainModel.py"
