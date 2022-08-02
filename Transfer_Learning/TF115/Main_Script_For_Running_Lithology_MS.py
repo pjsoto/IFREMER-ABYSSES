@@ -22,7 +22,7 @@ if args.phase == 'train':
     continue_ = False
     tracking_list = []
     #BACKBONE_NAME  = ['Vgg', 'ResNetV1_18', 'ResNetV1_50', 'ResNetV2_18', 'ResNetV2_50', 'Xception']
-    BACKBONE_NAME  = ['ResNetV1_18', 'ResNetV1_50', 'ResNetV2_18', 'ResNetV2_50']
+    BACKBONE_NAME  = ['ResNetV2_18', 'ResNetV2_50']
 
     if not args.cross_domain:
         CSV_FILES_NAMES_TRAIN = ['OTUS_Image_Classification_F1_Lithology_MS_Ltd.csv', 'OTUS_Image_Classification_F2_Lithology_MS_Ltd.csv','OTUS_Image_Classification_F3_Lithology_MS_Ltd.csv']
@@ -69,8 +69,8 @@ if args.phase == 'train':
             Dataset_main_path_train = DATASET_MAIN_PATH_TRAIN[c]
             Dataset_main_path_test = DATASET_MAIN_PATH_TEST[c]
             print(Dataset_main_path_train)
-            #if args.tracking_training:
-            #    tracking_list.append(str(b) + "/" + str(c) + "/Train")
+            if args.tracking_training:
+                tracking_list.append(str(b) + "/" + str(c) + "/Train")
 
             if continue_:
                 continue_training = True
