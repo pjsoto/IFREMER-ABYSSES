@@ -11,7 +11,7 @@ parser.add_argument('--test', dest = 'test', type = eval, choices = [True, False
 parser.add_argument('--gradcam', dest = 'gradcam', type = eval, choices = [True, False], default = False, help = 'Decide if gradcam phase will be running')
 parser.add_argument('--cross_domain', dest = 'cross_domain', type = eval, choices = [True, False], default = False, help = 'Set this parameter to True if the training will be tracked')
 parser.add_argument('--tracking_training', dest = 'tracking_training', type = eval, choices = [True, False], default = True, help = 'Set this parameter to True if the training will be tracked')
-parser.add_argument('--continue_training', dest = 'continue_training', type = eval, choices = [True, False], default = False, help = 'Set this parameter to True if the training musy continue from a previously saved model')
+parser.add_argument('--continue_training', dest = 'continue_training', type = eval, choices = [True, False], default = True, help = 'Set this parameter to True if the training musy continue from a previously saved model')
 parser.add_argument('--tracking_files_path', dest = 'tracking_files_path', type = str, default = '/datawork/EXPERIMENTS/CHECKPOINTS/OTUSIFREMER_IMAGELABEL_checkpoints/')
 args = parser.parse_args()
 

@@ -84,7 +84,7 @@ def superimpose(img_bgr, heatmap, thresh, save_path, emphasize=False):
     plt.figure(figsize=(20,20))
     ax = plt.subplot(111)
     plt.imshow(img_bgr)
-    plt.imshow(heatmap, 'jet', interpolation='none', alpha=0.5)
+    plt.imshow(heatmap, 'jet', interpolation='none', alpha=0.30)
     #heatmap = cv2.applyColorMap(heatmap, cv2.COLORMAP_JET)
 
     #hif = .8
