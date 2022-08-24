@@ -12,4 +12,4 @@ source /etc/profile.d/modules.sh
 echo "Load singularity..."
 module load singularity/3.4.1
 echo "Executing singularity..."
-singularity exec --nv --bind $DATAWORK/:/datawork $HOME/Singularities/tf1.15.5-gpu_rs.sif python $HOME/CODE/IFREMER-ABYSSES/Transfer_Learning/TF115/Main_Script_For_Running_Morphology_ET.py --running_in Datarmor_PBS --train True --test True --gradcam False --cross_domain False --tracking_training True --continue_training False
+singularity exec --nv --bind $DATAWORK/:/datawork $HOME/Singularities/tf1.15.5-gpu_rs.sif python $HOME/CODE/IFREMER-ABYSSES/Transfer_Learning/TF115/Main_Script_For_Running_Morphology_ET.py --running_in Datarmor_PBS --train False --test True --gradcam False --cross_domain False --tracking_training False --continue_training False
