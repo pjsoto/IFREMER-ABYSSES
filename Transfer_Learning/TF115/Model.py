@@ -512,6 +512,13 @@ class Model():
         Predicted_Labels = []
         True_Labels = []
 
+        if self.args.compute_uncertainty:
+            predictive_variance = []
+            predictive_entropy  = []
+            mutual_information  = []
+            #kl_divergence       = []
+
+
         if self.args.save_text_results:
             f = open(self.args.save_results_dir + "Metrics_Performance.txt","a")
         if self.args.save_images_and_predictions:
@@ -543,7 +550,9 @@ class Model():
 
             #
             if len(self.args.backbone_names) > 0:
+                b = 0
                 voting_array = np.zeros((1 , self.dataset.class_number))
+                likelihood_array = np.zeros((len(self.args.bakcbone_names),self.dataset.class_number))
                 for backbone in self.args.backbone_names:
                     args.backbone_name = backbone
                     args.checkpoint_name =  backbone + "/Model_CNN_" + backbone + "_" + self.args.csvfile_name_train
@@ -554,12 +563,14 @@ class Model():
                         args.trained_model_path = args.checkpoint_dir + '/' + model_folder + '/'
                         self.__init__(args, dataset)
                         batch_prediction_ = self.sess.run(self.prediction_c, feed_dict={self.data: data_batch})
+                        likelihood_array[b, :] = batch_prediction_
                         if self.args.labels_type == 'onehot_labels':
                             voting_array[0, np.argmax(batch_prediction_, axis = 1)[0]] += 1
                         if self.args.labels_type == 'multiple_labels':
                             y_pred = ((batch_prediction_ > 0.5) * 1.0)
                             voting_array += y_pred
                         batch_prediction = voting_array.copy()
+                        b += 1
                     else:
                         print("The model folder not found")
 
@@ -615,6 +626,21 @@ class Model():
                 plt.savefig(save_path)
                 plt.clf()
 
+            if self.args.compute_uncertainty:
+                # Predictive Variance
+                predictive_variance_k = np.std(likelihood_array, axis = 0)
+                predictive_variance.append(np.mean(predictive_variance_k))
+                # Predictive Entropy
+                mean_likelihood_k = np.mean(likelihood_array, axis = 0)
+                predictive_entropy.append(-1 * np.mean(mean_likelihood_k * np.log(mean_likelihood_k)))
+                # Mutual Information
+                classifiers_entropy = np.zeros((len(self.args.backbone_names), 1))
+                for b in range(len(self.args.backbone_names)):
+                    classifiers_entropy[b, 0] = -1 * np.mean(likelihood_array[b, :] * np.log(likelihood_array[b, :]))
+
+                mutual_information.append(-1 * np.mean(mean_likelihood_k * np.log(mean_likelihood_k)) - np.mean(classifiers_entropy))
+
+                # KL divergence
         #Metrics computation
         #In each class
         if self.args.save_text_results:
@@ -647,6 +673,12 @@ class Model():
                 f.write('General results:\n')
                 f.write("Accuracy: %.2f%%, Precision: %.2f%%, Recall: %.2f%%, Fscore: %.2f%%]\n" % (Ac, np.mean(P), np.mean(R), np.mean(F1)))
                 f.close()
+            if self.args.compute_uncertainty:
+                f.write("Uncertainty measures:\n")
+                f.write("Predictive Variance: %.2f%" % (np.mean(predictive_variance)))
+                f.write("Predictive Entropy: %.2f%" % (np.mean(predictive_entropy)))
+                f.write("Mutual Information: %.2f%" % (np.mean(mutual_information)))
+
 
             if self.args.confusion_matrix:
                 conf_mat = confusion_matrix(True_Labels, Predicted_Labels)
