@@ -9,9 +9,9 @@ parser.add_argument('--running_in', dest='running_in', type=str, default='Datarm
 parser.add_argument('--train', dest = 'train', type = eval, choices = [True, False], default = False, help = 'Decide if training phase will be running')
 parser.add_argument('--test', dest = 'test', type = eval, choices = [True, False], default = True, help = 'Decide if testing phase will be running')
 parser.add_argument('--gradcam', dest = 'gradcam', type = eval, choices = [True, False], default = False, help = 'Decide if gradcam phase will be running')
-parser.add_argument('--cross_domain', dest = 'cross_domain', type = eval, choices = [True, False], default = False, help = 'Set this parameter to True if the training will be tracked')
-parser.add_argument('--tracking_training', dest = 'tracking_training', type = eval, choices = [True, False], default = True, help = 'Set this parameter to True if the training will be tracked')
-parser.add_argument('--continue_training', dest = 'continue_training', type = eval, choices = [True, False], default = True, help = 'Set this parameter to True if the training musy continue from a previously saved model')
+parser.add_argument('--cross_domain', dest = 'cross_domain', type = eval, choices = [True, False], default = True, help = 'Set this parameter to True if the training will be tracked')
+parser.add_argument('--tracking_training', dest = 'tracking_training', type = eval, choices = [True, False], default = False, help = 'Set this parameter to True if the training will be tracked')
+parser.add_argument('--continue_training', dest = 'continue_training', type = eval, choices = [True, False], default = False, help = 'Set this parameter to True if the training musy continue from a previously saved model')
 parser.add_argument('--tracking_files_path', dest = 'tracking_files_path', type = str, default = '/datawork/EXPERIMENTS/CHECKPOINTS/OTUSIFREMER_IMAGELABEL_checkpoints/')
 args = parser.parse_args()
 
@@ -24,7 +24,7 @@ c = 0
 continue_ = False
 tracking_list = []
 #BACKBONE_NAME  = ['Vgg', 'ResNetV1_18', 'ResNetV1_50', 'ResNetV2_18', 'ResNetV2_50', 'Xception']
-BACKBONE_NAME  = ['ResNetV2_50']
+BACKBONE_NAME  = ['ResNetV1_18', 'ResNetV1_50', 'ResNetV2_18', 'ResNetV2_50']
 
 
 if not args.cross_domain:
