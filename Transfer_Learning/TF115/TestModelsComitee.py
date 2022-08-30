@@ -21,7 +21,7 @@ parser.add_argument('--batch_size', dest='batch_size', type=int, default=1, help
 parser.add_argument('--save_images_and_predictions', dest = 'save_images_and_predictions', type=eval, choices=[True, False], default=False, help = 'Decide if will be saved images and their predictions')
 parser.add_argument('--save_text_results', dest = 'save_text_results', type=eval, choices=[True, False], default=False, help = 'Decide if will be saved results in text file')
 parser.add_argument('--confusion_matrix',  dest = 'confusion_matrix',  type=eval, choices=[True, False], default=True, help = 'Decide if will be computed the confusion matrix')
-parser.add_argument('--compute_uncertainty', dest = 'compute_uncertainty', type = eval, choices = [True, False], default = True, 'Decide if will be computed the uncertainty measures')
+parser.add_argument('--compute_uncertainty', dest = 'compute_uncertainty', type = eval, choices = [True, False], default = True, help = 'Decide if will be computed the uncertainty measures')
 # Images pre-processing hyper-parameters
 parser.add_argument('--image_rows', dest='image_rows', type=int, default=1024, help='Image dimensions in rows')
 parser.add_argument('--image_cols', dest='image_cols', type=int, default=1024, help='Image dimensions in columns')
@@ -54,6 +54,7 @@ def main():
 
     args.results_dir = args.results_main_path + args.dataset_name + '_results/Committee/Committee_' + str(len(args.backbone_names)) + '_Train_' + args.csvfile_name_train + '_Test_' + args.csvfile_name_test + '/'
     print("Dataset pre-processing...")
+
     if args.dataset_name == 'SUIM':
         dataset = SUIM(args)
     if args.dataset_name == 'IFREMERData':
@@ -72,7 +73,7 @@ def main():
         args.save_results_dir = args.results_dir + args.learning_model + '_' + 'Comitee_Tested_' + dt_string +'/'
         if not os.path.exists(args.save_results_dir):
             os.makedirs(args.save_results_dir)
-
+        
         print('[*]Initializing the model...')
         model = Model(args, dataset)
         print('[*]Model Comitee evaluation running...')
