@@ -627,15 +627,15 @@ class Model():
 
             if self.args.compute_uncertainty:
                 # Predictive Variance
-                predictive_variance_k = np.std(likelihood_array, axis = 0)
+                predictive_variance_k = np.var(likelihood_array, axis = 0)
                 predictive_variance.append(np.mean(predictive_variance_k))
                 # Predictive Entropy
                 mean_likelihood_k = np.mean(likelihood_array, axis = 0)
-                predictive_entropy.append(-1 * np.mean(mean_likelihood_k * np.log(mean_likelihood_k)))
+                predictive_entropy.append(-1 * np.mean(mean_likelihood_k * np.log(mean_likelihood_k + 1e-5)))
                 # Mutual Information
                 classifiers_entropy = np.zeros((len(self.args.backbone_names), 1))
                 for b in range(len(self.args.backbone_names)):
-                    classifiers_entropy[b, 0] = -1 * np.mean(likelihood_array[b, :] * np.log(likelihood_array[b, :]))
+                    classifiers_entropy[b, 0] = -1 * np.mean(likelihood_array[b, :] * np.log(likelihood_array[b, :] + 1e-5))
 
                 mutual_information.append(-1 * np.mean(mean_likelihood_k * np.log(mean_likelihood_k)) - np.mean(classifiers_entropy))
 
@@ -671,10 +671,11 @@ class Model():
                 f.write('General results:\n')
                 f.write("Accuracy: %.2f%%, Precision: %.2f%%, Recall: %.2f%%, Fscore: %.2f%%]\n" % (Ac, np.mean(P), np.mean(R), np.mean(F1)))
             if self.args.compute_uncertainty:
+                print(mutual_information)
                 f.write("Uncertainty measures:\n")
-                f.write("Predictive Variance: %.2f\n" % (np.mean(predictive_variance)))
-                f.write("Predictive Entropy: %.2f\n" % (np.mean(predictive_entropy)))
-                f.write("Mutual Information: %.2f\n" % (np.mean(mutual_information)))
+                f.write("Predictive Variance: %.2f +/- %.2f\n" % (np.mean(predictive_variance), np.std(predictive_variance)))
+                f.write("Predictive Entropy: %.2f +/- %.2f\n" % (np.mean(predictive_entropy), np.std(predictive_entropy)))
+                f.write("Mutual Information: %.2f +/- %.2f\n" % (np.mean(mutual_information), np.std(mutual_information)))
 
             f.close()
 
