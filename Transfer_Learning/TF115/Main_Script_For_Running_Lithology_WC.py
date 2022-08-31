@@ -23,8 +23,8 @@ b = 0
 c = 0
 continue_ = False
 tracking_list = []
-#BACKBONE_NAME  = ['Vgg', 'ResNetV1_18', 'ResNetV1_50', 'ResNetV2_18', 'ResNetV2_50', 'Xception']
-BACKBONE_NAME  = ['ResNetV1_18', 'ResNetV1_50','ResNetV2_18', 'ResNetV2_50']
+BACKBONE_NAME  = ['Vgg', 'ResNetV1_18', 'ResNetV1_50', 'ResNetV2_18', 'ResNetV2_50', 'Xception']
+#BACKBONE_NAME  = ['ResNetV1_18', 'ResNetV1_50','ResNetV2_18', 'ResNetV2_50']
 
 if not args.cross_domain:
     CSV_FILES_NAMES_TRAIN = ['OTUS_Image_Classification_F1_Lithology_WC_Ltd.csv', 'OTUS_Image_Classification_F2_Lithology_WC_Ltd.csv','OTUS_Image_Classification_F3_Lithology_WC_Ltd.csv']
@@ -90,7 +90,7 @@ while b < len(BACKBONE_NAME):
             if args.tracking_training:
                 tracking_list.append(str(b) + "/" + str(c) + "/Test")
             Schedule.append("python " + Test_MAIN_COMMAND + " --train_task Image_Classification --learning_model CNN --backbone_name " + backbone_name + " --pretrained_backbone False --labels_type onehot_labels "
-                            "--phase test --feature_representation True --layer_index " + layer_position + " "
+                            "--phase test --feature_representation False --layer_index " + layer_position + " "
                             "--image_rows 1024 --image_cols 1024 --image_channels 3 --new_size_rows 1024 --new_size_cols 1024 --split_patch False --overlap_porcent 0.25 "
                             "--dataset_name OTUSIFREMER_IMAGELABEL --csvfile_name " + csv_name_test + " --checkpoint_name " + backbone_name + "/Model_CNN_" + backbone_name + "_" + csv_name_train + " "
                             "--dataset_csv_main_path /datawork/DATA/CSVs/OTUS_2018/ "

@@ -23,14 +23,14 @@ b = 0
 c = 0
 continue_ = False
 tracking_list = []
-#BACKBONE_NAME  = ['Vgg', 'ResNetV1_18', 'ResNetV1_50', 'ResNetV2_18', 'ResNetV2_50', 'Xception']
-BACKBONE_NAME  = ['ResNetV1_18', 'ResNetV1_50', 'ResNetV2_18', 'ResNetV2_50']
+BACKBONE_NAME  = ['Vgg', 'ResNetV1_18', 'ResNetV1_50', 'ResNetV2_18', 'ResNetV2_50', 'Xception']
+#BACKBONE_NAME  = ['ResNetV1_18', 'ResNetV1_50', 'ResNetV2_18', 'ResNetV2_50']
 
 if not args.cross_domain:
-    CSV_FILES_NAMES_TRAIN = [ 'OTUS_Image_Classification_F3_Morphology_MS_Ltd.csv']
-    CSV_FILES_NAMES_TEST  = [ 'OTUS_Image_Classification_F3_Morphology_MS_Ltd.csv']
-    DATASET_MAIN_PATH_TRAIN = ['/datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/']
-    DATASET_MAIN_PATH_TEST  = ['/datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/']
+    CSV_FILES_NAMES_TRAIN = ['OTUS_Image_Classification_F1_Morphology_MS_Ltd.csv','OTUS_Image_Classification_F2_Morphology_MS_Ltd.csv','OTUS_Image_Classification_F3_Morphology_MS_Ltd.csv']
+    CSV_FILES_NAMES_TEST  = ['OTUS_Image_Classification_F1_Morphology_MS_Ltd.csv','OTUS_Image_Classification_F2_Morphology_MS_Ltd.csv','OTUS_Image_Classification_F3_Morphology_MS_Ltd.csv']
+    DATASET_MAIN_PATH_TRAIN = ['/datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/']
+    DATASET_MAIN_PATH_TEST  = ['/datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/','/datawork/DATA/OTUS_2018_Doneesbrutes_Montsegur1024/']
 else:
     CSV_FILES_NAMES_TRAIN = ['OTUS_Image_Classification_F1_Morphology_MS_Ltd.csv', 'OTUS_Image_Classification_F2_Morphology_MS_Ltd.csv','OTUS_Image_Classification_F3_Morphology_MS_Ltd.csv', 'OTUS_Image_Classification_F1_Morphology_MS_Ltd.csv', 'OTUS_Image_Classification_F2_Morphology_MS_Ltd.csv','OTUS_Image_Classification_F3_Morphology_MS_Ltd.csv']
     CSV_FILES_NAMES_TEST  = ['OTUS_Image_Classification_F1_Morphology_WC_Ltd.csv', 'OTUS_Image_Classification_F2_Morphology_WC_Ltd.csv','OTUS_Image_Classification_F3_Morphology_WC_Ltd.csv', 'OTUS_Image_Classification_F1_Morphology_ET_Ltd.csv', 'OTUS_Image_Classification_F2_Morphology_ET_Ltd.csv','OTUS_Image_Classification_F3_Morphology_ET_Ltd.csv']

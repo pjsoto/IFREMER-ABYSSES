@@ -23,8 +23,8 @@ b = 0
 c = 0
 continue_ = False
 tracking_list = []
-#BACKBONE_NAME  = ['Vgg', 'ResNetV1_18', 'ResNetV1_50', 'ResNetV2_18', 'ResNetV2_50', 'Xception']
-BACKBONE_NAME  = ['ResNetV1_18', 'ResNetV1_50', 'ResNetV2_18', 'ResNetV2_50']
+BACKBONE_NAME  = ['Vgg', 'ResNetV1_18', 'ResNetV1_50', 'ResNetV2_18', 'ResNetV2_50', 'Xception']
+#BACKBONE_NAME  = ['ResNetV1_18', 'ResNetV1_50', 'ResNetV2_18', 'ResNetV2_50']
 
 if not args.cross_domain:
     CSV_FILES_NAMES_TRAIN = ['OTUS_Image_Classification_F1_Shells_White_fragments_ET_Ltd.csv', 'OTUS_Image_Classification_F2_Shells_White_fragments_ET_Ltd.csv','OTUS_Image_Classification_F3_Shells_White_fragments_ET_Ltd.csv']
