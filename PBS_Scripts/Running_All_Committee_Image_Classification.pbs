@@ -15,5 +15,5 @@ echo "Load singularity..."
 module load singularity/3.4.1
 echo "Executing singularity..."
 singularity exec --nv --bind ${DATAWORK}:/datawork ${HOME}/Singularities/tf1.15.5-gpu_rs.sif python ${HOME}/CODE/IFREMER-ABYSSES/Transfer_Learning/TF115/Main_Script_For_Running_Morphology_Comitee_MS.py
-singularity exec --nv --bind ${DATAWORK}:/datawork ${HOME}/Singularities/tf1.15.5-gpu_rs.sif python ${HOME}/CODE/IFREMER-ABYSSES/Transfer_Learning/TF115/Main_Script_For_Running_Morphology_Comitee_WC.py
-singularity exec --nv --bind ${DATAWORK}:/datawork ${HOME}/Singularities/tf1.15.5-gpu_rs.sif python ${HOME}/CODE/IFREMER-ABYSSES/Transfer_Learning/TF115/Main_Script_For_Running_Morphology_Comitee_ET.py
+#singularity exec --nv --bind ${DATAWORK}:/datawork ${HOME}/Singularities/tf1.15.5-gpu_rs.sif python ${HOME}/CODE/IFREMER-ABYSSES/Transfer_Learning/TF115/Main_Script_For_Running_Morphology_Comitee_WC.py
+#singularity exec --nv --bind ${DATAWORK}:/datawork ${HOME}/Singularities/tf1.15.5-gpu_rs.sif python ${HOME}/CODE/IFREMER-ABYSSES/Transfer_Learning/TF115/Main_Script_For_Running_Morphology_Comitee_ET.py
