@@ -42,7 +42,7 @@ while c < len(CSV_FILES_NAMES_TRAIN):
     print(Dataset_main_path_test)
 
     Schedule.append("python " + TestComitee_MAIN_COMMAND + " --train_task Image_Classification --learning_model CNN --pretrained_backbone False --labels_type multiple_labels "
-                    "--phase test --save_images_and_predictions False --save_text_results True --confusion_matrix True --compute_uncertainty True "
+                    "--phase test --save_images_and_predictions False --save_text_results True --confusion_matrix False --compute_uncertainty True "
                     "--image_rows 1024 --image_cols 1024 --image_channels 3 --new_size_rows 1024 --new_size_cols 1024 --split_patch False --overlap_porcent 0.25 "
                     "--dataset_name OTUSIFREMER_IMAGELABEL --csvfile_name_train " + csv_name_train + " --csvfile_name_test " + csv_name_test + " "
                     "--dataset_csv_main_path /datawork/DATA/CSVs/OTUS_2018/ "
