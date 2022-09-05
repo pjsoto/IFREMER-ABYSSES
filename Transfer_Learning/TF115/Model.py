@@ -663,13 +663,7 @@ class Model():
                 f.write("Accuracy: %.2f%%, Precision: %.2f%%, Recall: %.2f%%, Fscore: %.2f%%]\n" % (Ac, P, R, F1))
 
             if self.args.labels_type == 'multiple_labels':
-                for i in range(True_Labels.shape[0]):
-                    print(True_Labels[i,:], Predicted_Labels[i,:])
-
                 Ac, F1, P, R = compute_metrics(True_Labels, Predicted_Labels, None)
-                print(F1)
-                print(P)
-                print(R)
                 for c in range(self.dataset.class_number):
                     f.write("Class %d, precision: %.2f%%, recall: %.2f%%, fscore: %.2f%%]\n" % (c, P[c], R[c], F1[c]))
 
