@@ -547,10 +547,9 @@ class Model():
                 self.pad_tuple = []
 
             data_batch, labels_batch = self.dataset.read_samples(paths_batch, labels_batch, self.coordinates, self.pad_tuple)
-
             #
             if len(self.args.backbone_names) > 0:
-                b = 0
+                backbone_i = 0
                 voting_array = np.zeros((1 , self.dataset.class_number))
                 likelihood_array = np.zeros((len(self.args.backbone_names),self.dataset.class_number))
                 for backbone in self.args.backbone_names:
@@ -563,14 +562,14 @@ class Model():
                         args.trained_model_path = args.checkpoint_dir + '/' + model_folder + '/'
                         self.__init__(args, dataset)
                         batch_prediction_ = self.sess.run(self.prediction_c, feed_dict={self.data: data_batch})
-                        likelihood_array[b, :] = batch_prediction_
+                        likelihood_array[backbone_i, :] = batch_prediction_
                         if self.args.labels_type == 'onehot_labels':
                             voting_array[0, np.argmax(batch_prediction_, axis = 1)[0]] += 1
                         if self.args.labels_type == 'multiple_labels':
                             y_pred = ((batch_prediction_ > 0.5) * 1.0)
                             voting_array += y_pred
                         batch_prediction = voting_array.copy()
-                        b += 1
+                        backbone_i += 1
                     else:
                         print("The model folder not found")
 
@@ -595,9 +594,8 @@ class Model():
                 if self.args.split_patch:
                     print('Coming soon...')
                 else:
-                    True_Labels[b * self.args.batch_size : (b + 1) * self.args.batch_size, :] = y_true
-                    Predicted_Labels[b * self.args.batch_size : (b + 1) * self.args.batch_size, :] = y_pred
-
+                    True_Labels[b * self.args.batch_size : (b + 1) * self.args.batch_size, :] = y_true[0,:]
+                    Predicted_Labels[b * self.args.batch_size : (b + 1) * self.args.batch_size, :] = y_pred[0,:]
             if self.args.save_images_and_predictions:
                 true_names = []
                 predicted_names = []
@@ -663,8 +661,15 @@ class Model():
                 f.write('General results:\n')
                 Ac, F1, P, R = compute_metrics(True_Labels, Predicted_Labels, 'macro')
                 f.write("Accuracy: %.2f%%, Precision: %.2f%%, Recall: %.2f%%, Fscore: %.2f%%]\n" % (Ac, P, R, F1))
+
             if self.args.labels_type == 'multiple_labels':
+                for i in range(True_Labels.shape[0]):
+                    print(True_Labels[i,:], Predicted_Labels[i,:])
+
                 Ac, F1, P, R = compute_metrics(True_Labels, Predicted_Labels, None)
+                print(F1)
+                print(P)
+                print(R)
                 for c in range(self.dataset.class_number):
                     f.write("Class %d, precision: %.2f%%, recall: %.2f%%, fscore: %.2f%%]\n" % (c, P[c], R[c], F1[c]))
 
