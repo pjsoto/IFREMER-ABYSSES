@@ -555,7 +555,7 @@ class Model():
                 for backbone in self.args.backbone_names:
                     args.backbone_name = backbone
                     args.checkpoint_name =  backbone + "/Model_CNN_" + backbone + "_" + self.args.csvfile_name_train
-                    args.checkpoint_dir = args.checkpoints_main_path + args.dataset_name + '_checkpoints/' + args.checkpoint_name
+                    args.checkpoint_dir = args.checkpoints_main_path + args.dataset_name + '_checkpoints_1/' + args.checkpoint_name
                     checkpoint_files = os.listdir(args.checkpoint_dir)
                     if len(checkpoint_files) > 0:
                         model_folder = checkpoint_files[0]
@@ -578,13 +578,20 @@ class Model():
                 batch_prediction = self.sess.run(self.prediction_c, feed_dict={self.data: data_batch})
             print(batch_prediction)
             if self.args.labels_type == 'onehot_labels':
-                y_pred = np.argmax(batch_prediction, axis = 1)
+                max_number = max(batch_prediction[0,:])
+                max_indexs = np.transpose(np.array(np.where(batch_prediction[0,:] == max_number)))
+                if max_indexs.shape[0] == 1:
+                    y_pred = np.argmax(batch_prediction, axis = 1)[0]
+                else:
+                    avg_prediction = np.mean(likelihood_array, axis = 0)
+                    y_pred = np.argmax(avg_prediction)
+                
                 y_true = np.argmax(labels_batch, axis = 1)
-                print(y_pred)
+
                 if self.args.split_patch:
                     print('Coming soon...')
                 else:
-                    Predicted_Labels.append(y_pred[0])
+                    Predicted_Labels.append(y_pred)
                     True_Labels.append(y_true[0])
 
             if self.args.labels_type == 'multiple_labels':
