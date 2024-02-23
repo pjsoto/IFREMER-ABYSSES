@@ -3,7 +3,7 @@ This project aims to build machine learning methods for image classification and
 
 # Substrata classification:
 In this item, the proposed framework was devised as depicted in the following figure:
-![Image](image1.png)
+![Image](Image.png)
 
 # Pre-requisites:
 1- Python 3.7
