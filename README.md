@@ -5,7 +5,7 @@ This project aims to build machine learning methods for image classification and
 In this item, the proposed framework was devised as depicted in the following figure:
 ![Image](Image.png)
 
-The experiments conducted to verify the feasibility of the proposed framework were compiled in a recently published paper that can be consulted [here](https://www.sciencedirect.com/science/article/pii/S1574954124000773) 
+The experiments conducted to verify the feasibility of the proposed framework as well as the obtained results were compiled in a recently published paper that can be consulted [here](https://www.sciencedirect.com/science/article/pii/S1574954124000773) 
 # Pre-requisites:
 1- Python 3.7
 2- Tensorflow 1.15
